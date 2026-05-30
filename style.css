@@ -211,9 +211,30 @@ h1 {
     opacity: 1;
 }
 
+.typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid #ff4d4d;
+    width: 0;
+    animation: typing 3s steps(50) forwards, blink 0.7s step-end infinite;
+    margin: 0 auto;
+}
 
+@keyframes typing {
+    from {
+        width: 0;
+    }
 
+    to {
+        width: 470px;
+    }
+}
 
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
 
 .hero {
     height: 100%;
@@ -891,7 +912,7 @@ footer {
 @media (max-width: 970px) {
 
     .about-dont-img {
-    margin-top: 50px;
+        margin-top: 50px;
     }
 }
 
@@ -1036,6 +1057,7 @@ footer {
         margin: 50px auto;
     }
 }
+
 @media (max-width: 909px) {
     .Contactme {
         width: 100%;
@@ -1045,10 +1067,23 @@ footer {
         width: 100%;
     }
 }
+
 @media (max-width: 495px) {
-    form input
+    form input {
+        width: 90%;
+        margin-left: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    @keyframes typing {
+        to {
+            width: 360px;
+        }
+    }
+
+    .hero p 
     {
-     width: 90%;
-     margin-left: 15px;
+        font-size: 18px;
     }
 }
