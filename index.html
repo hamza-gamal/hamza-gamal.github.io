@@ -11,7 +11,8 @@
     <link rel="icon" href="images/logo-al-safha-al-portofolio.png" type="image/png">
     <title>Hamza Gamal | Portfolio</title>
 
-    <!-- /////////////////////////////////////////// -->
+    <!-- ///////////////// -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playwrite+DE+SAS:wght@300&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Storm&display=swap"
@@ -23,10 +24,11 @@
 
 
 <body id="Home">
-    <!-- //////////////////////////////////////////////////         navbar 🔴     //////////////////////////////////////////////// -->
+    <!-- ////////////////////////         navbar 🔴     ////////////////////// -->
 
     <header>
         <nav class="navbar">
+
             <div class="logo">
                 <div class="img-logo">
                     <a id="Home" href="https://hamza-gamal.github.io/portfolio/">
@@ -36,7 +38,27 @@
                 <a href="https://hamza-gamal.github.io/portfolio/">Hamza Gamal</a>
             </div>
 
-            <span class="hamburger"><i style="margin-left: 15px ; margin-top: 7px;" class="fa-solid fa-bars"></i></span>
+            <div class="nav-phone">
+
+                <span class="icon-nav">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+
+                <div class="nav-links-phone">
+                    <li><a href="#Home">Home</a></li>
+                    <li><a href="#about">about</a></li>
+                    <li><a href="#Projects">Projects</a></li>
+                    <li><a href="#Skills"> Skills</a></li>
+                    <li><a href="#Contact">Contact </a></li>
+                    <div id="sun" class="sun-phone">
+                        <div class="sun-phone-child"><i class="fa-solid fa-sun"></i> <span>Light Mode</span> </div>
+                    </div>
+
+                </div>
+
+            </div>
 
             <ul class="nav-links">
                 <li><a href="#Home">Home</a></li>
@@ -56,7 +78,7 @@
     </header>
 
 
-    <!-- //////////////////////////////////////////////////         hero 🔴     //////////////////////////////////////////////// -->
+    <!-- ////////////////////////         hero 🔴     ////////////////////// -->
 
     <section id="home" class="hero">
 
@@ -88,7 +110,7 @@
     <span class="stop"></span>
     </div>
 
-    <!-- //////////////////////////////////////////////////         ABOUT ME 🔴     //////////////////////////////////////////////// -->
+    <!-- ////////////////////////     ABOUT ME 🔴     ////////////////////// -->
 
 
     <section class="about">
@@ -119,43 +141,46 @@
 
 
 
-    <!-- //////////////////////////////////////////////////         Projects 🔴     //////////////////////////////////////////////// -->
+    <!-- ////////////////////////      Projects 🔴     ////////////////////// -->
     <h1 class="title-projects">Projects</h1>
 
     <section class="Projects">
 
 
         <div class="Project">
-            <div class="Project-child">
                 <a target="_blank" href="https://hamza-gamal.github.io/quran-kareem/">
-                    <img class="Quran" src="images/image copy 8.png" alt="Quran">
-                    <p>Quran</p>
+                    <img src="images/image copy 8.png" alt="Quran">
+                    <div class="t-c-p">
+                        <div>Quran</div>
+                        <div>An online website containing the entire Holy Quran for reading, featuring a clean, elegant, and easy-to-use user interface</div>
+                    </div>
                 </a>
-            </div>
         </div>
 
         <div class="Project">
-            <div class="Project-child">
                 <a target="_blank" href="https://hamza-gamal.github.io/restaurant/">
-                    <img class="Restaurant" src="images/imageresturant.png" alt="Restaurant">
-                    <p>Restaurant</p>
+                    <img src="images/imageresturant.png" alt="Restaurant">
+                    <div class="t-c-p">
+                        <div>Restaurant</div>
+                        <div>An experimental restaurant website designed as a concept project to showcase my modern UI layouts and responsive frontend development skills</div>
+                    </div>
                 </a>
-            </div>
         </div>
 
         <div style="margin-bottom: 30px;" class="Project">
-            <div class="Project-child">
-                <a target="_blank" href="https://hamza-gamal.github.io/portfolio/">
-                    <img class="Portfolio" src="images/image copy 7.png" alt="Portfolio">
-                    <p id="Skills">Portfolio</p>
+                <a href="https://hamza-gamal.github.io/portfolio/">
+                    <img src="images/image copy 7.png" alt="Portfolio">
+                    <div class="t-c-p">
+                        <div>Portfolio</div>
+                        <div>This is my portfolio. It was created in 2025, featuring a clean, elegant, and easy-to-use user interface. It displays my skills, projects, and personal information</div>
+                    </div>
                 </a>
-            </div>
         </div>
 
 
     </section>
-    <!-- //////////////////////////////////////////////////         skills 🔴     //////////////////////////////////////////////// -->
-    <div class="skills-skills">
+    <!-- ////////////////////////       skills 🔴     ////////////////////// -->
+    <div class="skills-skills" id="Skills">
         <section class="skills" style="padding: 20px;">
             <h1 class="skills-title" style=" padding:  10px 0 30px 0; text-align: center;">Skills</h1>
 
@@ -214,7 +239,7 @@
 
         </section>
 
-        <!-- //////////////////////////////////////////////////         footer 🔴     //////////////////////////////////////////////// -->
+        <!-- ////////////////////////      footer 🔴     ////////////////////// -->
 
         <section class="footer" id="Contact">
 
@@ -284,16 +309,16 @@
                     </div>
 
                     <div class="social-box">
-                        <a class="icon-footer" target="_blank" href="https://github.com/hamza-gamal"><i
-                                class="fa-brands fa-github"></i></a>
-                        <a class="icon-footer" target="_blank" href="https://www.youtube.com/@HamzaGamalDev"><i
-                                class="fa-brands fa-youtube"></i></a>
-                        <a class="icon-footer" target="_blank" href="https://www.linkedin.com/in/HamzaGamalDev/"><i
-                                class="fa-brands fa-linkedin"></i></a>
-                        <a class="icon-footer" target="_blank" href="https://www.instagram.com/hamzagamaldev"><i
-                                class="fa-brands fa-instagram"></i></a>
-                        <a class="icon-footer" target="_blank" href="https://www.tiktok.com/@hamzagamaldev"><i
-                                class="fa-brands fa-tiktok"></i></a>
+                        <a data-tooltip="GitHub" class="icon-footer" target="_blank"
+                            href="https://github.com/hamza-gamal"><i class="fa-brands fa-github"></i></a>
+                        <a data-tooltip="Youtube" class="icon-footer" target="_blank"
+                            href="https://www.youtube.com/@HamzaGamalDev"><i class="fa-brands fa-youtube"></i></a>
+                        <a data-tooltip="LinkedIn" class="icon-footer" target="_blank"
+                            href="https://www.linkedin.com/in/HamzaGamalDev/"><i class="fa-brands fa-linkedin"></i></a>
+                        <a data-tooltip="Instagram" class="icon-footer" target="_blank"
+                            href="https://www.instagram.com/hamzagamaldev"><i class="fa-brands fa-instagram"></i></a>
+                        <a data-tooltip="Tiktok" class="icon-footer" target="_blank"
+                            href="https://www.tiktok.com/@hamzagamaldev"><i class="fa-brands fa-tiktok"></i></a>
                     </div>
 
                 </div>
