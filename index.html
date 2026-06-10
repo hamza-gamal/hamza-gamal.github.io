@@ -1,5 +1,4 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,56 +22,59 @@
     />
   </head>
 
-  <body id="Home">
-    <!-- ////////////////////////         navbar 🔴     ////////////////////// -->
-
+  <body>
+    <!-- /////////   Navbar 🔴 ////////////// -->
     <header>
       <nav class="navbar">
-        <div class="logo">
-          <div class="img-logo">
+        <div class="nav-container">
+          <div class="logo">
             <a href="https://hamza-gamal.github.io/portfolio/">
-              <img class="صورة-اللوجو" src="images/logo-white.png" alt="logo" />
+              <div class="img-logo">
+                <img
+                  class="image-logo"
+                  src="images/logo-white.png"
+                  alt="logo"
+                />
+              </div>
+              Hamza Gamal
             </a>
           </div>
-          <a href="https://hamza-gamal.github.io/portfolio/">Hamza Gamal</a>
-        </div>
 
-        <div class="nav-phone">
-          <span class="icon-nav">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
+          <div class="nav-phone">
+            <span class="icon-nav">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
 
-          <div class="nav-links-phone">
-            <li><a href="#Home">Home</a></li>
-            <li><a href="#about">about</a></li>
-            <li><a href="#Projects">Projects</a></li>
-            <li><a href="#Skills"> Skills</a></li>
-            <li><a href="#Contact">Contact </a></li>
-            <div id="sun" class="sun-phone">
-              <div class="sun-phone-child">
-                <i class="fa-solid fa-sun"></i> <span>Light Mode</span>
+            <div class="nav-links-phone">
+              <li><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#Projects">Projects</a></li>
+              <li><a href="#Skills">Skills</a></li>
+              <li><a href="#Contact">Contact </a></li>
+              <div id="sun" class="sun-phone">
+                <div class="sun-phone-child">
+                  <i class="fa-solid fa-sun"></i> <span>Light Mode</span>
+                </div>
               </div>
             </div>
           </div>
+
+          <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#Projects">Projects</a></li>
+            <li><a href="#Skills">Skills</a></li>
+            <li><a href="#Contact">Contact </a></li>
+            <div id="sun" class="sun"><i class="fa-solid fa-sun"></i></div>
+            <div class="moon"><i class="fa-solid fa-moon"></i></div>
+          </ul>
         </div>
-
-        <ul class="nav-links">
-          <li><a href="#Home">Home</a></li>
-          <li><a href="#about">about</a></li>
-          <li><a href="#Projects">Projects</a></li>
-          <li><a href="#Skills"> Skills</a></li>
-          <li><a href="#Contact">Contact </a></li>
-          <div id="sun" class="sun"><i class="fa-solid fa-sun"></i></div>
-          <div class="moon"><i class="fa-solid fa-moon"></i></div>
-        </ul>
-
-        <div class="stop"></div>
       </nav>
     </header>
 
-    <!-- ////////////////////////         hero 🔴     ////////////////////// -->
+    <!-- ////////////  Hero 🔴 ////////////// -->
 
     <section id="home" class="hero">
       <div class="hero-content">
@@ -100,7 +102,7 @@
     </section>
     <span class="stop"></span>
 
-    <!-- ////////////////////////     ABOUT ME 🔴     ////////////////////// -->
+    <!-- ///////////  About Me 🔴  ///////// -->
 
     <section class="about">
       <img class="image-about" src="images/275183231.jfif" alt="my image" />
@@ -161,7 +163,7 @@
       </div>
     </section>
 
-    <!-- ////////////////////////      Projects 🔴     ////////////////////// -->
+    <!-- ///////////  Projects 🔴  //////////// -->
 
     <h2 class="title-section">Projects</h2>
 
@@ -193,7 +195,7 @@
         </a>
       </div>
 
-      <div style="margin-bottom: 30px" class="Project">
+      <div class="Project" style="margin-bottom: 30px">
         <a href="https://hamza-gamal.github.io/portfolio/">
           <img src="images/image copy 7.png" alt="Portfolio" />
           <div class="t-c-p">
@@ -208,7 +210,7 @@
       </div>
     </section>
 
-    <!-- ////////////////////////       skills 🔴     ////////////////////// -->
+    <!-- //////////////  Skills 🔴  ////////////// -->
 
     <div class="skills" id="Skills">
       <h2 class="title-section">Skills</h2>
@@ -303,7 +305,7 @@
       </div>
     </div>
 
-    <!-- ////////////////////////      footer 🔴     ////////////////////// -->
+    <!-- ///////////   footer 🔴 //////////// -->
 
     <section class="footer" id="Contact">
       <div style="width: 100%">
@@ -450,12 +452,14 @@
             Frontend Developer | student | Programming engineer
           </p>
           <span class="footer-caption"
-            >Made with ♣ by Hamza Gamal © 2025 - 2026</span
+            >Made by Hamza Gamal © 2025 - 2026</span
           >
         </div>
       </div>
     </footer>
-
+    <a href="#" class="btn-back-to-top">
+      <img class="image-logo" src="images/logo-white.png" alt="logo" />
+    </a>
     <script src="script.js"></script>
   </body>
 </html>

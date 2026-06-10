@@ -34,6 +34,7 @@ a {
 
 .stop {
   display: none;
+  clear: both;
 }
 
 img {
@@ -58,12 +59,91 @@ h1 {
   margin: -30px 0 0px 0;
 }
 
-/* /////////////////////           navbar 🔴         /////////////////////*/
-.sun {
+.btn-back-to-top {
+  background-color: #000000;
+  border: 1px solid rgba(226, 59, 59, 0.6);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  transition: all 0.3s ease-in-out;
+  animation: showButton linear both;
+  animation-timeline: scroll();
+  animation-range: entry 0px exit 500px;
+}
+
+.btn-back-to-top img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.6);
+  transition: transform 0.3s ease-in-out;
+}
+
+.btn-back-to-top:hover {
+  background-color: #000000;
+  border-color: #e23b3b;
+  transform: translateY(-4px) scale(1);
+  box-shadow: 0px 3px 9px 2px rgba(255, 75, 75, 0.6);
+}
+
+.btn-back-to-top:hover img {
+  transform: scale(1.6);
+}
+
+@keyframes showButton {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+}
+
+/* //////////////    navbar 🔴    /////////////*/
+.navbar {
+  background: rgba(4, 4, 4, 0.8);
+  backdrop-filter: blur(10px);
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  z-index: 9999999999;
+  border-bottom: 1px solid transparent;
+  animation: show-border linear both;
+  animation-timeline: scroll();
+  animation-range: 0px 50px;
+}
+.nav-container {
+  max-width: 1400px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+.sun,
+.moon {
   font-size: large;
   color: #fff;
   transition: 0.5s;
-  margin-right: -40px;
+  margin-right: 0;
   border-radius: 8px;
   padding: 5px 7px;
   text-align: center;
@@ -71,13 +151,7 @@ h1 {
 }
 
 .moon {
-  font-size: large;
-  color: #fff;
-  transition: 0.5s;
-  margin-right: -40px;
-  border-radius: 8px;
   display: none;
-  padding: 5px 7px;
   text-align: center;
   margin-top: 6px;
 }
@@ -93,24 +167,6 @@ h1 {
   display: none;
 }
 
-.navbar {
-  background: rgba(4, 4, 4, 0.8);
-  backdrop-filter: blur(10px);
-  height: 70px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  box-sizing: border-box;
-  z-index: 9999999999;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid transparent;
-  animation: show-border linear both;
-  animation-timeline: scroll();
-  animation-range: 0px 50px;
-}
-
 @keyframes show-border {
   from {
     border-bottom-color: transparent;
@@ -123,7 +179,7 @@ h1 {
   }
 }
 
-/* -------------------- logo (name and image) -------------------- */
+/* ---- logo (name and image) ----- */
 
 .logo {
   display: flex;
@@ -136,6 +192,8 @@ h1 {
 
 .logo a {
   color: #fff;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   transition: 0.4s;
 }
@@ -145,15 +203,15 @@ h1 {
 }
 
 .img-logo {
-  width: 97px;
+  width: 95px;
   display: flex;
-  margin-top: 5px;
   align-items: center;
-  margin-left: 20px;
+  margin: 0;
   margin-right: -15px;
+  overflow: hidden;
 }
 
-.صوره-اللوجو {
+.image-logo {
   width: 100%;
   transition: 0.2s;
 }
@@ -161,14 +219,13 @@ h1 {
 .logo:hover a {
   color: #e54848;
 }
-
-.logo:hover .صوره-اللوجو {
+.logo:hover .image-logo {
   transform: scale(1.05);
   filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
     hue-rotate(345deg) brightness(113%) contrast(80%);
 }
 
-/* ------------ links ------------- */
+/* ---- links ---- */
 .nav-phone {
   display: none;
   position: relative;
@@ -296,65 +353,7 @@ h1 {
   color: #e54848;
 }
 
-/* /////////////////////           hero 🔴         /////////////////////*/
-
-.Welcomeportfolio {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.4s;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.Welcomeportfolio:hover {
-  color: tomato;
-  transform: scale(1.05);
-}
-
-.Welcomeportfolio::after {
-  content: attr(data-text);
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  transition:
-    max-width 0.5s ease,
-    opacity 0.4s ease;
-}
-
-.Welcomeportfolio:hover::after {
-  max-width: 200px;
-  opacity: 1;
-}
-
-.typewriter {
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 2px solid #ff4d4d;
-  width: 0;
-  animation:
-    typing 3s steps(50) forwards,
-    blink 0.7s step-end infinite;
-  margin: 0 auto;
-}
-
-@keyframes typing {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 470px;
-  }
-}
-
-@keyframes blink {
-  50% {
-    border-color: transparent;
-  }
-}
-
+/* ///////////   hero 🔴     //////////*/
 .hero {
   height: calc(100%);
   margin-top: 50px;
@@ -395,7 +394,7 @@ h1 {
 }
 
 .image {
-  animation: نبضة 2s infinite;
+  animation: Pulse 2s infinite;
   width: 200px;
   filter: contrast(115%) brightness(110%) saturate(150%);
   height: 200px;
@@ -429,7 +428,7 @@ h1 {
   left: 0;
 }
 
-@keyframes نبضة {
+@keyframes Pulse {
   0% {
     box-shadow: 0 0 1px #ff6e6e;
   }
@@ -490,38 +489,92 @@ h1 {
   margin-left: 10px;
 }
 
-.main-btn {
-  background: #e23b3b;
-  color: #fff;
-  padding: 12px 25px;
-  transition:
-    transform 0.3s,
-    background-color 0.3s;
+.main-btn,
+.sec-btn {
+  padding: 10px 23px;
   text-decoration: none;
   border-radius: 5px;
   margin: 10px;
-  border: 2px solid #444343;
+  display: inline-block; /* لضمان عمل الـ margin والـ transform بشكل صحيح */
+  font-weight: bold;
+  /* جعلنا التنسيق يشمل كل الخصائص مثل الوهج والحجم وليس اللون فقط */
+  transition: all 0.3s ease-in-out;
 }
 
-.sec-btn {
-  border: 2px solid #444343;
-  color: #fff;
-  padding: 10px 23px;
-  background-color: #e23b3b;
-  text-decoration: none;
-  border-radius: 5px;
-  margin: 10px;
-  transition:
-    transform 0.3s,
-    background-color 0.3s;
+.sec-btn,
+.main-btn {
+  background-color: transparent;
+  color: #e23b3b;
+  border: 2px solid #e23b3b;
+  display: inline-block;
+  transition: all 0.3s ease-in-out;
 }
 
 .main-btn:hover,
 .sec-btn:hover {
-  background-color: #d13030;
+  background-color: #e23b3b;
+  color: #000000;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(226, 59, 59, 0.5);
+}
+.Welcomeportfolio {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.4s;
+  gap: 8px;
+  cursor: pointer;
 }
 
-/* /////////////////////           about 🔴         /////////////////////*/
+.Welcomeportfolio:hover {
+  color: tomato;
+  transform: scale(1.05);
+}
+
+.Welcomeportfolio::after {
+  content: attr(data-text);
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    max-width 0.5s ease,
+    opacity 0.4s ease;
+}
+
+.Welcomeportfolio:hover::after {
+  max-width: 200px;
+  opacity: 1;
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #ff4d4d;
+  width: 0;
+  animation:
+    typing 3s steps(50) forwards,
+    blink 0.7s step-end infinite;
+  margin: 0 auto;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 470px;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* ///////////////    about 🔴     ///////////////*/
 
 .about {
   background-size: cover;
@@ -582,7 +635,7 @@ h1 {
   margin-bottom: 15px;
 }
 
-/* /////////////////////           Projects 🔴         /////////////////////*/
+/* //////////////////    Projects 🔴    //////////////*/
 
 .Projects {
   width: 100%;
@@ -662,8 +715,8 @@ h1 {
   border-top-right-radius: 15px;
   filter: brightness(0.7);
   transition:
-    transform 0.4s ease-in-out,
-    filter 1s;
+    transform 0.3s ease-in-out,
+    filter 0.3s ease-in-out;
   margin: 0;
   height: 255px;
   display: block;
@@ -707,12 +760,13 @@ h1 {
   transform: scale(1.03);
 }
 
-/* /////////////////////           skills 🔴         /////////////////////*/
+/* ///////////////   skills 🔴  //////////////*/
 .skills {
   width: 100%;
   background-color: #000000;
   padding: 60px 20px;
   font-family: sans-serif;
+  margin: auto;
   box-sizing: border-box;
 }
 
@@ -795,11 +849,9 @@ h1 {
   font-size: 0.9rem;
   font-family: "Exo 2", sans-serif;
   margin-left: auto;
-  /* السؤال ال 3 : ازاي جات في اليمين من خلال مارجن ليفت اوتو ايه العلاقه */
-  /* السؤال ال 4 : لو لاحظت الصوره هتلاقي في خط تحت السكيلز ده ليه ده  انا مش عايزه ؟ */
 }
 
-/* /////////////////////           footer 🔴         /////////////////////*/
+/* /////////////    footer 🔴    /////////////*/
 
 .footer {
   background-color: #0c0c0c;
@@ -989,7 +1041,7 @@ footer {
   font-weight: bold;
   font-family: "Exo 2", sans-serif;
   font-size: larger;
-  margin-left: -18px;
+  margin-left: -13px;
 }
 
 .title-logo:hover {
@@ -1023,22 +1075,82 @@ footer {
   white-space: nowrap;
   font-size: 15px;
 }
-
-.icon-footer:hover {
-  background-color: rgba(255, 131, 131, 0.1);
-  color: #ff0000;
-}
-
 .icon-footer {
+  position: relative;
   color: #fff;
-  font-size: 22px;
+  font-size: 18px;
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
   height: 38px;
   width: 38px;
   display: inline-flex;
   justify-content: center;
   border-radius: 5px;
   align-items: center;
-  transition: 0.3s;
+}
+
+.icon-footer:hover {
+  color: #e23b3b;
+  background-color: rgba(255, 131, 131, 0.1);
+}
+.icon-footer::before {
+  content: "▼";
+  position: absolute;
+  bottom: calc(100% + 1px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px) scale(0.85);
+  font-size: 11px;
+  color: #0f172a;
+  text-shadow:
+    1px 0px 0px rgba(255, 255, 255, 0.15),
+    -1px 0px 0px rgba(255, 255, 255, 0.15),
+    0px 1px 0px rgba(255, 255, 255, 0.15);
+  z-index: 100000;
+  opacity: 0;
+  visibility: hidden;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  transition:
+    opacity 0.25s ease-in-out,
+    transform 0.25s ease-in-out,
+    visibility 0.25s;
+  transition-delay: 0.3s;
+}
+.icon-footer::after {
+  content: attr(
+    data-tooltip
+  ); 
+  position: absolute;
+  bottom: calc(100% + 9px); 
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px) scale(0.85);
+  background-color: #0f172a;
+  color: #ffffff;
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease-in-out,
+    transform 0.25s ease-in-out,
+    visibility 0.25s;
+  transition-delay: 0.3s;
+}
+
+.icon-footer:hover::before,
+.icon-footer:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 .logo-footer:hover .logo-image-footer {
@@ -1047,7 +1159,7 @@ footer {
     hue-rotate(345deg) brightness(113%) contrast(80%);
 }
 
-/* /////////////////////////////// media 🔴 /////////////////////////// */
+/* ///////////// media 🔴 //////////////// */
 
 @media (max-width: 845px) {
   .nav-links {
@@ -1209,5 +1321,12 @@ footer {
   }
   .title-projects {
     font-size: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .icon-footer::before,
+  .icon-footer::after {
+    display: none;
   }
 }
