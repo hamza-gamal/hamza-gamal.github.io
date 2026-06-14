@@ -29,7 +29,7 @@ html {
 :root {
   --main-color: #e23b3b;
   --section-background-1: #000;
-  --section-background-2: #0c0c0c;
+  --section-background-2: rgba(42, 39, 39, 0.3);
   --main-transition: 0.3s;
   --main-font: "Exo 2", sans-serif;
 }
@@ -75,7 +75,7 @@ h1 {
   margin: 0 auto;
 }
 
-/* //////////////    navbar 🔴    /////////////*/
+/* ///////////////////////////    navbar 🔴    ////////////////////*/
 .navbar {
   background: rgba(4, 4, 4, 0.8);
   backdrop-filter: blur(10px);
@@ -313,7 +313,7 @@ h1 {
   color: var(--main-color);
 }
 
-/* ///////////   hero 🔴     //////////*/
+/* ///////////////////     hero 🔴    ////////////////*/
 .hero {
   height: 100vh;
   min-height: 600px;
@@ -523,7 +523,7 @@ h1 {
   }
 }
 
-/* ///////////////    about 🔴     ///////////////*/
+/* ////////////////////////    about 🔴     /////////////////////*/
 
 .about {
   background-size: cover;
@@ -591,7 +591,7 @@ h1 {
   margin-bottom: 15px;
 }
 
-/* //////////////////    Projects 🔴    //////////////*/
+/* //////////////////    Projects 🔴    /////////////////////////*/
 
 .Projects {
   width: 100%;
@@ -602,7 +602,7 @@ h1 {
   padding: 0;
   gap: 30px;
   flex-wrap: wrap;
-  max-width: 1689px ;
+  max-width: 1689px;
 }
 
 .Project {
@@ -639,8 +639,8 @@ h1 {
   content: "";
   position: absolute;
   left: 0;
-  top: 170px;
-  height: 85px;
+  top: 185px;
+  height: 70px;
   width: 100%;
   background: linear-gradient(
     to bottom,
@@ -658,6 +658,22 @@ h1 {
   top: 0px;
   width: 100%;
   height: 255px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.Project:nth-child(4)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 180px;
+  height: 75px;
+  width: 100%;
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 0%,
@@ -716,8 +732,8 @@ h1 {
   filter: brightness(1);
   transform: scale(1.03);
 }
+/* ///////////////////   skills 🔴  ////////////////////////*/
 
-/* ///////////////   skills 🔴  //////////////*/
 .skills {
   width: 100%;
   background-color: var(--section-background-1);
@@ -808,7 +824,7 @@ h1 {
   margin-left: auto;
 }
 
-/* /////////////    footer 🔴    /////////////*/
+/* /////////////////////    form 🔴    //////////////////////*/
 
 .footer {
   background-color: var(--section-background-2);
@@ -820,6 +836,8 @@ h1 {
   padding: 40px;
 }
 
+/* --- contact --- */
+
 form {
   background: #070707;
   overflow: hidden;
@@ -830,29 +848,8 @@ form {
   border-radius: 10px;
   color: #fff;
   border: rgb(51, 51, 51) 0.1px solid;
-  padding: 30px 17px;
+  padding: 30px 15px;
   margin: 0;
-}
-
-.Contactme {
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 300px;
-}
-
-.e-l-p {
-  background-color: #070707;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
-  padding: 20px;
-  padding-top: 25px;
-  border-radius: 10px;
-  border: rgb(51, 51, 51) 0.1px solid;
 }
 
 form input {
@@ -863,29 +860,92 @@ form input {
   margin-left: 27px;
   padding: 10px;
   width: 42%;
+  font-family: var(--main-font);
+  font-weight: 500;
+  font-size: medium;
   color: #fff;
 }
 
+input::placeholder {
+  color: rgb(163, 163, 163);
+  opacity: 1;
+}
+
 form button {
-  padding: 20px;
-  margin: 33px 0 0 0;
+  padding: 10px;
   background-size: cover;
   background-position: center center;
   border: #333 solid 1px;
-  color: #f8f8f8;
-  display: inline-block;
+  background-color: var(--main-color);
+  color: #ffffff;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 1px;
+  font-size: 17px;
+  cursor: pointer;
+  font-family: var(--main-font);
   border-radius: 5px;
-  background: rgb(230, 83, 54);
-  text-align: center;
-  margin: auto;
   width: 90%;
-  margin-left: 5%;
-  margin-right: 2.5%;
   transition: var(--main-transition);
 }
-
+.btn-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 form button:hover {
-  background: rgb(202, 57, 31);
+  background-color: #ff3131;
+}
+
+input:focus,
+textarea:focus {
+  border-color: rgba(255, 121, 121, 0.7);
+  border-width: 1.6 px;
+  outline: none;
+}
+
+textarea {
+  color: #fff;
+  width: 90%;
+  overflow: auto;
+  display: flex;
+  font-family: var(--main-font);
+  font-weight: 500;
+  font-size: medium;
+  margin: auto;
+  resize: vertical;
+  min-height: 100px;
+  max-height: 150px;
+  height: 130px;
+  border-radius: 5px;
+  background-color: #070707;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+}
+textarea::placeholder {
+  color: rgb(163, 163, 163);
+  opacity: 1;
+}
+
+.IconBtnForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+}
+/* --- contactme --- */
+
+.Contactme {
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  gap: 15px;
+  width: 300px;
 }
 
 .icon-contactme {
@@ -898,13 +958,6 @@ form button:hover {
   justify-content: center;
   font-size: 25px;
   color: red;
-}
-
-input:focus,
-textarea:focus {
-  border-color: #fff;
-  border-width: 2px;
-  outline: none;
 }
 
 .title-contactme {
@@ -933,24 +986,20 @@ textarea:focus {
   flex-direction: column;
 }
 
-textarea {
-  color: #fff;
-  width: 90%;
-  overflow: auto;
-  display: flex;
-  margin: auto;
-  resize: vertical;
-  min-height: 100px;
-  max-height: 150px;
-  height: 130px;
-  border-radius: 5px;
+.e-l-p {
   background-color: #070707;
-  border: 1px solid #333;
-  border-radius: 5px;
-  padding: 10px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  padding: 20px;
+  padding-top: 25px;
+  border-radius: 10px;
+  border: rgb(51, 51, 51) 0.1px solid;
 }
 
-/* ------------------*/
+/* ///////////////////    footer 🔴    //////////////////////*/
 
 footer {
   background-color: var(--section-background-1);
@@ -963,7 +1012,6 @@ footer {
 }
 
 .footer-container {
-  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   padding: 0 40px;
@@ -1189,9 +1237,9 @@ footer {
 
 /* ///////////// media 🔴 //////////////// */
 @media (max-width: 470px) {
- .title-section{
-  font-size: 80px;
- } 
+  .title-section {
+    font-size: 80px;
+  }
 }
 
 @media (max-width: 845px) {

@@ -24,7 +24,7 @@
 
   <body>
     <!-- /////////   Navbar 🔴 ////////////// -->
-    <header>
+    <header id="home">
       <nav class="navbar">
         <div class="nav-container">
           <div class="logo">
@@ -48,7 +48,7 @@
             </span>
 
             <div class="nav-links-phone">
-              <li><a href="#">Home</a></li>
+              <li><a href="#home">Home</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#Projects">Projects</a></li>
               <li><a href="#Skills">Skills</a></li>
@@ -62,7 +62,7 @@
           </div>
 
           <ul class="nav-links">
-            <li><a href="#">Home</a></li>
+            <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#Projects">Projects</a></li>
             <li><a href="#Skills">Skills</a></li>
@@ -76,7 +76,7 @@
 
     <!-- ////////////  Hero 🔴 ////////////// -->
 
-    <section id="home" class="hero">
+    <section class="hero">
       <div class="hero-content">
         <div class="image-caption">
           <div class="image-2-caption">
@@ -214,7 +214,7 @@
           <img src="images/leon.png" alt="leon" />
           <div class="t-c-p">
             <div>Leon</div>
-            <div> 
+            <div>
               A light-mode website built using HTML5, CSS3, and JavaScript as a
               showcase project. It features an eye-comfortable design that is
               fully responsive and optimized to look great on all device
@@ -359,7 +359,31 @@
           name="Message"
         ></textarea>
         <br />
-        <button type="submit">Send</button>
+
+        <div class="btn-form">
+          <button type="submit">
+            <span class="IconBtnForm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-send mr-2 h-4 w-4"
+              >
+                <path
+                  d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"
+                ></path>
+                <path d="m21.854 2.147-10.94 10.939"></path>
+              </svg>
+            </span>
+            Send Message
+          </button>
+        </div>
       </form>
 
       <div class="Contactme">
@@ -404,7 +428,7 @@
         </div>
       </div>
     </section>
-
+    <!-- -|-|-|-|-|-|-|-|-|-|-|-|-|-|- -->
     <footer>
       <div class="footer-container">
         <div class="footer-row-top">
