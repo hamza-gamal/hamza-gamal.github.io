@@ -1,3 +1,4 @@
+// ال js كله عباره عن مساعده في ال فورم لعدم حدوس تنقيل الى موقع formbress عند ملء ثم ارسال ال form
 const form = document.querySelector(".Contact");
 
 let toastTimeout;

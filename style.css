@@ -2,7 +2,7 @@
 
 body {
   color: #fff;
-  background-color: #000000;
+  background-color: #000;
   background-position:
     center 130%,
     center center;
@@ -10,7 +10,7 @@ body {
   background-repeat: no-repeat;
   height: 100%;
   background-size: cover;
-  font-family: "Exo 2", sans-serif;
+  font-family: var(--main-font);
   text-decoration: none;
 }
 
@@ -26,10 +26,16 @@ html {
   max-width: 100%;
   box-sizing: border-box;
 }
-
+:root {
+  --main-color: #e23b3b;
+  --section-background-1: #000;
+  --section-background-2: #0c0c0c;
+  --main-transition: 0.3s;
+  --main-font: "Exo 2", sans-serif;
+}
 a {
   text-decoration: none;
-  color: #e54848;
+  color: var(--main-color);
 }
 
 .stop {
@@ -56,31 +62,20 @@ h1 {
   font-weight: 800;
   letter-spacing: -3px;
   opacity: 0.7;
-  margin: -30px 0 0px 0;
+  margin: -30px 0 0 0;
 }
-#toast {
-  position: fixed;
-  top: 15%;
-  right: 40%;
-  background: #22c55e;
-  color: #fff;
-  padding: 14px 18px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-20px);
-  transition: all 0.3s ease;
-  z-index: 99999;
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--main-color);
+  width: 0;
+  animation:
+    typing 3s steps(50) forwards,
+    blink 0.7s step-end infinite;
+  margin: 0 auto;
 }
 
-#toast.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}/* //////////////    navbar 🔴    /////////////*/
+/* //////////////    navbar 🔴    /////////////*/
 .navbar {
   background: rgba(4, 4, 4, 0.8);
   backdrop-filter: blur(10px);
@@ -94,7 +89,7 @@ h1 {
   border-bottom: 1px solid transparent;
   animation: show-border linear both;
   animation-timeline: scroll();
-  animation-range: 0px 50px;
+  animation-range: 0 50px;
 }
 .nav-container {
   max-width: 1400px;
@@ -111,7 +106,7 @@ h1 {
 .moon {
   font-size: large;
   color: #fff;
-  transition: 0.5s;
+  transition: var(--main-transition);
   margin-right: 0;
   border-radius: 8px;
   padding: 5px 7px;
@@ -128,7 +123,7 @@ h1 {
 .sun:hover,
 .moon:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  color: #f83939;
+  color: var(--main-color);
   cursor: pointer;
 }
 
@@ -155,7 +150,7 @@ h1 {
   align-items: center;
   white-space: nowrap;
   font-size: 24px;
-  font-family: "Exo 2", sans-serif;
+  font-family: var(--main-font);
   font-weight: bold;
 }
 
@@ -164,11 +159,7 @@ h1 {
   display: flex;
   align-items: center;
   text-decoration: none;
-  transition: 0.4s;
-}
-
-.logo span {
-  color: #ff4d4d;
+  transition: var(--main-transition);
 }
 
 .img-logo {
@@ -182,11 +173,11 @@ h1 {
 
 .image-logo {
   width: 100%;
-  transition: 0.2s;
+  transition: var(--main-transition);
 }
 
 .logo:hover a {
-  color: #e54848;
+  color: var(--main-color);
 }
 .logo:hover .image-logo {
   transform: scale(1.05);
@@ -216,11 +207,11 @@ h1 {
   display: block;
   padding: 15px;
   color: #fff;
-  transition: 0.3s;
+  transition: var(--main-transition);
 }
 
 .nav-links-phone li a:hover {
-  color: rgb(229, 72, 72);
+  color: var(--main-color);
   padding-left: 25px;
 }
 
@@ -231,7 +222,7 @@ h1 {
 .sun-phone {
   padding: 15px;
   color: #fff;
-  transition: 0.3s;
+  transition: var(--main-transition);
   text-align: center;
 }
 
@@ -247,7 +238,7 @@ h1 {
 }
 
 .sun-phone-child:hover {
-  color: rgb(229, 72, 72);
+  color: var(--main-color);
   background-color: #2c2c2c;
 }
 
@@ -282,7 +273,7 @@ h1 {
 
 .icon-nav span:nth-child(2) {
   height: 2px;
-  transition: 0.3s;
+  transition: var(--main-transition);
   width: 60%;
   background-color: #fff;
 }
@@ -315,20 +306,21 @@ h1 {
   color: #fff;
   text-decoration: none;
   font-size: 20px;
-  transition: 0.4s;
+  transition: var(--main-transition);
 }
 
 .nav-links a:hover {
-  color: #e54848;
+  color: var(--main-color);
 }
 
 /* ///////////   hero 🔴     //////////*/
 .hero {
-  height: calc(100%);
+  height: 100vh;
+  min-height: 600px;
   margin-top: 50px;
   color: #fff;
   text-align: center;
-  background-color: #000000;
+  background-color: var(--section-background-1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -349,7 +341,7 @@ h1 {
 .hero p {
   font-size: 24px;
   font-family: "Dancing Script";
-  color: #ff4d4d;
+  color: var(--main-color);
   margin-bottom: 22px;
 }
 
@@ -439,7 +431,7 @@ h1 {
   color: tomato;
   transition: left 0.5s 0.5s;
   margin-top: 20px;
-  font-family: "Exo 2", sans-serif;
+  font-family: var(--main-font);
   font-size: large;
   position: relative;
   left: 100%;
@@ -464,25 +456,24 @@ h1 {
   text-decoration: none;
   border-radius: 5px;
   margin: 10px;
-  display: inline-block; /* لضمان عمل الـ margin والـ transform بشكل صحيح */
+  display: inline-block;
   font-weight: bold;
-  /* جعلنا التنسيق يشمل كل الخصائص مثل الوهج والحجم وليس اللون فقط */
-  transition: all 0.3s ease-in-out;
+  transition: all var(--main-transition) ease-in-out;
 }
 
 .sec-btn,
 .main-btn {
   background-color: transparent;
-  color: #e23b3b;
-  border: 2px solid #e23b3b;
+  color: var(--main-color);
+  border: 2px solid var(--main-color);
   display: inline-block;
-  transition: all 0.3s ease-in-out;
+  transition: all var(--main-transition) ease-in-out;
 }
 
 .main-btn:hover,
 .sec-btn:hover {
-  background-color: #e23b3b;
-  color: #000000;
+  background-color: var(--main-color);
+  color: #000;
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(226, 59, 59, 0.5);
 }
@@ -490,7 +481,7 @@ h1 {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  transition: 0.4s;
+  transition: var(--main-transition);
   gap: 8px;
   cursor: pointer;
 }
@@ -514,17 +505,6 @@ h1 {
 .Welcomeportfolio:hover::after {
   max-width: 200px;
   opacity: 1;
-}
-
-.typewriter {
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 2px solid #ff4d4d;
-  width: 0;
-  animation:
-    typing 3s steps(50) forwards,
-    blink 0.7s step-end infinite;
-  margin: 0 auto;
 }
 
 @keyframes typing {
@@ -551,7 +531,7 @@ h1 {
   margin: auto;
   margin-bottom: 50px;
   padding: 50px 0 50px 0;
-  background-color: #0c0c0c;
+  background-color: var(--section-background-2);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -570,13 +550,13 @@ h1 {
 
 .p1-about {
   color: rgb(255, 0, 0);
-  font-family: "Exo 2", sans-serif;
+  font-family: var(--main-font);
   font-optical-sizing: auto;
 }
 
 .caption-about {
   color: rgba(255, 255, 255, 0.7);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--main-font);
   line-height: 1.4;
 }
 
@@ -622,6 +602,7 @@ h1 {
   padding: 0;
   gap: 30px;
   flex-wrap: wrap;
+  max-width: 1689px ;
 }
 
 .Project {
@@ -739,9 +720,9 @@ h1 {
 /* ///////////////   skills 🔴  //////////////*/
 .skills {
   width: 100%;
-  background-color: #000000;
+  background-color: var(--section-background-1);
   padding: 60px 20px;
-  font-family: sans-serif;
+  font-family: var(--main-font);
   margin: auto;
   box-sizing: border-box;
 }
@@ -763,13 +744,13 @@ h1 {
   border-radius: 16px;
   padding: 24px;
   transition:
-    transform 0.3s ease,
-    border-color 0.3s ease;
+    transform var(--main-transition) ease,
+    border-color var(--main-transition) ease;
 }
 
 .skill-card:hover {
   transform: translateY(-5px);
-  border-color: #ff4d4d;
+  border-color: var(--main-color);
 }
 
 .skill-header {
@@ -789,7 +770,7 @@ h1 {
   color: #fff;
   font-size: 1.2rem;
   font-weight: 500;
-  font-family: "Exo 2", sans-serif;
+  font-family: var(--main-font);
 }
 
 .skill-footer {
@@ -816,21 +797,21 @@ h1 {
   top: 0;
   left: 0;
   height: 6px;
-  background: linear-gradient(90deg, #ff4d4d, #ff7676);
+  background: linear-gradient(90deg, var(--main-color), #ff7676);
   border-radius: 10px;
 }
 
 .skill-percentage {
   color: #888;
   font-size: 0.9rem;
-  font-family: "Exo 2", sans-serif;
+  font-family: var(--main-font);
   margin-left: auto;
 }
 
 /* /////////////    footer 🔴    /////////////*/
 
 .footer {
-  background-color: #0c0c0c;
+  background-color: var(--section-background-2);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -900,7 +881,7 @@ form button {
   width: 90%;
   margin-left: 5%;
   margin-right: 2.5%;
-  transition: 0.3s;
+  transition: var(--main-transition);
 }
 
 form button:hover {
@@ -972,12 +953,12 @@ textarea {
 /* ------------------*/
 
 footer {
-  background-color: #000000;
+  background-color: var(--section-background-1);
   color: gray;
   display: flex;
   flex-direction: column;
   border-top: #2c2c2c 1px solid;
-  padding: 50px 0px;
+  padding: 50px 0;
   gap: 20px;
 }
 
@@ -1003,7 +984,7 @@ footer {
 }
 
 .logo-box:hover .title-logo {
-  color: #e23b3b;
+  color: var(--main-color);
 }
 
 .logo-box:hover .logo-image-footer {
@@ -1015,13 +996,13 @@ footer {
   color: #fff;
   transition: 0.5s;
   font-weight: bold;
-  font-family: "Exo 2", sans-serif;
+  font-family: var(--main-font);
   font-size: larger;
   margin-left: -13px;
 }
 
 .title-logo:hover {
-  color: #e23b3b;
+  color: var(--main-color);
 }
 
 .title-logo:hover .logo-image-footer {
@@ -1046,7 +1027,7 @@ footer {
 .footer-caption {
   padding-top: 10px;
   display: inline-block;
-  transition: 0.3s;
+  transition: var(--main-transition);
   font-weight: 500;
   white-space: nowrap;
   font-size: 15px;
@@ -1055,7 +1036,7 @@ footer {
   position: relative;
   color: #fff;
   font-size: 18px;
-  transition: all 0.3s ease-in-out;
+  transition: all var(--main-transition) ease-in-out;
   text-decoration: none;
   height: 38px;
   width: 38px;
@@ -1066,7 +1047,7 @@ footer {
 }
 
 .icon-footer:hover {
-  color: #e23b3b;
+  color: var(--main-color);
   background-color: rgba(255, 131, 131, 0.1);
 }
 .icon-footer::before {
@@ -1078,19 +1059,18 @@ footer {
   font-size: 11px;
   color: #0f172a;
   text-shadow:
-    1px 0px 0px rgba(255, 255, 255, 0.15),
-    -1px 0px 0px rgba(255, 255, 255, 0.15),
-    0px 1px 0px rgba(255, 255, 255, 0.15);
+    1px 0 0 rgba(255, 255, 255, 0.15),
+    -1px 0 0 rgba(255, 255, 255, 0.15),
+    0 1px 0 rgba(255, 255, 255, 0.15);
   z-index: 100000;
   opacity: 0;
   visibility: hidden;
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-
+  font-family: var(--main-font);
   transition:
     opacity 0.25s ease-in-out,
     transform 0.25s ease-in-out,
     visibility 0.25s;
-  transition-delay: 0.3s;
+  transition-delay: var(--main-transition);
 }
 .icon-footer::after {
   content: attr(data-tooltip);
@@ -1099,11 +1079,9 @@ footer {
   left: 50%;
   transform: translateX(-50%) translateY(-5px) scale(0.85);
   background-color: #0f172a;
-  color: #ffffff;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  color: #fff;
+  font-family: var(--main-font);
+  letter-spacing: 1px;
   font-size: 11px;
   font-weight: bold;
   white-space: nowrap;
@@ -1117,7 +1095,7 @@ footer {
     opacity 0.25s ease-in-out,
     transform 0.25s ease-in-out,
     visibility 0.25s;
-  transition-delay: 0.3s;
+  transition-delay: var(--main-transition);
 }
 
 .icon-footer:hover::before,
@@ -1132,8 +1110,32 @@ footer {
   filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
     hue-rotate(345deg) brightness(113%) contrast(80%);
 }
+#toast {
+  position: fixed;
+  top: 15%;
+  right: 40%;
+  background: #22c55e;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: all var(--main-transition) ease;
+  z-index: 99999;
+}
+
+#toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
 .btn-back-to-top {
-  background-color: #000000;
+  background-color: #000;
   border: 1px solid rgba(226, 59, 59, 0.6);
   width: 48px;
   height: 48px;
@@ -1147,10 +1149,10 @@ footer {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  transition: all 0.3s ease-in-out;
+  transition: all var(--main-transition) ease-in-out;
   animation: showButton linear both;
   animation-timeline: scroll();
-  animation-range: entry 0px exit 500px;
+  animation-range: entry 0 exit 500px;
 }
 
 .btn-back-to-top img {
@@ -1158,14 +1160,14 @@ footer {
   height: 100%;
   object-fit: contain;
   transform: scale(1.6);
-  transition: transform 0.3s ease-in-out;
+  transition: transform var(--main-transition) ease-in-out;
 }
 
 .btn-back-to-top:hover {
-  background-color: #000000;
-  border-color: #e23b3b;
+  background-color: #000;
+  border-color: var(--main-color);
   transform: translateY(-4px) scale(1);
-  box-shadow: 0px 3px 9px 2px rgba(255, 75, 75, 0.6);
+  box-shadow: 0 3px 9px 2px rgba(255, 75, 75, 0.6);
 }
 
 .btn-back-to-top:hover img {
@@ -1186,6 +1188,11 @@ footer {
 }
 
 /* ///////////// media 🔴 //////////////// */
+@media (max-width: 470px) {
+ .title-section{
+  font-size: 80px;
+ } 
+}
 
 @media (max-width: 845px) {
   .nav-links {
