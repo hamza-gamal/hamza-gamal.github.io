@@ -1,17 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Playwrite+AT:ital,wght@0,100..400;1,100..400&display=swap");
-
 body {
   color: #fff;
-  background-color: #000;
-  background-position:
-    center 130%,
-    center center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  height: 100%;
-  background-size: cover;
   font-family: var(--main-font);
   text-decoration: none;
+  min-height: 100vh;
+  height: auto;
+  background-color: #030202;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 html {
@@ -25,13 +20,16 @@ html {
 * {
   margin: 0;
   padding: 0;
+  /* overflow-x: hidden; */
   max-width: 100%;
   box-sizing: border-box;
 }
 :root {
   --main-color: #e23b3b;
-  --section-background-1: #000;
-  --section-background-2: rgba(42, 39, 39, 0.3);
+  /* --section-background-1: #000;
+  --section-background-2: rgba(42, 39, 39, 0.3); */
+  --section-background-1: transparent;
+  --section-background-2: transparent;
   --main-transition: 0.3s;
   --main-font: "Exo 2", sans-serif;
 }
@@ -58,9 +56,10 @@ h1 {
 }
 
 .title-section {
-  color: rgb(19, 19, 19);
+  color: rgb(20, 20, 20);
   font-size: 100px;
   text-align: center;
+  backdrop-filter: blur(10px);
   font-weight: 800;
   letter-spacing: -3px;
   opacity: 0.7;
@@ -97,26 +96,40 @@ h1 {
 }
 
 /* ///////////////////////////    navbar 🔴    ////////////////////*/
+
 .navbar {
-  background: rgba(4, 4, 4, 0.8);
-  backdrop-filter: blur(10px);
+  /* background: rgba(4, 4, 4, 0.8); */
+  /* backdrop-filter: blur(10px); */
+  animation-name: lettel-top-nav;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-duration: auto;
+  animation-timeline: scroll();
+  animation-range: 0px 80px;
   height: 70px;
   width: 100%;
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 10px;
+  border-radius: 20px;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 9999999999;
   border-bottom: 1px solid transparent;
-  animation: show-border linear both;
-  animation-timeline: scroll();
-  animation-range: 0 50px;
 }
 .nav-container {
   max-width: 1400px;
-  width: 100%;
-  height: 100%;
+  background: rgba(4, 4, 4, 0.5);
+  width: 90%;
+  animation-name: show-border;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-duration: auto;
+  animation-timeline: scroll();
+  animation-range: 0px 80px;
   margin: 0 auto;
+  border-radius: 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -130,9 +143,11 @@ h1 {
   transition: var(--main-transition);
   margin-right: 0;
   border-radius: 8px;
-  padding: 5px 7px;
-  text-align: center;
-  margin-top: 6px;
+  padding: 7px;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .moon {
@@ -143,25 +158,13 @@ h1 {
 
 .sun:hover,
 .moon:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(43, 43, 43, 0.5);
   color: var(--main-color);
   cursor: pointer;
 }
 
 .hamburger {
   display: none;
-}
-
-@keyframes show-border {
-  from {
-    border-bottom-color: transparent;
-  }
-
-  to {
-    box-shadow:
-      0 6px 6px -1px rgba(255, 255, 255, 0.05),
-      0 3px 4px -1px rgba(255, 255, 255, 0.03);
-  }
 }
 
 /* ---- logo (name and image) ----- */
@@ -184,23 +187,56 @@ h1 {
 }
 
 .img-logo {
-  width: 95px;
-  display: flex;
-  align-items: center;
+  width: 120px;
   margin: 0;
-  margin-right: -15px;
-  overflow: hidden;
+  margin-right: -25px;
+  align-self: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
 }
 
 .image-logo {
+  grid-area: 1 / 1 / 2 / 2;
   width: 100%;
+  max-height: 70px;
+  object-fit: contain;
   transition: var(--main-transition);
+  animation-name: logonav;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-duration: auto;
+  animation-timeline: scroll();
+  animation-range: 0px 80px;
+}
+
+.image-logo-2 {
+  grid-area: 1 / 1 / 2 / 2;
+  width: 55px;
+  max-height: 50px;
+  margin: 0;
+  object-fit: contain;
+  transition: var(--main-transition);
+  animation-name: logonavtwo;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-duration: auto;
+  animation-timeline: scroll();
+  animation-range: 0px 80px;
 }
 
 .logo:hover a {
   color: var(--main-color);
 }
 .logo:hover .image-logo {
+  transform: scale(1.05);
+  filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
+    hue-rotate(345deg) brightness(113%) contrast(80%);
+}
+
+.logo:hover .image-logo-2 {
   transform: scale(1.05);
   filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
     hue-rotate(345deg) brightness(113%) contrast(80%);
@@ -373,7 +409,7 @@ h1 {
 
 .hero img {
   margin: auto;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .image {
@@ -411,24 +447,9 @@ h1 {
   left: 0;
 }
 
-@keyframes Pulse {
-  0% {
-    box-shadow: 0 0 1px #ff6e6e;
-  }
-
-  50% {
-    box-shadow: 0 0 15px #ff6e6e;
-  }
-
-  100% {
-    box-shadow: 0 0 1px #ff6e6e;
-  }
-}
-
 .image-caption {
   position: relative;
   overflow: hidden;
-  margin-bottom: -32px;
   height: 230px;
   margin: auto;
   width: 240px;
@@ -438,11 +459,11 @@ h1 {
   position: absolute;
   overflow: hidden;
   left: 20px;
-  background-color: rgba(48, 48, 48, 0.5);
+  background-color: rgba(48, 48, 48, 0.6);
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  top: 13px;
+  top: 20px;
   opacity: 0;
   transition:
     opacity 0.5s,
@@ -529,22 +550,6 @@ h1 {
   opacity: 1;
 }
 
-@keyframes typing {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 470px;
-  }
-}
-
-@keyframes blink {
-  50% {
-    border-color: transparent;
-  }
-}
-
 /* ////////////////////////    about 🔴     /////////////////////*/
 
 .about {
@@ -560,10 +565,39 @@ h1 {
   justify-content: center;
   gap: 10px;
 }
-.about img {
-  filter: contrast(115%) brightness(110%) saturate(150%);
-  box-shadow: inset 32px;
+.aboutimg {
+  position: relative;
 }
+.mark-dev {
+  color: red;
+  font-weight: bold;
+  padding-left: 5px;
+}
+.back-img {
+  position: absolute;
+  bottom: -10px;
+  right: 20px;
+  border: 1px solid #ff3131;
+  width: 140px;
+  height: 37px;
+  font-size: 14px;
+  background-color: rgba(255, 65, 65, 0.3);
+  backdrop-filter: blur(30px);
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  justify-content: center;
+  border-radius: 50px;
+}
+.about img {
+  box-shadow: 0 0 60px 10px rgba(255, 0, 8, 0.2);
+  width: 320px;
+  border-radius: 50px;
+  border: 1px solid oklch(0.3 0.03 260);
+  margin-right: 40px;
+  animation: aboutimg 1.3s infinite alternate;
+}
+
 .image-about,
 .about-dont-img {
   display: inline-block;
@@ -601,12 +635,6 @@ h1 {
 
 .puzzile-about:active {
   transform: scale(0.9);
-}
-
-.about img {
-  width: 310px;
-  border-radius: 50px;
-  padding-right: 40px;
 }
 
 .all-not-img {
@@ -710,8 +738,8 @@ h1 {
   border-top-right-radius: 15px;
   filter: brightness(0.7);
   transition:
-    transform 0.3s ease-in-out,
-    filter 0.3s ease-in-out;
+    transform 0.4s ease-in-out,
+    filter var(--main-transition) ease-in-out;
   margin: 0;
   height: 255px;
   display: block;
@@ -752,7 +780,7 @@ h1 {
 
 .Project:hover img {
   filter: brightness(1);
-  transform: scale(1.03);
+  transform: scale(1.09);
 }
 /* ///////////////////   skills 🔴  ////////////////////////*/
 
@@ -1028,7 +1056,7 @@ textarea::placeholder {
 /* ///////////////////    footer 🔴    //////////////////////*/
 
 footer {
-  background-color: var(--section-background-1);
+  background-color: #000;
   color: gray;
   display: flex;
   flex-direction: column;
@@ -1249,19 +1277,6 @@ footer {
   transform: scale(1.6);
 }
 
-@keyframes showButton {
-  from {
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0);
-  }
-  to {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
-  }
-}
-
 /* ///////////// media 🔴 //////////////// */
 @media (max-width: 470px) {
   .title-section {
@@ -1437,5 +1452,106 @@ footer {
   .icon-footer::before,
   .icon-footer::after {
     display: none;
+  }
+}
+/* ///////////////////////////    Keyframes 🔴    ////////////////////*/
+
+@keyframes show-border {
+  from {
+    background-color: transparent;
+    width: 100%;
+    border-radius: 0;
+    box-shadow:
+      0px -1px 8px 6px rgba(255, 255, 255, 0),
+      0 3px 4px 0px rgba(255, 255, 255, 0);
+  }
+
+  to {
+    background: rgba(4, 4, 4, 0.5);
+    backdrop-filter: blur(3px);
+    box-shadow:
+      0px -1px 8px 6px rgba(255, 255, 255, 0.05),
+      0 3px 4px 0px rgba(255, 255, 255, 0.03);
+  }
+}
+
+@keyframes lettel-top-nav {
+  from {
+    top: 0px;
+  }
+
+  to {
+    top: 15px;
+    border-radius: 0px 0px 20px 20px;
+  }
+}
+
+@keyframes Pulse {
+  0% {
+    box-shadow: 0 0 1px #ff6e6e;
+  }
+
+  50% {
+    box-shadow: 0 0 15px #ff6e6e;
+  }
+
+  100% {
+    box-shadow: 0 0 1px #ff6e6e;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 470px;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@keyframes showButton {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+}
+
+@keyframes logonav {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes logonavtwo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes aboutimg {
+  from {
+    transform: translate(0, -15px);
+  }
+  to {
+    transform: translate(0, 0px);
   }
 }
