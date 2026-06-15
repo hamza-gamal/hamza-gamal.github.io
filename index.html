@@ -22,9 +22,9 @@
     />
   </head>
 
-  <body>
+  <body id="home">
     <!-- /////////   Navbar 🔴 ////////////// -->
-    <header id="home">
+    <header>
       <nav class="navbar">
         <div class="nav-container">
           <div class="logo">
@@ -84,14 +84,14 @@
           </div>
           <div class="caption">
             <h2>Hamza Gamal</h2>
-            <p>Frontend Developer | student | Programming engineer</p>
+            <p>Frontend Developer | Designer | Programming Engineer</p>
           </div>
         </div>
         <div class="text-hero">
           <h3 class="Welcomeportfolio" data-text="to My portfolio">Welcome</h3>
           <h1 class="Hamza_Gamal">HAMZA GAMAL</h1>
           <p class="typewriter">
-            Frontend Developer | designer | Programming engineer
+            Frontend Developer | Designer | Programming Engineer
           </p>
           <div>
             <a href="#Projects" class="main-btn">View Work</a>
@@ -109,7 +109,13 @@
 
       <div class="about-dont-img">
         <p class="all-not-img p1-about">ABOUT ME</p>
-        <h2 class="all-not-img h2-about">Hi, I'm Hamza Gamal 👋</h2>
+        <h2 class="all-not-img h2-about">
+          Hi, I'm
+          <span style="text-shadow: 1px 1px 10px rgba(255, 48, 48, 0.9)"
+            >Hamza Gamal</span
+          >
+          👋
+        </h2>
         <p class="all-not-img caption-about">
           I'm an Egyptian front-end developer, born on July 2, 2013. <br />
           I'm passionate about web design and turning ideas into reality through
@@ -126,7 +132,7 @@
               font-size: 20px;
             "
           >
-            3+
+            4+
           </div>
           <div style="color: rgb(167, 167, 167); margin-top: 8px">Projects</div>
         </div>
@@ -156,7 +162,7 @@
           >
             HTML
           </div>
-          <div id="Projects" style="color: rgb(167, 167, 167); margin-top: 8px">
+          <div style="color: rgb(167, 167, 167); margin-top: 8px">
             + JS + CSS
           </div>
         </div>
@@ -165,9 +171,10 @@
 
     <!-- ///////////  Projects 🔴  //////////// -->
 
-    <h2 class="title-section">Projects</h2>
+    <h2 class="title-section" id="Projects">Projects</h2>
 
     <section class="Projects">
+
       <div class="Project">
         <a target="_blank" href="https://hamza-gamal.github.io/quran-kareem/">
           <img src="images/image copy 8.png" alt="Quran" />
@@ -176,20 +183,6 @@
             <div>
               An online website containing the entire Holy Quran for reading,
               featuring a clean, elegant, and easy-to-use user interface
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="Project">
-        <a target="_blank" href="https://hamza-gamal.github.io/restaurant/">
-          <img src="images/imageresturant.png" alt="Restaurant" />
-          <div class="t-c-p">
-            <div>Restaurant</div>
-            <div>
-              An experimental restaurant website designed as a concept project
-              to showcase my modern UI layouts and responsive frontend
-              development skills
             </div>
           </div>
         </a>
@@ -208,7 +201,7 @@
           </div>
         </a>
       </div>
-
+      
       <div class="Project" style="margin-bottom: 30px">
         <a target="_blank" href="https://hamza-gamal.github.io/leon/">
           <img src="images/leon.png" alt="leon" />
@@ -223,6 +216,20 @@
           </div>
         </a>
       </div>
+
+      <div class="Project">
+        <a target="_blank" href="https://hamza-gamal.github.io/restaurant/">
+          <img src="images/imageresturant.png" alt="Restaurant" />
+          <div class="t-c-p">
+            <div>Restaurant</div>
+            <div>
+              An experimental restaurant website designed as a concept project
+              to showcase my modern UI layouts and responsive frontend
+              development skills
+            </div>
+          </div>
+        </a>
+      </div>
     </section>
 
     <!-- //////////////  Skills 🔴  ////////////// -->
@@ -232,7 +239,7 @@
       <div class="skills-container">
         <div class="skills-grid">
           <!-- HTML5 -->
-          <div class="skill-card">
+          <div class="skill">
             <div class="skill-header">
               <span class="skill-icon"
                 ><i class="fa-brands fa-html5" style="color: #e34c26"></i
@@ -246,7 +253,7 @@
           </div>
 
           <!-- CSS3 -->
-          <div class="skill-card">
+          <div class="skill">
             <div class="skill-header">
               <span class="skill-icon"
                 ><i class="fa-brands fa-css3-alt" style="color: #264de4"></i
@@ -260,7 +267,7 @@
           </div>
 
           <!-- JavaScript -->
-          <div class="skill-card">
+          <div class="skill">
             <div class="skill-header">
               <span class="skill-icon"
                 ><i class="fa-brands fa-js" style="color: #f7df1e"></i
@@ -274,7 +281,7 @@
           </div>
 
           <!-- UI Design -->
-          <div class="skill-card">
+          <div class="skill">
             <div class="skill-header">
               <span class="skill-icon"
                 ><i class="fa-solid fa-desktop" style="color: #a855f7"></i
@@ -288,7 +295,7 @@
           </div>
 
           <!-- UX Design -->
-          <div class="skill-card">
+          <div class="skill">
             <div class="skill-header">
               <span class="skill-icon"
                 ><i class="fa-solid fa-users-gear" style="color: #0ea5e9"></i
@@ -301,7 +308,7 @@
             </div>
           </div>
           <!-- Responsive Design -->
-          <div class="skill-card">
+          <div class="skill">
             <div class="skill-header">
               <span class="skill-icon"
                 ><i
@@ -354,7 +361,7 @@
 
         <textarea
           required
-          minlength="10"
+          minlength="5"
           placeholder="Your Message"
           name="Message"
         ></textarea>
@@ -499,7 +506,7 @@
       ↑
       <!-- <i class="fa-notdog-duo fa-solid fa-arrow-up"></i> -->
     </a>
-    <script src="script.js"></script>
     <div id="toast"></div>
+    <script src="script.js"></script>
   </body>
 </html>
