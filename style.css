@@ -4,9 +4,23 @@ body {
   text-decoration: none;
   min-height: 100vh;
   height: auto;
+  background:
+    linear-gradient(
+      to right top,
+      rgba(216, 58, 58, 0.3) 0%,
+      rgba(216, 58, 58, 0.2) 10%,
+      rgba(216, 58, 58, 0.1) 35%,
+      transparent 60%
+    ),
+    linear-gradient(
+      to left bottom,
+      rgba(216, 58, 58, 0.3) 0%,
+      rgba(216, 58, 58, 0.2) 10%,
+      rgba(216, 58, 58, 0.1) 35%,
+      transparent 50%
+    );
   background-color: #030202;
   background-attachment: fixed;
-  background-size: cover;
 }
 
 html {
@@ -56,14 +70,14 @@ h1 {
 }
 
 .title-section {
-  color: rgb(20, 20, 20);
+  color: rgb(25, 25, 25);
   font-size: 100px;
   text-align: center;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); */
   font-weight: 800;
   letter-spacing: -3px;
   opacity: 0.7;
-  margin: -30px 0 0 0;
+  margin: 0 0 70px 0;
 }
 .typewriter {
   overflow: hidden;
@@ -214,7 +228,7 @@ h1 {
 
 .image-logo-2 {
   grid-area: 1 / 1 / 2 / 2;
-  width: 45x;
+  width: 45px;
   max-height: 50px;
   margin: 0;
   object-fit: contain;
@@ -233,7 +247,7 @@ h1 {
 .logo:hover .image-logo {
   transform: scale(1.05);
   filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
-  hue-rotate(345deg) brightness(113%) contrast(80%);
+    hue-rotate(345deg) brightness(113%) contrast(80%);
 }
 
 /* ---- links ---- */
@@ -774,7 +788,7 @@ h1 {
 
 .Project:hover img {
   filter: brightness(1);
-  transform: scale(1.09);
+  transform: scale(1.05);
 }
 /* ///////////////////   skills 🔴  ////////////////////////*/
 
@@ -1523,7 +1537,7 @@ footer {
   }
 }
 
-@keyframes logonavtwo   {
+@keyframes logonavtwo {
   from {
     opacity: 1;
   }
@@ -1532,7 +1546,7 @@ footer {
   }
 }
 
-@keyframes  logonav{
+@keyframes logonav {
   from {
     opacity: 0;
   }
