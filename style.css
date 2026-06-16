@@ -214,7 +214,7 @@ h1 {
 
 .image-logo-2 {
   grid-area: 1 / 1 / 2 / 2;
-  width: 55px;
+  width: 45x;
   max-height: 50px;
   margin: 0;
   object-fit: contain;
@@ -233,13 +233,7 @@ h1 {
 .logo:hover .image-logo {
   transform: scale(1.05);
   filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
-    hue-rotate(345deg) brightness(113%) contrast(80%);
-}
-
-.logo:hover .image-logo-2 {
-  transform: scale(1.05);
-  filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
-    hue-rotate(345deg) brightness(113%) contrast(80%);
+  hue-rotate(345deg) brightness(113%) contrast(80%);
 }
 
 /* ---- links ---- */
@@ -1529,7 +1523,7 @@ footer {
   }
 }
 
-@keyframes logonav {
+@keyframes logonavtwo   {
   from {
     opacity: 1;
   }
@@ -1538,7 +1532,7 @@ footer {
   }
 }
 
-@keyframes logonavtwo {
+@keyframes  logonav{
   from {
     opacity: 0;
   }
