@@ -70,7 +70,7 @@ h1 {
 }
 
 .title-section {
-  color: rgb(25, 25, 25);
+  color: rgba(255, 255, 255, 0.2);
   font-size: 100px;
   text-align: center;
   /* backdrop-filter: blur(10px); */
@@ -621,7 +621,10 @@ h1 {
 .caption-about {
   color: rgba(255, 255, 255, 0.7);
   font-family: var(--main-font);
+  font-size: 17px;
   line-height: 1.4;
+  width: auto;
+  max-width: 400px;
 }
 
 .puzzile-about {
