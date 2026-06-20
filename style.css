@@ -727,7 +727,7 @@ h1 {
   position: relative;
 }
 .Servises .Servises-content .image-col img {
-  width: 260px;  
+  width: 260px;
   animation: topandbottom 1.3s infinite alternate;
 }
 .Servises .Servises-content .image-col::before {
@@ -747,6 +747,12 @@ h1 {
   .Servises .Servises-content .srv {
     flex-direction: column;
     text-align: center;
+  }
+  .Servises .Servises-content .srv p {
+    max-width: 400px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: auto;
   }
   .Servises .Servises-content .srv i {
     margin: auto;
@@ -772,7 +778,7 @@ h1 {
   justify-content: center;
   align-items: stretch;
   padding: 0;
-  gap: 40px;
+  gap: 25px;
   flex-wrap: wrap;
   max-width: 1689px;
 }
@@ -786,76 +792,12 @@ h1 {
   overflow: hidden;
   box-sizing: border-box;
   transition: 0.3s;
-  width: 30%;
-  max-width: 400px;
-  border: solid 0.5px rgba(255, 134, 134, 0.3);
+  width: 40%;
+  max-width: 550px;
+  border: solid 0.5px rgba(255, 134, 134, 0.2);
   position: relative;
-  border-radius: 15px;
+  border-radius: 20px;
 }
-.Project:nth-child(1)::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 30px;
-  width: 100%;
-  height: 225px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-.Project:nth-child(2)::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0px;
-  width: 100%;
-  height: 255px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-.Project:nth-child(3)::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 180px;
-  height: 75px;
-  width: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-.Project:nth-child(4)::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 185px;
-  height: 70px;
-  width: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
 .Project img {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -864,9 +806,54 @@ h1 {
     transform 0.4s ease-in-out,
     filter var(--main-transition) ease-in-out;
   margin: 0;
-  height: 255px;
   display: block;
+  height: auto;
+  max-height: 300px;
 }
+
+.Project:hover {
+  transform: translate(0, -5px);
+  border: solid 0.5px rgba(255, 134, 134, 0.6234);
+}
+
+.Project:hover img {
+  filter: brightness(1);
+  transform: scale(1.05);
+}
+
+.Project::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+.Project:nth-child(1)::after {
+  top: 130px;
+  height: 180px;
+}
+
+.Project:nth-child(2)::after {
+  top: 0px;
+  height: 300px;
+}
+
+.Project:nth-child(3)::after {
+  top: 200px;
+  height: 100px;
+}
+
+.Project:nth-child(4)::after {
+  top: 200px;
+  height: 100px;
+}
+
 .Project a {
   display: flex;
   flex-direction: column;
@@ -882,19 +869,20 @@ h1 {
   flex-grow: 1;
 }
 
-.Project .t-c-p div:first-child {
+.Project .t-c-p h2 {
   color: #fff;
-  font-size: 20px;
+  font-size: 22px;
   transition: 0.3s;
   margin: 0;
   font-weight: bold;
   display: flex;
   align-items: center;
   font-family: "Exo 2", sans-serif;
-  padding: 10px;
+  padding-left: 10px;
+  padding-top: 40px;
 }
 
-.Project .t-c-p div:last-child {
+.Project .t-c-p p {
   transition: 0.3s;
   padding: 15px;
   color: rgb(100, 100, 100);
@@ -906,15 +894,34 @@ h1 {
   font-family: "Exo 2", sans-serif;
   line-height: 1.7;
   border-bottom-right-radius: 15px;
+  margin-bottom: -10px;
 }
-
-.Project:hover {
-  transform: translate(0, -5px);
+.ProgrammingLanguagesPr {
+  height: auto;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  padding: 10px;
+  Padding-bottom: 20px;
 }
-
-.Project:hover img {
-  filter: brightness(1);
-  transform: scale(1.05);
+.Pr {
+  color: rgb(150, 150, 150);
+  font-weight: bold;
+  background-color: rgba(255, 179, 179, 0.1);
+  height: 26px;
+  width: auto;
+  padding: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: small;
+  border-radius: 20px;
 }
 
 /* ///////////////////   skills 🔴  ////////////////////////*/
@@ -1034,7 +1041,7 @@ form {
   max-width: 600px;
   width: 100%;
   flex: 1 1 500px;
-  margin: 0 ;
+  margin: 0;
   border-radius: 10px;
   color: #fff;
   border: rgb(51, 51, 51) 0.1px solid;
@@ -1044,21 +1051,21 @@ form {
 .text-form {
   display: flex;
   flex-direction: column;
-  gap: 8px; 
-  width: 90%; 
-  margin: 0 auto 25px auto; 
-  text-align: left; 
+  gap: 8px;
+  width: 90%;
+  margin: 0 auto 25px auto;
+  text-align: left;
 }
 
 .text-form h2 {
   font-size: 24px;
   font-family: var(--main-font);
   color: #fff;
-  margin: 0; 
+  margin: 0;
 }
 
 .caption-form {
-  max-width: 100%; 
+  max-width: 100%;
   font-size: 15px;
   color: rgb(150, 150, 150);
   line-height: 1.5;
@@ -1067,10 +1074,10 @@ form {
 
 .inputs-group {
   display: flex;
-  justify-content: space-between; 
-  width: 90%; 
+  justify-content: space-between;
+  width: 90%;
   margin: 0 auto 20px auto;
-  gap: 20px; 
+  gap: 20px;
   flex-wrap: wrap;
 }
 
@@ -1119,11 +1126,11 @@ form button {
 form button:hover {
   background-color: #ff3131;
 }
-
+                                                                                                                                                                                                                                                                                                                                                                                          
 input:focus,
 textarea:focus {
   border-color: rgba(255, 121, 121, 0.7);
-  border-width: 1.6 px;
+  border-width: 1.6px;
   outline: none;
 }
 
@@ -1607,12 +1614,12 @@ footer {
 
 @media (max-width: 600px) {
   .inputs-group {
-    flex-direction: column; 
+    flex-direction: column;
     gap: 15px;
   }
-  
+
   form input {
-    width: 100%; 
+    width: 100%;
   }
 }
 @media (max-width: 600px) {
@@ -1622,7 +1629,6 @@ footer {
     margin-bottom: 20px;
   }
 }
-
 
 @media (max-width: 480px) {
   .icon-footer::before,
