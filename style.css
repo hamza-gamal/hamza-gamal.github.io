@@ -792,7 +792,7 @@ h1 {
   overflow: hidden;
   box-sizing: border-box;
   transition: 0.3s;
-  width: 40%;
+  width: 37%;
   max-width: 550px;
   border: solid 0.5px rgba(255, 134, 134, 0.2);
   position: relative;
@@ -807,51 +807,47 @@ h1 {
     filter var(--main-transition) ease-in-out;
   margin: 0;
   display: block;
-  height: auto;
-  max-height: 300px;
+  height: 300px;
+  width: auto;
 }
 
 .Project:hover {
   transform: translate(0, -5px);
   border: solid 0.5px rgba(255, 134, 134, 0.6234);
+  transform: translate(0, -5px);
+  border: solid 0.5px rgba(255, 134, 134, 0.6234);
+  box-shadow:
+    0px 20px 50px -10px rgba(226, 59, 59, 0.5),
+    0 3px 4px 0px rgba(226, 59, 59, 0.5);
 }
 
 .Project:hover img {
   filter: brightness(1);
   transform: scale(1.05);
 }
-
+.Project:hover::after {
+  opacity: 0;
+}
 .Project::after {
   content: "";
   position: absolute;
+  transition: 1s;
   left: 0;
+  bottom: 0;
   width: 100%;
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.8) 40%,
     rgba(0, 0, 0, 1) 100%
   );
   z-index: 1;
   pointer-events: none;
-}
-.Project:nth-child(1)::after {
-  top: 130px;
-  height: 180px;
-}
-
-.Project:nth-child(2)::after {
-  top: 0px;
-  height: 300px;
-}
-
-.Project:nth-child(3)::after {
-  top: 200px;
-  height: 100px;
+  height: 70%;
 }
 
 .Project:nth-child(4)::after {
-  top: 200px;
-  height: 100px;
+  height: 0;
 }
 
 .Project a {
@@ -863,8 +859,8 @@ h1 {
 .Project .t-c-p {
   position: relative;
   z-index: 2;
-  background-color: rgb(0, 0, 0);
   display: flex;
+  background-color: #000;
   flex-direction: column;
   flex-grow: 1;
 }
@@ -896,6 +892,15 @@ h1 {
   border-bottom-right-radius: 15px;
   margin-bottom: -10px;
 }
+.Project:hover .t-c-p P {
+  color: rgb(170, 170, 170);
+}
+
+.Project:hover .Pr {
+  color: rgb(170, 170, 170);
+  background-color: rgba(255, 179, 179, 0.2);
+}
+
 .ProgrammingLanguagesPr {
   height: auto;
   width: 100%;
@@ -903,11 +908,12 @@ h1 {
   gap: 10px;
   flex-direction: row;
   padding: 10px;
-  Padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 .Pr {
   color: rgb(150, 150, 150);
   font-weight: bold;
+  transition: var(--main-transition);
   background-color: rgba(255, 179, 179, 0.1);
   height: 26px;
   width: auto;
@@ -1126,7 +1132,7 @@ form button {
 form button:hover {
   background-color: #ff3131;
 }
-                                                                                                                                                                                                                                                                                                                                                                                          
+
 input:focus,
 textarea:focus {
   border-color: rgba(255, 121, 121, 0.7);
@@ -1623,9 +1629,8 @@ footer {
   }
 }
 @media (max-width: 600px) {
-  /* الكود اللي ضفناه المرة اللي فاتت للـ inputs سيبه وزود تحته ده: */
   .text-form {
-    text-align: center; /* بيخلي العنوان والوصف في النص على الموبايل عشان يماشوا الفورم */
+    text-align: center;
     margin-bottom: 20px;
   }
 }
