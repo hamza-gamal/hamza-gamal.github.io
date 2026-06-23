@@ -7,16 +7,16 @@ body {
   background:
     linear-gradient(
       to right top,
-      rgba(216, 58, 58, 0.4) 0%,
-      rgba(216, 58, 58, 0.2) 10%,
-      rgba(216, 58, 58, 0.1) 35%,
+      rgba(216, 58, 58, 0.2) 0%,
+      rgba(216, 58, 58, 0.15) 10%,
+      rgba(216, 58, 58, 0.05) 35%,
       transparent 60%
     ),
     linear-gradient(
       to left bottom,
-      rgba(216, 58, 58, 0.4) 0%,
-      rgba(216, 58, 58, 0.2) 10%,
-      rgba(216, 58, 58, 0.1) 35%,
+      rgba(216, 58, 58, 0.2) 0%,
+      rgba(216, 58, 58, 0.15) 10%,
+      rgba(216, 58, 58, 0.05) 35%,
       transparent 50%
     );
   background-color: #030202;
@@ -40,10 +40,6 @@ html {
 }
 :root {
   --main-color: #e23b3b;
-  /* --section-background-1: #000;
-  --section-background-2: rgba(42, 39, 39, 0.3); */
-  --section-background-1: transparent;
-  --section-background-2: transparent;
   --main-transition: 0.3s;
   --main-font: "Exo 2", sans-serif;
 }
@@ -80,7 +76,7 @@ h1 {
   margin: 0 0 70px 0;
 }
 .title-section + p {
-  margin: -100px 0 0;
+  margin: -100px 0 50px 0;
   font-size: 20px;
   text-align: center;
   color: #797979;
@@ -116,6 +112,11 @@ h1 {
   }
 }
 
+.sticky-element {
+  position: sticky;
+  top: 0;
+}
+
 /* ///////////////////////////    navbar 🔴    ////////////////////*/
 
 .navbar {
@@ -126,7 +127,7 @@ h1 {
   animation-fill-mode: both;
   animation-duration: auto;
   animation-timeline: scroll();
-  animation-range: 0px 80px;
+  animation-range: 0 80px;
   height: 70px;
   width: 100%;
   position: fixed;
@@ -148,7 +149,7 @@ h1 {
   animation-fill-mode: both;
   animation-duration: auto;
   animation-timeline: scroll();
-  animation-range: 0px 80px;
+  animation-range: 0 80px;
   margin: 0 auto;
   border-radius: 25px;
   display: flex;
@@ -230,12 +231,12 @@ h1 {
   animation-fill-mode: both;
   animation-duration: auto;
   animation-timeline: scroll();
-  animation-range: 0px 80px;
+  animation-range: 0 80px;
 }
 
 .image-logo-2 {
   grid-area: 1 / 1 / 2 / 2;
-  width: 45px;
+  width: 43px;
   max-height: 50px;
   margin: 0;
   object-fit: contain;
@@ -245,7 +246,7 @@ h1 {
   animation-fill-mode: both;
   animation-duration: auto;
   animation-timeline: scroll();
-  animation-range: 0px 80px;
+  animation-range: 0 80px;
 }
 
 .logo:hover a {
@@ -392,7 +393,6 @@ h1 {
   margin-top: 50px;
   color: #fff;
   text-align: center;
-  background-color: var(--section-background-1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -573,7 +573,6 @@ h1 {
   margin: auto;
   margin-bottom: 50px;
   padding: 50px 0 50px 0;
-  background-color: var(--section-background-2);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -813,13 +812,12 @@ h1 {
 }
 
 .Project:hover {
-  transform: translate(0, -5px);
+  /* transform: translate(0, -5px); */
   border: solid 0.5px rgba(255, 134, 134, 0.6234);
-  transform: translate(0, -5px);
   border: solid 0.5px rgba(255, 134, 134, 0.6234);
   box-shadow:
-    0px 20px 50px -10px rgba(226, 59, 59, 0.5),
-    0 3px 4px 0px rgba(226, 59, 59, 0.5);
+    0 20px 50px -10px rgba(226, 59, 59, 0.5),
+    0 3px 4px 0 rgba(226, 59, 59, 0.5);
 }
 
 .Project:hover img {
@@ -829,7 +827,7 @@ h1 {
 .Project:hover::after {
   opacity: 0;
 }
-.Project::after {
+/* .Project::after {
   content: "";
   position: absolute;
   transition: 1s;
@@ -849,7 +847,7 @@ h1 {
 
 .Project:nth-child(4)::after {
   height: 0;
-}
+} */
 
 .Project a {
   display: flex;
@@ -935,7 +933,6 @@ h1 {
 
 .skills {
   width: 100%;
-  background-color: var(--section-background-1);
   padding: 60px 20px;
   font-family: var(--main-font);
   margin: auto;
@@ -944,7 +941,7 @@ h1 {
 
 .skills-container {
   max-width: 1000px;
-  margin: 90px auto auto auto;
+  margin: auto;
 }
 
 .skills-grid {
@@ -1005,7 +1002,7 @@ h1 {
   position: absolute;
   top: 0;
   left: 0;
-  width: 80%;
+  width: 100%;
   height: 6px;
   background: #222;
   border-radius: 10px;
@@ -1020,17 +1017,17 @@ h1 {
   border-radius: 10px;
 }
 
-.skill-percentage {
+.skill-num {
   color: #888;
   font-size: 0.9rem;
   font-family: var(--main-font);
   margin-left: auto;
+  margin-top: 10px;
 }
 
 /* /////////////////////    form 🔴    //////////////////////*/
 
 .footer {
-  background-color: var(--section-background-2);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -1651,27 +1648,27 @@ footer {
     width: 100%;
     border-radius: 0;
     box-shadow:
-      0px -1px 8px 6px rgba(255, 255, 255, 0),
-      0 3px 4px 0px rgba(255, 255, 255, 0);
+      0 -1px 8px 6px rgba(255, 255, 255, 0),
+      0 3px 4px 0 rgba(255, 255, 255, 0);
   }
 
   to {
     background: rgba(4, 4, 4, 0.5);
     backdrop-filter: blur(3px);
     box-shadow:
-      0px -1px 8px 6px rgba(255, 255, 255, 0.05),
-      0 3px 4px 0px rgba(255, 255, 255, 0.03);
+      0 -1px 8px 6px rgba(255, 255, 255, 0.05),
+      0 3px 4px 0 rgba(255, 255, 255, 0.05);
   }
 }
 
 @keyframes lettel-top-nav {
   from {
-    top: 0px;
+    top: 0;
   }
 
   to {
     top: 15px;
-    border-radius: 0px 0px 20px 20px;
+    border-radius: 0 0 20px 20px;
   }
 }
 
@@ -1741,6 +1738,6 @@ footer {
     transform: translate(0, -15px);
   }
   to {
-    transform: translate(0, 0px);
+    transform: translate(0, 0);
   }
 }
