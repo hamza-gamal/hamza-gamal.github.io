@@ -541,11 +541,10 @@ h1 {
   align-items: center;
   transition: var(--main-transition);
   gap: 8px;
-  cursor: pointer;
 }
 
 .Welcomeportfolio:hover {
-  color: tomato;
+  color: var(--main-color);
   transform: scale(1.05);
 }
 
@@ -1462,7 +1461,7 @@ footer {
   }
 }
 
-@media (max-width: 950px) {
+@media (max-width: 1020px) {
   .nav-links {
     display: none;
     position: absolute;
