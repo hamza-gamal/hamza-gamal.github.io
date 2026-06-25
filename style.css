@@ -806,7 +806,6 @@ h1 {
     filter var(--main-transition) ease-in-out;
   margin: 0;
   display: block;
-  height: 300px;
   width: auto;
 }
 
@@ -821,12 +820,12 @@ h1 {
 
 .Project:hover img {
   filter: brightness(1);
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 .Project:hover::after {
   opacity: 0;
 }
-/* .Project::after {
+.Project::after {
   content: "";
   position: absolute;
   transition: 1s;
@@ -841,12 +840,9 @@ h1 {
   );
   z-index: 1;
   pointer-events: none;
-  height: 70%;
+  height: 60%;
 }
 
-.Project:nth-child(4)::after {
-  height: 0;
-} */
 
 .Project a {
   display: flex;
