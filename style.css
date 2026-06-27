@@ -742,31 +742,6 @@ h1 {
 .Services .Services-content .image-col::after {
   content: "";
 }
-@media (max-width: 767px) {
-  .Services .Services-content .srv {
-    flex-direction: column;
-    text-align: center;
-  }
-  .Services .Services-content .srv p {
-    max-width: 400px;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin: auto;
-  }
-  .Services .Services-content .srv i {
-    margin: auto;
-  }
-}
-@media (max-width: 1199px) {
-  .image-col-column {
-    display: none;
-  }
-}
-@media (max-width: 1199px) {
-  .image-column {
-    display: none;
-  }
-}
 
 /* //////////////////    Projects 🔴    /////////////////////////*/
 
@@ -842,7 +817,6 @@ h1 {
   pointer-events: none;
   height: 60%;
 }
-
 
 .Project a {
   display: flex;
@@ -1385,28 +1359,61 @@ footer {
   filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
     hue-rotate(345deg) brightness(113%) contrast(80%);
 }
+
 #toast {
   position: fixed;
-  top: 15%;
-  right: 40%;
-  background: #22c55e;
-  color: #fff;
-  padding: 14px 18px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  top: 95px;
+  left: 50%;
+  width: min(356px, calc(100% - 32px));
+  min-height: 72px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 16px;
+  border-radius: 7px;
+  background-color: #e9fff1;
+  color: #087d35;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-20px);
-  transition: all var(--main-transition) ease;
+  pointer-events: none;
+  transform: translate(-50%, -14px);
+  transition: 0.3s ease;
   z-index: 99999;
+}
+
+#toast::before {
+  content: "✓";
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin-top: 4px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #16a34a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
 }
 
 #toast.show {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
+}
+
+#toast.error {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+#toast.error::before {
+  content: "!";
+  background: #ef4444;
 }
 
 .btn-back-to-top {
@@ -1457,7 +1464,7 @@ footer {
   }
 }
 
-@media (max-width: 1020px) {
+@media (max-width: 930px) {
   .nav-links {
     display: none;
     position: absolute;
@@ -1488,6 +1495,31 @@ footer {
   }
 }
 
+@media (max-width: 767px) {
+  .Services .Services-content .srv {
+    flex-direction: column;
+    text-align: center;
+  }
+  .Services .Services-content .srv p {
+    max-width: 400px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: auto;
+  }
+  .Services .Services-content .srv i {
+    margin: auto;
+  }
+}
+@media (max-width: 1199px) {
+  .image-col-column {
+    display: none;
+  }
+}
+@media (max-width: 1199px) {
+  .image-column {
+    display: none;
+  }
+}
 
 @media (max-width: 964px) {
   .caption-puzzile-about {
@@ -1725,8 +1757,6 @@ footer {
     transform: translate(0, 0);
   }
 }
-
-
 
 @media (max-width: 510px) {
   @keyframes typing {
