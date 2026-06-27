@@ -1,5 +1,3 @@
-// ال js كله عبارة عن مساعدة في الفورم لعدم الانتقال إلى Formspree بعد الإرسال
-
 const form = document.querySelector(".Contact");
 const toast = document.getElementById("toast");
 
@@ -34,33 +32,37 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  const button = form.querySelector("button");
+  const button = form.querySelector('button[type="submit"]');
   const originalHTML = button.innerHTML;
 
   button.disabled = true;
   button.textContent = "Sending...";
 
   const formData = new FormData(form);
+  const data = Object.fromEntries(formData);
 
   try {
-    const response = await fetch("https://formspree.io/f/xbdpvqge", {
+    const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      body: formData,
       headers: {
+        "Content-Type": "application/json",
         Accept: "application/json",
       },
+      body: JSON.stringify(data),
     });
 
-    if (response.ok) {
+    const result = await response.json();
+
+    if (result.success) {
       showToast("Thank you for your message! I'll get back to you soon.");
       form.reset();
     } else {
-      showToast("Failed to send message!", "error");
+      showToast(result.message || "Failed to send message!", "error");
     }
   } catch (error) {
     showToast("Network error!", "error");
+  } finally {
+    button.disabled = false;
+    button.innerHTML = originalHTML;
   }
-
-  button.disabled = false;
-  button.innerHTML = originalHTML;
 });
