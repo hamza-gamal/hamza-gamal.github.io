@@ -42,8 +42,8 @@ html {
   --main-color: #e23b3b;
   --main-transition: 0.3s;
   --main-font: "Exo 2", sans-serif;
-  --bg-1: rgb(20, 15, 15);
-  --bg-2: rgb(30, 25, 25);
+  --bg-1: rgb(10, 5, 5);
+  --bg-2: rgb(20, 16, 16);
 }
 a {
   text-decoration: none;
