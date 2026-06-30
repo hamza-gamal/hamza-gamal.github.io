@@ -160,6 +160,7 @@ h1 {
   padding: 0 20px;
   box-sizing: border-box;
 }
+
 .sun,
 .moon {
   font-size: large;
@@ -223,20 +224,21 @@ h1 {
 }
 
 .image-logo {
-  grid-area: 1 / 1 / 2 / 2;
+  /* grid-area: 1 / 1 / 2 / 2; */
   width: 100%;
-  max-height: 70px;
+  max-height: 65px;
+  margin-right: -5;
   object-fit: contain;
   transition: var(--main-transition);
-  animation-name: logonav;
+  /* animation-name: logonav;
   animation-timing-function: linear;
   animation-fill-mode: both;
   animation-duration: auto;
   animation-timeline: scroll();
-  animation-range: 0 80px;
+  animation-range: 0 80px; */
 }
 
-.image-logo-2 {
+/* .image-logo-2 {
   grid-area: 1 / 1 / 2 / 2;
   width: 43px;
   max-height: 50px;
@@ -249,7 +251,7 @@ h1 {
   animation-duration: auto;
   animation-timeline: scroll();
   animation-range: 0 80px;
-}
+} */
 
 .logo:hover a {
   color: var(--main-color);
@@ -1166,7 +1168,16 @@ textarea::placeholder {
   gap: 15px;
   width: 300px;
 }
-
+.Contactme .linkContactMe {
+  color: gray;
+  transition: 0.2s;
+}
+.Location-data {
+  color: gray;
+}
+.Location-data:hover  {
+  cursor:  not-allowed;
+}
 .icon-contactme {
   background-color: rgba(255, 0, 0, 0.2);
   width: 45px;
@@ -1183,20 +1194,18 @@ textarea::placeholder {
   font-weight: bold;
   color: white;
   text-align: left;
-  display: block;
+  display: flex;
 }
 
 .data-contactme {
-  color: gray;
   font-size: 14px;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
-
-.Contactme a {
-  transition: 0.2s;
+.linkContactMe {
+  display: flex;
 }
-
-.Contactme a:hover {
+.Contactme .linkContactMe:hover {
   color: rgb(179, 14, 14);
 }
 
@@ -1579,7 +1588,7 @@ footer {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 740px) {
   .logo-image-footer {
     width: 110px;
     margin-right: -20px;
@@ -1636,7 +1645,7 @@ footer {
   }
 }
 
-@media (max-width: 909px) {
+@media (max-width: 920px) {
   .Contactme {
     width: 100%;
   }
@@ -1785,4 +1794,12 @@ footer {
   .hero p {
     font-size: 18px;
   }
+}
+
+/* اختصارات */
+
+.flex-center-center {
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
