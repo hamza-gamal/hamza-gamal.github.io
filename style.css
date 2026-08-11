@@ -146,6 +146,7 @@ h1 {
   max-width: 1400px;
   background: rgba(4, 4, 4, 0.5);
   width: 90%;
+  height: 50px;
   animation-name: show-border;
   animation-timing-function: linear;
   animation-fill-mode: both;
@@ -222,28 +223,30 @@ h1 {
   align-items: center;
   justify-items: center;
 }
-
 .image-logo {
-  /* grid-area: 1 / 1 / 2 / 2; */
-  width: 100%;
+  grid-area: 1 / 1 / 2 / 2;
+  width: 60px;
+  padding: 5px;
   max-height: 65px;
   margin-right: -5;
   object-fit: contain;
   transition: var(--main-transition);
-  /* animation-name: logonav;
+  opacity: 0.85;
+  animation-name: logonav;
   animation-timing-function: linear;
   animation-fill-mode: both;
   animation-duration: auto;
   animation-timeline: scroll();
-  animation-range: 0 80px; */
+  animation-range: 0 80px;
 }
 
-/* .image-logo-2 {
+.image-logo-2 {
   grid-area: 1 / 1 / 2 / 2;
-  width: 43px;
+  width: 50px;
   max-height: 50px;
   margin: 0;
   object-fit: contain;
+  opacity: 0.85;
   transition: var(--main-transition);
   animation-name: logonavtwo;
   animation-timing-function: linear;
@@ -251,15 +254,18 @@ h1 {
   animation-duration: auto;
   animation-timeline: scroll();
   animation-range: 0 80px;
-} */
+}
 
 .logo:hover a {
   color: var(--main-color);
 }
-.logo:hover .image-logo {
-  transform: scale(1.05);
-  filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
-    hue-rotate(345deg) brightness(113%) contrast(80%);
+
+.logo:hover .image-logo-2 ,  .logo:hover .image-logo{
+  /* transform: scale(0.9);
+  filter: brightness(0) saturate(100%) invert(16%) sepia(51%) saturate(6524%)
+    hue-rotate(357deg) brightness(105%) contrast(128%); */
+  opacity: 1;
+  transform: scale(0.98);
 }
 
 /* ---- links ---- */
@@ -1175,8 +1181,8 @@ textarea::placeholder {
 .Location-data {
   color: gray;
 }
-.Location-data:hover  {
-  cursor:  not-allowed;
+.Location-data:hover {
+  cursor: not-allowed;
 }
 .icon-contactme {
   background-color: rgba(255, 0, 0, 0.2);
@@ -1796,10 +1802,10 @@ footer {
   }
 }
 
-/* اختصارات */
+/*--------------------------- اختصارات -------------------------*/
 
 .flex-center-center {
- display: flex;
- align-items: center;
- justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
