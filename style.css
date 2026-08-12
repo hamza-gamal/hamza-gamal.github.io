@@ -260,7 +260,8 @@ h1 {
   color: var(--main-color);
 }
 
-.logo:hover .image-logo-2 ,  .logo:hover .image-logo{
+.logo:hover .image-logo-2,
+.logo:hover .image-logo {
   /* transform: scale(0.9);
   filter: brightness(0) saturate(100%) invert(16%) sepia(51%) saturate(6524%)
     hue-rotate(357deg) brightness(105%) contrast(128%); */
@@ -1264,15 +1265,22 @@ footer {
 .logo-box {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
 .logo-box:hover .title-logo {
   color: var(--main-color);
 }
 
+.logo-image-footer {
+  transition: var(--main-transition);
+  opacity: 0.85;
+  width: 50px;
+}
+
 .logo-box:hover .logo-image-footer {
-  filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
-    hue-rotate(345deg) brightness(113%) contrast(80%);
+  transform: scale(0.98);
+  opacity: 1;
 }
 
 .title-logo {
@@ -1286,17 +1294,6 @@ footer {
 
 .title-logo:hover {
   color: var(--main-color);
-}
-
-.title-logo:hover .logo-image-footer {
-  filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
-    hue-rotate(345deg) brightness(113%) contrast(80%);
-}
-
-.logo-image-footer {
-  width: 80px;
-  height: auto;
-  transition: 0.5s;
 }
 
 .footer-row-bottom {
@@ -1386,12 +1383,6 @@ footer {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0) scale(1);
-}
-
-.logo-footer:hover .logo-image-footer {
-  transform: scale(1.05);
-  filter: brightness(0) saturate(100%) invert(35%) sepia(86%) saturate(4619%)
-    hue-rotate(345deg) brightness(113%) contrast(80%);
 }
 
 #toast {
@@ -1595,11 +1586,9 @@ footer {
 }
 
 @media (max-width: 740px) {
-  .logo-image-footer {
-    width: 110px;
-    margin-right: -20px;
+  .logo-image-footer{
+    margin-right: 5px;
   }
-
   .footer-row-top {
     flex-direction: column;
     gap: 0;
