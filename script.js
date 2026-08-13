@@ -67,4 +67,3 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-console.log(`Hamza Gamal | Portfolio`);
