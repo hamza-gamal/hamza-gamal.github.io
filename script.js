@@ -1,7 +1,73 @@
 const form = document.querySelector(".Contact");
 const toast = document.getElementById("toast");
+const skillExampleToggle = document.querySelector(".skill-example-toggle");
+const skills3dExample = document.querySelector(".skills-3d-example");
+const themeToggles = document.querySelectorAll(".theme-toggle");
+const menuToggle = document.querySelector(".icon-nav");
+const mobileMenu = document.querySelector(".nav-phone");
 
 let toastTimeout;
+
+// function updateThemeControls(isLightMode) {
+//   themeToggles.forEach((toggle) => {
+//     toggle.setAttribute(
+//       "aria-label",
+//       isLightMode ? "Switch to dark mode" : "Switch to light mode",
+//     );
+
+//     const mobileLabel = toggle.querySelector(".sun-phone span");
+//     if (mobileLabel) {
+//       mobileLabel.textContent = isLightMode ? "Dark Mode" : "Light Mode";
+//     }
+//   });
+// }
+
+// const savedTheme = localStorage.getItem("portfolio-theme");
+// const isLightMode = savedTheme === "light";
+// document.body.classList.toggle("light-mode", isLightMode);
+// updateThemeControls(isLightMode);
+
+// themeToggles.forEach((toggle) => {
+//   const toggleTheme = () => {
+//     const lightMode = document.body.classList.toggle("light-mode");
+//     localStorage.setItem("portfolio-theme", lightMode ? "light" : "dark");
+//     updateThemeControls(lightMode);
+//   };
+
+//   toggle.addEventListener("click", toggleTheme);
+//   toggle.addEventListener("keydown", (event) => {
+//     if (event.key === "Enter" || event.key === " ") {
+//       event.preventDefault();
+//       toggleTheme();
+//     }
+//   });
+// });
+
+function toggleMobileMenu() {
+  const isOpen = mobileMenu.classList.toggle("is-open");
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+}
+
+menuToggle?.addEventListener("click", toggleMobileMenu);
+menuToggle?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    toggleMobileMenu();
+  }
+});
+
+mobileMenu?.querySelectorAll(".nav-links-phone a").forEach((link) => {
+  link.addEventListener("click", () => mobileMenu.classList.remove("is-open"));
+});
+
+skillExampleToggle?.addEventListener("click", () => {
+  const isVisible = skills3dExample.classList.toggle("is-visible");
+
+  skillExampleToggle.setAttribute("aria-expanded", String(isVisible));
+  skills3dExample.setAttribute("aria-hidden", String(!isVisible));
+  skillExampleToggle.textContent = isVisible ? "Hide Example" : "Example";
+});
 
 function showToast(message, type = "success") {
   clearTimeout(toastTimeout);
@@ -20,7 +86,7 @@ function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
-form.addEventListener("submit", async (e) => {
+form?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const emailInput = form.querySelector('input[name="email"]');
@@ -67,4 +133,4 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-console.log(`Hamza Gamal | Portfolio`)
+console.log(`Hamza Gamal | Portfolio`);

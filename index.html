@@ -35,12 +35,18 @@
                 <img class="image-logo" src="images/HG.png" alt="logo" />
                 <img class="image-logo-2" src="images/HG.png" alt="logo" />
               </div>
-              Hamza Gamal
+              <span>Hamza Gamal</span>
             </a>
           </div>
 
           <div class="nav-phone">
-            <span class="icon-nav">
+            <span
+              class="icon-nav"
+              role="button"
+              tabindex="0"
+              aria-expanded="false"
+              aria-label="Open menu"
+            >
               <span></span>
               <span></span>
               <span></span>
@@ -53,7 +59,12 @@
               <li><a href="#Projects">Projects</a></li>
               <li><a href="#Skills">Skills</a></li>
               <li><a href="#Contact">Contact </a></li>
-              <div id="sun" class="sun-phone">
+              <div
+                class="sun-phone theme-toggle"
+                role="button"
+                tabindex="0"
+                aria-label="Switch to light mode"
+              >
                 <div class="sun-phone-child">
                   <i class="fa-solid fa-sun"></i> <span>Light Mode</span>
                 </div>
@@ -68,8 +79,22 @@
             <li><a href="#Projects">Projects</a></li>
             <li><a href="#Skills">Skills</a></li>
             <li><a href="#Contact">Contact </a></li>
-            <div id="sun" class="sun"><i class="fa-solid fa-sun"></i></div>
-            <div class="moon"><i class="fa-solid fa-moon"></i></div>
+            <div
+              class="sun theme-toggle"
+              role="button"
+              tabindex="0"
+              aria-label="Switch to light mode"
+            >
+              <i class="fa-solid fa-sun"></i>
+            </div>
+            <div
+              class="moon theme-toggle"
+              role="button"
+              tabindex="0"
+              aria-label="Switch to dark mode"
+            >
+              <i class="fa-solid fa-moon"></i>
+            </div>
           </ul>
         </div>
       </nav>
@@ -414,6 +439,44 @@
               <span class="skill-num">95%</span>
             </div>
           </div>
+
+          <!-- 3D -->
+          <div class="skill skill-3d-card">
+            <div class="skill-header">
+              <span class="skill-icon"
+                ><i class="fa-solid fa-cube" style="color: #00f0ff"></i
+              ></span>
+              <span class="skill-name">3D</span>
+            </div>
+            <div class="skill-footer">
+              <div class="progress-bar" style="width: 90%"></div>
+              <span class="skill-num">90%</span>
+            </div>
+            <button
+              class="skill-example-toggle"
+              type="button"
+              aria-expanded="false"
+            >
+              Example
+            </button>
+          </div>
+        </div>
+
+        <div class="skills-3d-example" aria-hidden="true">
+          <div class="cube-scene">
+            <div class="cube">
+              <div class="cube-face cube-front">HTML</div>
+              <div class="cube-face cube-back">CSS</div>
+              <div class="cube-face cube-right">JS</div>
+              <div class="cube-face cube-left">React</div>
+              <div class="cube-face cube-top">Node.js</div>
+              <div class="cube-face cube-bottom">SQL</div>
+            </div>
+          </div>
+          <div class="skills-example-copy">
+            <span>3D Example</span>
+            <p>Hover over the cube to pause the animation.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -558,7 +621,14 @@
         <div class="footer-row-top">
           <div class="logo-box">
             <a href="http://hamza-gamal.github.io">
-              <img class="logo-image-footer" src="images/HG.png" alt="logo" />
+              <!-- <img class="logo-image-footer" src="images/HG.png" alt="logo" /> -->
+              <div class="Logo-svg">
+                <object
+                  data="images/HG.svg"
+                  type="image/svg+xml"
+                  width="100%"
+                ></object>
+              </div>
             </a>
             <a class="title-logo" href="http://hamza-gamal.github.io"
               >Hamza Gamal</a
@@ -613,7 +683,6 @@
       </div>
     </footer>
     <a href="#" class="btn-back-to-top">
-      <!-- <img class="image-logo" src="images/logo-white.png" alt="logo" /> -->
       ↑
       <!-- <i class="fa-notdog-duo fa-solid fa-arrow-up"></i> -->
     </a>
