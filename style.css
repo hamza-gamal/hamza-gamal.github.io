@@ -119,8 +119,8 @@ h1 {
   top: 0;
 }
 
-.Logo-svg{
-width: 50px;
+.Logo-svg {
+  width: 50px;
 }
 
 /* ///////////////////////////    navbar 🔴    ////////////////////*/
@@ -168,6 +168,7 @@ width: 50px;
 
 .sun,
 .moon {
+  position: relative;
   font-size: large;
   color: #fff;
   transition: var(--main-transition);
@@ -191,6 +192,55 @@ width: 50px;
 .moon:hover {
   background-color: rgba(43, 43, 43, 0.5);
   color: var(--main-color);
+}
+
+.theme-toggle::before,
+.theme-toggle::after {
+  right: 0;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--main-transition),
+    transform var(--main-transition),
+    visibility var(--main-transition);
+}
+
+.theme-toggle::before {
+  content: "";
+  right: 8px;
+  width: 10px;
+  height: 6px;
+  background-color: var(--main-color);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  top: calc(100% + 2px);
+  transform: translateY(-4px);
+}
+
+.theme-toggle::after {
+  content: attr(data-tooltip);
+  top: calc(100% + 7px);
+  white-space: nowrap;
+  padding: 5px 9px;
+  border: 1px solid var(--main-color);
+  border-radius: 5px;
+  background-color: #181818;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  transform: translateY(-4px);
+}
+
+.theme-toggle:hover::before,
+.theme-toggle:hover::after,
+.theme-toggle:focus-visible::before,
+.theme-toggle:focus-visible::after,
+.theme-toggle.is-tooltip-visible::before,
+.theme-toggle.is-tooltip-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .hamburger {
@@ -309,6 +359,7 @@ width: 50px;
 }
 
 .sun-phone {
+  position: relative;
   padding: 15px;
   color: #fff;
   transition: var(--main-transition);
@@ -329,6 +380,30 @@ width: 50px;
 .sun-phone-child:hover {
   color: var(--main-color);
   background-color: #2c2c2c;
+}
+
+.sun-phone::before,
+.sun-phone::after {
+  left: 50%;
+  right: auto;
+  z-index: 1;
+}
+
+.sun-phone::before {
+  top: calc(100% + 2px);
+}
+
+.sun-phone::after {
+  top: calc(100% + 7px);
+}
+
+.sun-phone:hover::before,
+.sun-phone:focus-visible::before,
+.sun-phone.is-tooltip-visible::before,
+.sun-phone:hover::after,
+.sun-phone:focus-visible::after,
+.sun-phone.is-tooltip-visible::after {
+  transform: translate(-50%, 0);
 }
 
 .nav-links-phone::before {

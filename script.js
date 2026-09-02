@@ -8,6 +8,19 @@ const mobileMenu = document.querySelector(".nav-phone");
 
 let toastTimeout;
 
+themeToggles.forEach((toggle) => {
+  toggle.addEventListener("click", () => {
+    themeToggles.forEach((otherToggle) => {
+      otherToggle.classList.remove("is-tooltip-visible");
+    });
+    toggle.classList.add("is-tooltip-visible");
+
+    window.setTimeout(() => {
+      toggle.classList.remove("is-tooltip-visible");
+    }, 2200);
+  });
+});
+
 // function updateThemeControls(isLightMode) {
 //   themeToggles.forEach((toggle) => {
 //     toggle.setAttribute(
