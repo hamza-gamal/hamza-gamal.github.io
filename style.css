@@ -652,7 +652,7 @@ h1 {
   overflow: hidden;
   white-space: nowrap;
   transition:
-    max-width 0.5s ease,
+    max-width 0.6s ease,
     opacity 0.4s ease;
 }
 
@@ -889,7 +889,9 @@ h1 {
     filter var(--main-transition) ease-in-out;
   margin: 0;
   display: block;
-  width: auto;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
 }
 
 .Project:hover {
@@ -975,6 +977,15 @@ h1 {
 .Project:hover .Pr {
   color: rgb(170, 170, 170);
   background-color: rgba(255, 179, 179, 0.2);
+}
+.Project .New {
+  color: rgb(200, 200, 0);
+  background-color: black;
+}
+
+.Project:hover .New {
+  color: black;
+  background-color: rgb(200, 200, 0);
 }
 
 .ProgrammingLanguagesPr {
