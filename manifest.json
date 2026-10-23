@@ -1,0 +1,16 @@
+{
+  "name": "Hamza Gamal Dev | Portfolio",
+  "short_name": "Hamza Portfolio",
+  "description": "Portfolio of Hamza Gamal - Frontend Developer",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#0d1117",
+  "icons": [
+    {
+      "src": "images/HG.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}

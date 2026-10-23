@@ -147,3 +147,17 @@ form?.addEventListener("submit", async (e) => {
 });
 
 console.log(`Hamza Gamal | Portfolio`);
+
+// Register Service Worker for Offline / PWA Support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then((reg) => {
+        console.log('Service Worker Registered successfully! Offline ready.', reg.scope);
+      })
+      .catch((err) => {
+        console.error('Service Worker registration failed:', err);
+      });
+  });
+}
