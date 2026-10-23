@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hamza-portfolio-v1';
+const CACHE_NAME = 'hamza-portfolio-v2';
 
 // Static local assets to pre-cache immediately
 const STATIC_ASSETS = [
@@ -15,16 +15,31 @@ const STATIC_ASSETS = [
   './images/imgQuran.png',
   './images/imgResturant.png',
   './images/Services.png',
-  './Audio/Quran.mp3',
-  './manifest.json'
+  './manifest.json',
+  // CDN Stylesheets & Webfonts so they work completely offline:
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2',
+  'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
+  'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff2?223121516f406b0b0200e47dafaef02c',
+  'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playwrite+DE+SAS:wght@300&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Storm&display=swap'
 ];
 
 // Install Event: Pre-cache static assets
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
-    }).then(() => self.skipWaiting())
+      // Use map with Promise.allSettled so if one external font fails, the rest still cache
+      return Promise.allSettled(
+        STATIC_ASSETS.map((url) => {
+          return fetch(url, { mode: 'cors' })
+            .catch(() => fetch(url, { mode: 'no-cors' }))
+            .then((res) => cache.put(url, res))
+            .catch((err) => console.warn('Could not pre-cache:', url, err));
+        })
+      );
+    })
   );
 });
 
@@ -52,16 +67,14 @@ self.addEventListener('fetch', (event) => {
   if (event.request.url.includes('api.web3forms.com')) return;
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
-        // Return cache hit immediately
         return cachedResponse;
       }
 
       // If not in cache, fetch from network and dynamically cache it
       return fetch(event.request)
         .then((networkResponse) => {
-          // Check for valid response (or opaque response for CDNs like fonts/fa)
           if (
             networkResponse &&
             (networkResponse.status === 200 || networkResponse.type === 'opaque')
@@ -74,7 +87,7 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
-          // If network failed and navigating to a page, fallback to index.html
+          // Fallback to index.html for navigation requests
           if (event.request.mode === 'navigate') {
             return caches.match('./index.html');
           }
