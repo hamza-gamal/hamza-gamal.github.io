@@ -8,53 +8,49 @@ const mobileMenu = document.querySelector(".nav-phone");
 
 let toastTimeout;
 
+function updateThemeControls(isLightMode) {
+  themeToggles.forEach((toggle) => {
+    toggle.setAttribute(
+      'aria-label',
+      isLightMode ? 'Switch to dark mode' : 'Switch to light mode',
+    );
+
+    const mobileLabel = toggle.querySelector('.sun-phone span, .sun-phone-child span');
+    if (mobileLabel) {
+      mobileLabel.textContent = isLightMode ? 'Dark Mode' : 'Light Mode';
+    }
+  });
+}
+
+const savedTheme = localStorage.getItem('portfolio-theme');
+const isLightMode = savedTheme === 'light';
+document.body.classList.toggle('light-mode', isLightMode);
+updateThemeControls(isLightMode);
+
 themeToggles.forEach((toggle) => {
-  toggle.addEventListener("click", () => {
+  const toggleTheme = () => {
+    const lightMode = document.body.classList.toggle('light-mode');
+    localStorage.setItem('portfolio-theme', lightMode ? 'light' : 'dark');
+    updateThemeControls(lightMode);
+
     themeToggles.forEach((otherToggle) => {
-      otherToggle.classList.remove("is-tooltip-visible");
+      otherToggle.classList.remove('is-tooltip-visible');
     });
-    toggle.classList.add("is-tooltip-visible");
+    toggle.classList.add('is-tooltip-visible');
 
     window.setTimeout(() => {
-      toggle.classList.remove("is-tooltip-visible");
+      toggle.classList.remove('is-tooltip-visible');
     }, 2200);
+  };
+
+  toggle.addEventListener('click', toggleTheme);
+  toggle.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleTheme();
+    }
   });
 });
-
-// function updateThemeControls(isLightMode) {
-//   themeToggles.forEach((toggle) => {
-//     toggle.setAttribute(
-//       "aria-label",
-//       isLightMode ? "Switch to dark mode" : "Switch to light mode",
-//     );
-
-//     const mobileLabel = toggle.querySelector(".sun-phone span");
-//     if (mobileLabel) {
-//       mobileLabel.textContent = isLightMode ? "Dark Mode" : "Light Mode";
-//     }
-//   });
-// }
-
-// const savedTheme = localStorage.getItem("portfolio-theme");
-// const isLightMode = savedTheme === "light";
-// document.body.classList.toggle("light-mode", isLightMode);
-// updateThemeControls(isLightMode);
-
-// themeToggles.forEach((toggle) => {
-//   const toggleTheme = () => {
-//     const lightMode = document.body.classList.toggle("light-mode");
-//     localStorage.setItem("portfolio-theme", lightMode ? "light" : "dark");
-//     updateThemeControls(lightMode);
-//   };
-
-//   toggle.addEventListener("click", toggleTheme);
-//   toggle.addEventListener("keydown", (event) => {
-//     if (event.key === "Enter" || event.key === " ") {
-//       event.preventDefault();
-//       toggleTheme();
-//     }
-//   });
-// });
 
 function toggleMobileMenu() {
   const isOpen = mobileMenu.classList.toggle("is-open");
