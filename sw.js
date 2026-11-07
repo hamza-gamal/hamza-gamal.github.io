@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hamza-portfolio-v3';
+const CACHE_NAME = 'hamza-portfolio-v4';
 
 // Static local assets to pre-cache immediately
 const STATIC_ASSETS = [
@@ -8,6 +8,8 @@ const STATIC_ASSETS = [
   './script.js',
   './images/HG-white.png',
   './images/HG-black.png',
+  './images/HG-quran-dark.svg',
+  './images/HG-quran-light.svg',
   './images/HG.png',
   './images/HG.svg',
   './images/imgHamza.png',
