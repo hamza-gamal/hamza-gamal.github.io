@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Table Hub | Studio</title>
+    <title>Table Hub</title>
 
     <!-- Favicon & Icons -->
     <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="images/logo.png" />
     <meta name="theme-color" content="#dc2626" />
 
-    <!-- Google Fonts: Inter, Cairo, Outfit -->
+    <!-- Google Fonts: Inter, Cairo -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -31,32 +31,17 @@
     <!-- ── Header ── -->
     <header class="app-header">
       <div class="header-inner">
-        <!-- Left: Hamza Gamal Portfolio Link + Brand -->
-        <div class="header-left">
-          <a
-            href="https://hamza-gamal.github.io/portfolio"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-portfolio"
-            aria-label="Hamza Gamal Portfolio"
-          >
-            <img src="images/HG.png" alt="Hamza Gamal" />
-          </a>
-
+        <!-- Site Logo & Title (Opposite side from HG logo) -->
+        <div class="header-brand-side">
           <div class="brand-box">
             <div class="brand-logo-wrap">
-              <img src="images/logo.svg" alt="Table Hub" class="brand-logo" />
+              <img src="images/logo.svg" alt="Table Hub Logo" class="brand-logo" />
             </div>
-            <div class="brand-text">
-              <h1 class="brand-title">
-                <span data-i18n="appTitle">Table Hub</span>
-                <span class="brand-badge">HG</span>
-              </h1>
-            </div>
+            <h1 class="brand-title" data-i18n="appTitle">Table Hub</h1>
           </div>
         </div>
 
-        <!-- Center: Clean Search Bar -->
+        <!-- Center Search -->
         <div class="header-center">
           <div class="search-box">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -74,8 +59,8 @@
           </div>
         </div>
 
-        <!-- Right: Actions & Preferences -->
-        <div class="header-right">
+        <!-- Actions & HG Portfolio Logo (On the other side) -->
+        <div class="header-user-side">
           <!-- View Mode (Tabs vs Grid) -->
           <button id="viewToggleBtn" class="action-icon-btn" title="Toggle View Mode">
             <i class="fa-solid fa-table-cells-large"></i>
@@ -97,6 +82,20 @@
             <i class="fa-solid fa-moon icon-dark"></i>
             <i class="fa-solid fa-sun icon-light"></i>
           </button>
+
+          <!-- Separator Line -->
+          <div class="header-divider"></div>
+
+          <!-- Hamza Gamal Portfolio Link (Tooltip appears strictly underneath) -->
+          <a
+            href="https://hamza-gamal.github.io/portfolio"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-portfolio"
+            aria-label="Hamza Gamal Portfolio"
+          >
+            <img src="images/HG.png" alt="Hamza Gamal" />
+          </a>
         </div>
       </div>
     </header>
@@ -104,7 +103,7 @@
     <!-- ── Subheader Bar: Table Tabs & Dynamic Scaling (+1 / -1) ── -->
     <section class="control-bar">
       <div class="control-bar-inner">
-        <!-- Tabs Scroll Area -->
+        <!-- Tabs List -->
         <div class="tabs-area">
           <div class="tabs-list" id="tabsContainer">
             <!-- Dynamic Tabs rendered here -->
@@ -161,7 +160,7 @@
     <!-- ── Floating Toast Notifications Container ── -->
     <div id="toastContainer" class="toast-stack" aria-live="polite"></div>
 
-    <!-- ── Minimalist Clean Footer ── -->
+    <!-- ── Clean Minimal Footer ── -->
     <footer class="app-footer">
       <div class="footer-inner">
         <div class="footer-brand">
@@ -171,8 +170,8 @@
           </span>
         </div>
         <div class="footer-hints">
-          <span class="footer-hint"><i class="fa-solid fa-arrows-left-right"></i> <span data-i18n="hintResize">Drag column borders to resize</span></span>
-          <span class="footer-hint"><i class="fa-solid fa-bolt"></i> <span data-i18n="hintAutoSave">Instant auto-save</span></span>
+          <span class="footer-hint"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> <span data-i18n="hintResizeBox">Resize table freely from bottom corner</span></span>
+          <span class="footer-hint"><i class="fa-solid fa-arrows-left-right"></i> <span data-i18n="hintResize">Drag column borders</span></span>
         </div>
       </div>
     </footer>

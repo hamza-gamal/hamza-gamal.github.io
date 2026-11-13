@@ -3,10 +3,12 @@
  * TABLE HUB STUDIO - ENGINE & INTERACTIVITY
  * Author: Hamza Gamal (https://hamza-gamal.github.io/portfolio)
  * Highlights:
+ *   - Freely resizable table container (like <textarea> with corner grip)
  *   - Interactive column & row drag-to-resize on borders
+ *   - Clean tables (no # index column, no bulky add buttons)
+ *   - Seamless Tab/Enter auto-row generation
  *   - Zero native browser alert/confirm popups (custom glass modal)
  *   - Balanced Red & Black palette (neutral darks + electric red)
- *   - Decluttered, spacious UI with keyboard cell navigation
  *   - Bilingual EN (default) / AR with real-time switching
  *   - Excel-ready CSV export with UTF-8 BOM
  * ═══════════════════════════════════════════════════════════════
@@ -22,11 +24,11 @@ const I18N = {
     activeCopies: "Tables:",
     singleTable: "1 Table",
     multiTables: "{n} Tables",
-    hintResize: "Drag column borders to resize",
+    hintResizeBox: "Resize table freely from bottom corner",
+    hintResize: "Drag column borders",
     hintAutoSave: "Instant auto-save",
     tableDefaultTitle: "Table {n}",
     colDefault: "Column {n}",
-    addRow: "+ Add Row",
     duplicate: "Duplicate Table",
     clear: "Clear Table Data",
     exportCsv: "Export to CSV",
@@ -56,11 +58,11 @@ const I18N = {
     activeCopies: "الجداول:",
     singleTable: "جدول واحد",
     multiTables: "{n} جداول",
-    hintResize: "المس واسحب حدود الأعمدة لتكبيرها وتصغيرها",
+    hintResizeBox: "اسحب وكبر الجدول بحرية من الزاوية السفلية",
+    hintResize: "اسحب حدود الأعمدة لتعديل العرض",
     hintAutoSave: "حفظ فوري تلقائي",
     tableDefaultTitle: "جدول {n}",
     colDefault: "عمود {n}",
-    addRow: "+ إضافة صف",
     duplicate: "نسخ الجدول",
     clear: "تفريغ محتوى الجدول",
     exportCsv: "تصدير ملف CSV",
@@ -101,7 +103,9 @@ function createInitialTable(id, num) {
   return {
     id: id,
     title: isAr ? `جدول ${num}` : `Table ${num}`,
-    colWidths: [180, 160, 140, 140],
+    boxWidth: "",
+    boxHeight: "",
+    colWidths: [200, 180, 160, 160],
     rowHeights: [],
     columns: isAr
       ? ["الاسم / المهمة", "النوع", "الحالة", "الأولوية"]
@@ -109,14 +113,14 @@ function createInitialTable(id, num) {
     rows: isAr
       ? [
           ["تصميم واجهة المستخدم", "تطوير", "مكتمل", "عالي"],
-          ["سحب وتكبير حدود الأعمدة", "ميزة", "مكتمل", "عالي"],
+          ["تكبير الجدول من الزاوية", "ميزة", "مكتمل", "عالي"],
           ["الوضع المظلم أحمر وأسود", "تصميم", "مكتمل", "متوسط"],
           ["تصدير ملفات Excel", "بيانات", "مكتمل", "عالي"]
         ]
       : [
           ["Red & Black Luxury Theme", "UI Design", "Completed", "High"],
-          ["Drag-to-Resize Column Borders", "Feature", "Ready", "High"],
-          ["Custom Glass Confirmation Modal", "UX Polish", "Ready", "Urgent"],
+          ["Corner Resize Handle", "Feature", "Ready", "High"],
+          ["Drag-to-Resize Column Borders", "UX Polish", "Ready", "Urgent"],
           ["Excel & UTF-8 CSV Export", "Feature", "Completed", "Normal"]
         ]
   };
@@ -151,7 +155,6 @@ function loadData() {
       console.warn("Resetting tables to default", e);
     }
   }
-  // Default for new visitors: exactly 1 table
   AppState.tables = [createInitialTable(1, 1)];
   AppState.activeTableId = 1;
 }
@@ -418,6 +421,10 @@ function buildTableCard(table, displayIndex) {
   const lang = AppState.lang;
   const i18n = I18N[lang];
 
+  const boxStyle = [];
+  if (table.boxWidth) boxStyle.push(`width: ${table.boxWidth}`);
+  if (table.boxHeight) boxStyle.push(`height: ${table.boxHeight}`);
+
   card.innerHTML = `
     <!-- Card Header -->
     <div class="card-header">
@@ -455,15 +462,14 @@ function buildTableCard(table, displayIndex) {
       </div>
     </div>
 
-    <!-- Table Scroll Container -->
-    <div class="table-scroll-wrap">
+    <!-- Freely Resizable Table Container (Like Textarea with Corner Grip) -->
+    <div class="table-resizable-wrap" style="${boxStyle.join("; ")}" data-table-id="${table.id}">
       <table class="interactive-table" data-table-id="${table.id}">
         <thead>
           <tr>
-            <th class="td-row-idx">#</th>
             ${table.columns
               .map((colName, colIdx) => {
-                const colW = table.colWidths && table.colWidths[colIdx] ? table.colWidths[colIdx] : 160;
+                const colW = table.colWidths && table.colWidths[colIdx] ? table.colWidths[colIdx] : 180;
                 return `
               <th data-col-idx="${colIdx}" style="width: ${colW}px;">
                 <div class="th-inner">
@@ -475,16 +481,10 @@ function buildTableCard(table, displayIndex) {
                   }
                 </div>
                 <!-- Interactive Drag-to-Resize Column Handle -->
-                <div class="col-resize-handle" data-col-idx="${colIdx}" title="${i18n.hintResize}"></div>
+                <div class="col-resize-handle" data-col-idx="${colIdx}"></div>
               </th>`;
               })
               .join("")}
-            <!-- End of Columns: Add Column Header Button (+) -->
-            <th class="th-add-column">
-              <button class="btn-add-col-header" title="${i18n.colDefault.replace("{n}", table.columns.length + 1)}">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -493,36 +493,19 @@ function buildTableCard(table, displayIndex) {
               const rowH = table.rowHeights && table.rowHeights[rowIdx] ? `style="height: ${table.rowHeights[rowIdx]}px;"` : "";
               return `
             <tr data-row-idx="${rowIdx}" ${rowH}>
-              <td class="td-row-idx">
-                <span class="idx-num">${rowIdx + 1}</span>
-                ${
-                  table.rows.length > 1
-                    ? `<button class="row-del-btn" title="${i18n.deleteRow}" data-row-idx="${rowIdx}"><i class="fa-solid fa-xmark"></i></button>`
-                    : ""
-                }
-                <!-- Interactive Drag-to-Resize Row Handle -->
-                <div class="row-resize-handle" data-row-idx="${rowIdx}"></div>
-              </td>
               ${row
                 .map(
                   (val, colIdx) => `
                 <td contenteditable="true" spellcheck="false" data-row="${rowIdx}" data-col="${colIdx}">${escapeHtml(val)}</td>`
                 )
                 .join("")}
-              <td class="td-empty-spacer"></td>
+              <!-- Interactive Drag-to-Resize Row Handle -->
+              <div class="row-resize-handle" data-row-idx="${rowIdx}"></div>
             </tr>`;
             })
             .join("")}
         </tbody>
       </table>
-    </div>
-
-    <!-- Bottom Add Row Strip -->
-    <div class="table-add-row-strip">
-      <button class="btn-add-row" data-table-id="${table.id}">
-        <i class="fa-solid fa-plus"></i>
-        <span>${i18n.addRow}</span>
-      </button>
     </div>
   `;
 
@@ -530,7 +513,7 @@ function buildTableCard(table, displayIndex) {
   return card;
 }
 
-// ── Attach Events inside Table Card (including drag-to-resize) ──
+// ── Attach Events inside Table Card ──
 function attachTableCardEvents(card, table) {
   // Title Edit
   const titleInput = card.querySelector(".card-table-title");
@@ -551,23 +534,12 @@ function attachTableCardEvents(card, table) {
     });
   });
 
-  // Add Column (+) button on header
-  card.querySelector(".btn-add-col-header")?.addEventListener("click", () => {
-    const nextNum = table.columns.length + 1;
-    table.columns.push(I18N[AppState.lang].colDefault.replace("{n}", nextNum));
-    if (!table.colWidths) table.colWidths = [];
-    table.colWidths.push(160);
-    table.rows.forEach((r) => r.push(""));
+  // Free Resize Container: Persist Width and Height on mouseup
+  const resizableWrap = card.querySelector(".table-resizable-wrap");
+  resizableWrap?.addEventListener("mouseup", () => {
+    table.boxWidth = resizableWrap.style.width;
+    table.boxHeight = resizableWrap.style.height;
     saveData(true);
-    renderApp();
-  });
-
-  // Add Row (+) button at bottom
-  card.querySelector(".btn-add-row")?.addEventListener("click", () => {
-    const emptyRow = new Array(table.columns.length).fill("");
-    table.rows.push(emptyRow);
-    saveData(true);
-    renderApp();
   });
 
   // Delete Column
@@ -588,19 +560,6 @@ function attachTableCardEvents(card, table) {
           renderApp();
         }
       );
-    });
-  });
-
-  // Delete Row
-  card.querySelectorAll(".row-del-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const rowIdx = Number(btn.getAttribute("data-row-idx"));
-      if (table.rows.length <= 1) return;
-      table.rows.splice(rowIdx, 1);
-      if (table.rowHeights) table.rowHeights.splice(rowIdx, 1);
-      saveData(true);
-      renderApp();
     });
   });
 
@@ -629,14 +588,14 @@ function attachTableCardEvents(card, table) {
       const r = Number(td.getAttribute("data-row"));
       const c = Number(td.getAttribute("data-col"));
 
-      // Enter moves to cell below (or adds new row if on last row!)
+      // Enter moves to cell below (or adds new row seamlessly if on last row!)
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         if (r + 1 < table.rows.length) {
           const nextCell = card.querySelector(`td[data-row="${r + 1}"][data-col="${c}"]`);
           if (nextCell) nextCell.focus();
         } else {
-          // At bottom: hit Enter to add next row
+          // Bottom of table: Add new row seamlessly
           const emptyRow = new Array(table.columns.length).fill("");
           table.rows.push(emptyRow);
           saveData(true);
@@ -646,6 +605,19 @@ function attachTableCardEvents(card, table) {
             if (newCell) newCell.focus();
           }, 30);
         }
+      }
+
+      // Tab on very last cell adds next row seamlessly
+      if (e.key === "Tab" && !e.shiftKey && r === table.rows.length - 1 && c === table.columns.length - 1) {
+        e.preventDefault();
+        const emptyRow = new Array(table.columns.length).fill("");
+        table.rows.push(emptyRow);
+        saveData(true);
+        renderApp();
+        setTimeout(() => {
+          const firstCellNextRow = document.querySelector(`td[data-row="${r + 1}"][data-col="0"]`);
+          if (firstCellNextRow) firstCellNextRow.focus();
+        }, 30);
       }
     });
   });
@@ -678,7 +650,7 @@ function setupColumnResize(card, table) {
         const delta = isRtl
           ? startX - moveEvent.pageX
           : moveEvent.pageX - startX;
-        const newWidth = Math.max(65, startWidth + delta);
+        const newWidth = Math.max(70, startWidth + delta);
 
         th.style.width = `${newWidth}px`;
         if (!table.colWidths) table.colWidths = [];
@@ -718,7 +690,7 @@ function setupRowResize(card, table) {
 
       function onMouseMove(moveEvent) {
         const delta = moveEvent.pageY - startY;
-        const newHeight = Math.max(30, startHeight + delta);
+        const newHeight = Math.max(32, startHeight + delta);
 
         tr.style.height = `${newHeight}px`;
         if (!table.rowHeights) table.rowHeights = [];
