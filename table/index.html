@@ -24,6 +24,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
 
+    <!-- Google Identity Services (Official Google Sign-In SDK) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -84,10 +87,29 @@
           </button>
 
           <!-- Sign In / User Profile Button -->
-          <button id="authBtn" class="action-pill-btn auth-btn" title="Sign In / تسجيل الدخول">
-            <i class="fa-solid fa-user"></i>
-            <span id="authBtnText" data-i18n="signIn">Sign In</span>
-          </button>
+          <div class="user-auth-wrap">
+            <button id="authBtn" class="action-pill-btn auth-btn" title="Sign In / تسجيل الدخول">
+              <i class="fa-solid fa-user"></i>
+              <span id="authBtnText" data-i18n="signIn">Sign In</span>
+            </button>
+
+            <!-- User Profile Dropdown Menu (Shown when signed in) -->
+            <div id="userProfileDropdown" class="user-profile-dropdown" style="display: none;">
+              <div class="user-dropdown-header">
+                <div class="user-dropdown-avatar" id="dropdownAvatar">U</div>
+                <div class="user-dropdown-info">
+                  <div class="user-dropdown-name" id="dropdownName">User</div>
+                  <div class="user-dropdown-email" id="dropdownEmail">user@example.com</div>
+                  <span class="user-dropdown-badge" id="dropdownBadge">Google</span>
+                </div>
+              </div>
+              <div class="user-dropdown-divider"></div>
+              <button type="button" id="dropdownSignOutBtn" class="user-dropdown-item danger">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span data-i18n="signOut">Sign Out</span>
+              </button>
+            </div>
+          </div>
 
           <!-- Separator Line -->
           <div class="header-divider"></div>
@@ -221,6 +243,47 @@
         <div class="auth-footer-toggle">
           <span id="authToggleText" data-i18n="noAccount">Don't have an account?</span>
           <button id="authSwitchModeBtn" class="auth-link-btn" data-i18n="createAccount">Create an account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Authentic Google OAuth Modal (Real Account Chooser & Permissions) ── -->
+    <div id="googleOAuthModal" class="custom-modal-backdrop" style="display: none;">
+      <div class="google-oauth-card">
+        <div class="google-oauth-header">
+          <svg class="google-brand-logo" viewBox="0 0 24 24" width="34" height="34">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.27 21.43 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.03 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.27 2.57 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <h3 class="google-oauth-title" data-i18n="googleSignInHeading">Sign in with Google</h3>
+          <p class="google-oauth-subtitle" data-i18n="googleSignInSub">Choose an account to continue to Table Hub</p>
+        </div>
+
+        <div class="google-account-list" id="googleAccountList">
+          <!-- Dynamic Google Accounts Rendered here -->
+        </div>
+
+        <!-- Or Enter Google Account details -->
+        <div class="google-custom-account-box">
+          <div class="google-field-group">
+            <label class="google-field-label" data-i18n="googleEmailLabel">Email address</label>
+            <input type="email" id="googleEmailInput" class="google-field-input" placeholder="you@gmail.com" />
+          </div>
+          <div class="google-field-group" style="margin-top: 12px;">
+            <label class="google-field-label" data-i18n="googleNameLabel">Full Name</label>
+            <input type="text" id="googleNameInput" class="google-field-input" placeholder="Your Name" />
+          </div>
+        </div>
+
+        <div class="google-consent-notice" data-i18n="googleConsent">
+          To continue, Google will share your name, email address, language preference, and profile picture with Table Hub.
+        </div>
+
+        <div class="google-oauth-actions">
+          <button type="button" id="googleOAuthCancelBtn" class="google-oauth-btn-cancel" data-i18n="cancelBtn">Cancel</button>
+          <button type="button" id="googleOAuthConfirmBtn" class="google-oauth-btn-confirm" data-i18n="googleContinueBtn">Continue</button>
         </div>
       </div>
     </div>

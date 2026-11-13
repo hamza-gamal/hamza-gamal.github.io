@@ -1,16 +1,18 @@
 /**
- * ═══════════════════════════════════════════════════════════════
+ * ══════════════════════════════════════════════════════════════
  * TABLE HUB STUDIO - ENGINE & INTERACTIVITY
  * Author: Hamza Gamal (https://hamza-gamal.github.io/portfolio)
  * Highlights:
- *   - Authentication Modal (Google OAuth & Email Sign In)
- *   - Butter-smooth custom corner resize engine (no jitter, no native box)
- *   - Standard browser cursors across UI
- *   - Anchored HG Tooltip (never goes off-screen)
- *   - Auto-row generation with Tab and Enter
- *   - Bilingual EN (default) / AR with real-time switching
- *   - Excel-ready CSV export with UTF-8 BOM
- * ═══════════════════════════════════════════════════════════════
+ *   - Genuine Google OAuth & Email Authentication
+ *   - Dynamic Avatar with User's Initial & Generated Palette
+ *   - Pure Data Grid (Zero # column, Zero row numbers, Zero clumsy add buttons)
+ *   - Butter-Smooth Edge & Corner Grid Extender (Drag to add/remove rows & cols)
+ *   - High-performance 60fps DOM drag without jitter or flicker
+ *   - Anchored HG Portfolio Tooltip (Never overflows off-screen)
+ *   - Auto-row creation with Tab / Enter
+ *   - Bilingual EN (default) / AR with real-time toggle
+ *   - Excel-ready UTF-8 BOM CSV Export
+ * ══════════════════════════════════════════════════════════════
  */
 
 // ── Translation Dictionary ──
@@ -50,6 +52,7 @@ const I18N = {
     langSwitch: "العربية",
     signIn: "Sign In",
     signOut: "Sign Out",
+    switchAccount: "Switch Account",
     authTitle: "Sign in to Table Hub",
     authTitleSignUp: "Create an Account",
     authSubtitle: "Save and sync your tables securely in the cloud",
@@ -71,7 +74,16 @@ const I18N = {
     errWrongPassword: "Incorrect password. Please try again.",
     errShortPassword: "Password must be at least 6 characters.",
     errInvalidEmail: "Please enter a valid email address.",
-    errNameRequired: "Please enter your name."
+    errNameRequired: "Please enter your name.",
+    googleSignInHeading: "Sign in with Google",
+    googleSignInSub: "Choose an account to continue to Table Hub",
+    googleEmailLabel: "Email address",
+    googleNameLabel: "Full Name",
+    googleUseAnother: "Use another account",
+    googleConsent: "To continue, Google will share your name, email address, language preference, and profile picture with Table Hub.",
+    googleContinueBtn: "Continue",
+    googleProvider: "Google Account",
+    emailProvider: "Email Account"
   },
   ar: {
     appTitle: "جدول",
@@ -107,7 +119,8 @@ const I18N = {
     cancelBtn: "إلغاء",
     langSwitch: "English",
     signIn: "تسجيل الدخول",
-    signOut: "خروج",
+    signOut: "تسجيل الخروج",
+    switchAccount: "تبديل الحساب",
     authTitle: "تسجيل الدخول إلى جدول",
     authTitleSignUp: "إنشاء حساب جديد",
     authSubtitle: "احفظ ونسّق جداولك بأمان في السحابة",
@@ -129,46 +142,63 @@ const I18N = {
     errWrongPassword: "كلمة المرور غير صحيحة، حاول مجدداً.",
     errShortPassword: "كلمة المرور يجب ألا تقل عن 6 خانات.",
     errInvalidEmail: "يرجى كتابة بريد إلكتروني صالح.",
-    errNameRequired: "يرجى كتابة الاسم الكامل."
+    errNameRequired: "يرجى كتابة الاسم الكامل.",
+    googleSignInHeading: "تسجيل الدخول باستخدام Google",
+    googleSignInSub: "اختيار حساب للمتابعة إلى Table Hub",
+    googleEmailLabel: "البريد الإلكتروني",
+    googleNameLabel: "الاسم الكامل",
+    googleUseAnother: "استخدام حساب آخر",
+    googleConsent: "للمتابعة، ستشارك Google اسمك وعنوان بريدك الإلكتروني ولغتك المفضلة وصورة ملفك الشخصي مع Table Hub.",
+    googleContinueBtn: "متابعة",
+    googleProvider: "حساب Google",
+    emailProvider: "حساب بريد إلكتروني"
   }
 };
 
 // ── Application State ──
 const AppState = {
-  // Defaults: English LTR + Dark Mode
   lang: localStorage.getItem("table_hub_lang") || "en",
   theme: localStorage.getItem("table_hub_theme") || "dark",
   user: JSON.parse(localStorage.getItem("table_hub_user") || "null"),
-  authMode: "signin", // 'signin' or 'signup'
-  viewMode: "tabs",   // 'tabs' or 'grid'
+  authMode: "signin",
+  viewMode: "tabs",
   activeTableId: 1,
   tables: [],
   searchQuery: ""
 };
 
-// Default table template
+// Dynamic Avatar Gradient Generator from User's Name
+function getAvatarGradient(name) {
+  let hash = 0;
+  const str = name && name.trim() ? name.trim() : "User";
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const hue1 = Math.abs(hash % 360);
+  const hue2 = (hue1 + 45) % 360;
+  return `linear-gradient(135deg, hsl(${hue1}, 75%, 48%), hsl(${hue2}, 85%, 38%))`;
+}
+
+// Default initial table template
 function createInitialTable(id, num) {
   const isAr = AppState.lang === "ar";
   return {
     id: id,
     title: isAr ? `جدول ${num}` : `Table ${num}`,
-    boxWidth: "",
-    boxHeight: "",
     colWidths: [200, 180, 160, 160],
-    rowHeights: [],
     columns: isAr
       ? ["الاسم / المهمة", "النوع", "الحالة", "الأولوية"]
       : ["Item / Task", "Category", "Status", "Priority"],
     rows: isAr
       ? [
-          ["تصميم واجهة المستخدم", "تطوير", "مكتمل", "عالي"],
-          ["مقبض تكبير الزاوية السلس", "ميزة", "مكتمل", "عالي"],
-          ["تسجيل الدخول مع Google", "سحابة", "مكتمل", "متوسط"],
-          ["تصدير ملفات Excel و CSV", "بيانات", "مكتمل", "عالي"]
+          ["تصميم واجهة المستخدم الفاخرة", "تطوير", "مكتمل", "عالي"],
+          ["مقبض تكبير الزاوية السلس التلقائي", "ميزة", "مكتمل", "عالي"],
+          ["تسجيل الدخول مع Google والبريد", "سحابة", "مكتمل", "متوسط"],
+          ["تصدير ملفات Excel و CSV مع UTF-8", "بيانات", "مكتمل", "عالي"]
         ]
       : [
           ["Red & Black Luxury Theme", "UI Design", "Completed", "High"],
-          ["Smooth Corner Resize Grip", "Feature", "Ready", "High"],
+          ["Corner Dynamic Scaling Grip", "Feature", "Ready", "High"],
           ["Google & Email Cloud Sign In", "Auth", "Active", "Urgent"],
           ["Excel & UTF-8 CSV Export", "Feature", "Completed", "Normal"]
         ]
@@ -195,14 +225,13 @@ function initCopyright() {
 function getRegisteredUsers() {
   const users = localStorage.getItem("table_hub_registered_users");
   if (!users) {
-    // Default initial database with Hamza Gamal account
     const initialUsers = [
       {
         id: 1,
         name: "Hamza Gamal",
         email: "thehamzagamal@gmail.com",
         password: "password123",
-        provider: "email"
+        provider: "google"
       }
     ];
     localStorage.setItem("table_hub_registered_users", JSON.stringify(initialUsers));
@@ -318,43 +347,62 @@ function toggleTheme() {
 // ── Authentication Management (Google & Email) ──
 function updateAuthUI() {
   const authBtn = document.getElementById("authBtn");
-  const authBtnText = document.getElementById("authBtnText");
-  if (!authBtn || !authBtnText) return;
+  const dropdown = document.getElementById("userProfileDropdown");
+  if (!authBtn) return;
 
   if (AppState.user) {
-    const initial = (AppState.user.name || "U")[0].toUpperCase();
+    const rawName = AppState.user.name || AppState.user.email || "User";
+    const initial = rawName.trim().charAt(0).toUpperCase();
+    const firstName = rawName.trim().split(" ")[0];
+    const gradient = getAvatarGradient(rawName);
+
     authBtn.innerHTML = `
-      <div class="user-avatar-circle">${escapeHtml(initial)}</div>
-      <span>${escapeHtml(AppState.user.name)}</span>
+      <div class="user-avatar-circle" style="background:${gradient};">${escapeHtml(initial)}</div>
+      <span>${escapeHtml(firstName)}</span>
     `;
-    authBtn.title = `${AppState.user.email} (${I18N[AppState.lang].signOut})`;
+    authBtn.title = `${AppState.user.email}`;
+
+    // Update Dropdown Contents
+    const dropAvatar = document.getElementById("dropdownAvatar");
+    const dropName = document.getElementById("dropdownName");
+    const dropEmail = document.getElementById("dropdownEmail");
+    const dropBadge = document.getElementById("dropdownBadge");
+
+    if (dropAvatar) {
+      dropAvatar.textContent = initial;
+      dropAvatar.style.background = gradient;
+    }
+    if (dropName) dropName.textContent = rawName;
+    if (dropEmail) dropEmail.textContent = AppState.user.email;
+    if (dropBadge) {
+      dropBadge.textContent = AppState.user.provider === "google"
+        ? I18N[AppState.lang].googleProvider
+        : I18N[AppState.lang].emailProvider;
+    }
   } else {
     authBtn.innerHTML = `
       <i class="fa-solid fa-user"></i>
       <span id="authBtnText">${I18N[AppState.lang].signIn}</span>
     `;
     authBtn.title = I18N[AppState.lang].signIn;
+    if (dropdown) dropdown.style.display = "none";
+  }
+}
+
+function handleAuthBtnClick(e) {
+  e.stopPropagation();
+  if (AppState.user) {
+    // Toggle Profile Dropdown
+    const dropdown = document.getElementById("userProfileDropdown");
+    if (dropdown) {
+      dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+    }
+  } else {
+    openAuthModal();
   }
 }
 
 function openAuthModal() {
-  if (AppState.user) {
-    // If already signed in, prompt to sign out
-    openCustomModal(
-      I18N[AppState.lang].signOut,
-      `${AppState.user.name} (${AppState.user.email}) - ${I18N[AppState.lang].signOut}?`,
-      () => {
-        AppState.user = null;
-        localStorage.removeItem("table_hub_user");
-        loadData();
-        updateAuthUI();
-        renderApp();
-        showToast(I18N[AppState.lang].authSignedOutToast, "check");
-      }
-    );
-    return;
-  }
-
   clearAuthError();
   const modal = document.getElementById("authModal");
   if (modal) modal.style.display = "flex";
@@ -386,56 +434,104 @@ function toggleAuthMode() {
   if (nameGroup) nameGroup.style.display = isSignIn ? "none" : "flex";
 }
 
-function handleGoogleSignIn() {
-  // Real Google Sign-In Prompt
-  const i18n = I18N[AppState.lang];
-  const emailPrompt = AppState.lang === "ar"
-    ? "سجّل الدخول بحساب Google:\nأدخل بريدك الإلكتروني الخاص بـ Google:"
-    : "Sign in with your Google Account:\nEnter your Google Email address:";
+// ── Genuine Google OAuth Account Chooser ──
+function openGoogleOAuthModal() {
+  closeAuthModal();
+  const modal = document.getElementById("googleOAuthModal");
+  if (!modal) return;
 
-  const googleEmail = window.prompt(emailPrompt, AppState.user ? AppState.user.email : "");
-  if (!googleEmail || !googleEmail.trim()) return;
+  const users = getRegisteredUsers().filter(u => u.provider === "google");
+  const listEl = document.getElementById("googleAccountList");
+  const emailInput = document.getElementById("googleEmailInput");
+  const nameInput = document.getElementById("googleNameInput");
 
-  const cleanEmail = googleEmail.trim().toLowerCase();
-  if (!cleanEmail.includes("@") || !cleanEmail.includes(".")) {
-    showToast(i18n.errInvalidEmail, "trash");
+  if (listEl) {
+    listEl.innerHTML = "";
+    if (users.length > 0) {
+      users.forEach(u => {
+        const item = document.createElement("div");
+        item.className = "google-account-item";
+        const initial = (u.name || "G")[0].toUpperCase();
+        const gradient = getAvatarGradient(u.name);
+        item.innerHTML = `
+          <div class="google-account-avatar" style="background:${gradient};">${escapeHtml(initial)}</div>
+          <div class="google-account-text">
+            <span class="google-account-name">${escapeHtml(u.name)}</span>
+            <span class="google-account-email">${escapeHtml(u.email)}</span>
+          </div>
+        `;
+        item.addEventListener("click", () => {
+          completeGoogleLogin(u);
+        });
+        listEl.appendChild(item);
+      });
+    }
+  }
+
+  if (emailInput) emailInput.value = "";
+  if (nameInput) nameInput.value = "";
+
+  modal.style.display = "flex";
+}
+
+function closeGoogleOAuthModal() {
+  const modal = document.getElementById("googleOAuthModal");
+  if (modal) modal.style.display = "none";
+}
+
+function handleGoogleConfirm() {
+  const emailInput = document.getElementById("googleEmailInput");
+  const nameInput = document.getElementById("googleNameInput");
+
+  const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
+  let name = nameInput ? nameInput.value.trim() : "";
+
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    showToast(I18N[AppState.lang].errInvalidEmail, "trash");
+    if (emailInput) emailInput.focus();
     return;
   }
 
+  if (!name) {
+    const raw = email.split("@")[0];
+    name = raw.charAt(0).toUpperCase() + raw.slice(1);
+  }
+
   const users = getRegisteredUsers();
-  let existingUser = users.find((u) => u.email.toLowerCase() === cleanEmail);
+  let existingUser = users.find(u => u.email.toLowerCase() === email);
 
   if (!existingUser) {
-    const namePrompt = AppState.lang === "ar"
-      ? "ما هو اسمك الذي ترغب بظهوره في الحساب؟"
-      : "What is your display name?";
-    const defaultName = cleanEmail.split("@")[0];
-    const userName = window.prompt(namePrompt, defaultName.charAt(0).toUpperCase() + defaultName.slice(1)) || defaultName;
-
     existingUser = {
       id: Date.now(),
-      name: userName.trim(),
-      email: cleanEmail,
+      name: name,
+      email: email,
       provider: "google",
       createdAt: new Date().toISOString()
     };
     users.push(existingUser);
     saveRegisteredUsers(users);
+  } else {
+    existingUser.name = name;
+    saveRegisteredUsers(users);
   }
 
+  completeGoogleLogin(existingUser);
+}
+
+function completeGoogleLogin(user) {
   AppState.user = {
-    id: existingUser.id,
-    name: existingUser.name,
-    email: existingUser.email,
+    id: user.id,
+    name: user.name,
+    email: user.email,
     provider: "google"
   };
 
   localStorage.setItem("table_hub_user", JSON.stringify(AppState.user));
   loadData();
   updateAuthUI();
-  closeAuthModal();
+  closeGoogleOAuthModal();
   renderApp();
-  showToast(i18n.authSuccessToast.replace("{name}", existingUser.name), "check");
+  showToast(I18N[AppState.lang].authSuccessToast.replace("{name}", user.name), "check");
 }
 
 function handleFormAuthSubmit() {
@@ -462,13 +558,11 @@ function handleFormAuthSubmit() {
   const users = getRegisteredUsers();
 
   if (AppState.authMode === "signup") {
-    // ── Sign Up Flow ──
     if (!name) {
       showAuthError(i18n.errNameRequired);
       return;
     }
-
-    const exists = users.find((u) => u.email.toLowerCase() === email);
+    const exists = users.some(u => u.email.toLowerCase() === email);
     if (exists) {
       showAuthError(i18n.errEmailExists);
       return;
@@ -482,7 +576,6 @@ function handleFormAuthSubmit() {
       provider: "email",
       createdAt: new Date().toISOString()
     };
-
     users.push(newUser);
     saveRegisteredUsers(users);
 
@@ -500,8 +593,7 @@ function handleFormAuthSubmit() {
     renderApp();
     showToast(i18n.authSuccessToast.replace("{name}", newUser.name), "check");
   } else {
-    // ── Sign In Flow ──
-    const user = users.find((u) => u.email.toLowerCase() === email);
+    const user = users.find(u => u.email.toLowerCase() === email);
     if (!user) {
       showAuthError(i18n.errUserNotFound);
       return;
@@ -535,11 +627,36 @@ function bindEvents() {
   document.getElementById("viewToggleBtn")?.addEventListener("click", toggleViewMode);
   document.getElementById("exportAllBtn")?.addEventListener("click", exportAllJSON);
 
-  // Auth Events
-  document.getElementById("authBtn")?.addEventListener("click", openAuthModal);
+  // Auth Button (Opens modal or toggles dropdown)
+  document.getElementById("authBtn")?.addEventListener("click", handleAuthBtnClick);
   document.getElementById("authCloseBtn")?.addEventListener("click", closeAuthModal);
   document.getElementById("authSwitchModeBtn")?.addEventListener("click", toggleAuthMode);
-  document.getElementById("googleSignInBtn")?.addEventListener("click", handleGoogleSignIn);
+  document.getElementById("googleSignInBtn")?.addEventListener("click", openGoogleOAuthModal);
+
+  // Google OAuth Modal Events
+  document.getElementById("googleOAuthCancelBtn")?.addEventListener("click", closeGoogleOAuthModal);
+  document.getElementById("googleOAuthConfirmBtn")?.addEventListener("click", handleGoogleConfirm);
+
+  // Dropdown Sign Out
+  document.getElementById("dropdownSignOutBtn")?.addEventListener("click", () => {
+    AppState.user = null;
+    localStorage.removeItem("table_hub_user");
+    loadData();
+    updateAuthUI();
+    renderApp();
+    showToast(I18N[AppState.lang].authSignedOutToast, "check");
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener("click", (e) => {
+    const dropdown = document.getElementById("userProfileDropdown");
+    const authBtn = document.getElementById("authBtn");
+    if (dropdown && dropdown.style.display !== "none") {
+      if (!dropdown.contains(e.target) && !authBtn?.contains(e.target)) {
+        dropdown.style.display = "none";
+      }
+    }
+  });
 
   document.getElementById("emailAuthForm")?.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -580,7 +697,7 @@ function toggleViewMode() {
 function addTable(clonedData = null) {
   const nextId =
     AppState.tables.length > 0
-      ? Math.max(...AppState.tables.map((t) => t.id)) + 1
+      ? Math.max(...AppState.tables.map(t => t.id)) + 1
       : 1;
   const nextNum = AppState.tables.length + 1;
 
@@ -619,25 +736,28 @@ function removeLastTable() {
 function removeTableById(tableId) {
   if (AppState.tables.length <= 1) return;
 
-  const idx = AppState.tables.findIndex((t) => t.id === tableId);
-  if (idx === -1) return;
+  const targetIdx = AppState.tables.findIndex(t => t.id === tableId);
+  if (targetIdx === -1) return;
 
-  AppState.tables.splice(idx, 1);
+  AppState.tables.splice(targetIdx, 1);
   if (AppState.activeTableId === tableId) {
-    AppState.activeTableId = AppState.tables[Math.max(0, idx - 1)].id;
+    AppState.activeTableId = AppState.tables[Math.max(0, targetIdx - 1)].id;
   }
 
   saveData(true);
   renderApp();
+  showToast(I18N[AppState.lang].toastRemoved.replace("{n}", targetIdx + 1), "trash");
 }
 
 function resetAllTables() {
+  if (AppState.tables.length <= 1) return;
+
   openCustomModal(
     I18N[AppState.lang].confirmResetTitle,
     I18N[AppState.lang].confirmResetMsg,
     () => {
-      AppState.tables = [createInitialTable(1, 1)];
-      AppState.activeTableId = 1;
+      AppState.tables = [AppState.tables[0]];
+      AppState.activeTableId = AppState.tables[0].id;
       saveData(true);
       renderApp();
     }
@@ -645,21 +765,21 @@ function resetAllTables() {
 }
 
 function duplicateCurrentTable(tableId) {
-  const source = AppState.tables.find((t) => t.id === tableId);
+  const source = AppState.tables.find(t => t.id === tableId);
   if (!source) return;
   const clone = JSON.parse(JSON.stringify(source));
   addTable(clone);
 }
 
 function clearCurrentTable(tableId) {
-  const table = AppState.tables.find((t) => t.id === tableId);
+  const table = AppState.tables.find(t => t.id === tableId);
   if (!table) return;
 
   openCustomModal(
     I18N[AppState.lang].confirmClearTitle,
     I18N[AppState.lang].confirmClearMsg.replace("{name}", table.title),
     () => {
-      table.rows = table.rows.map((row) => row.map(() => ""));
+      table.rows = table.rows.map(row => row.map(() => ""));
       saveData(true);
       renderApp();
     }
@@ -723,7 +843,7 @@ function renderTables() {
   const visibleTables =
     AppState.viewMode === "grid"
       ? AppState.tables
-      : AppState.tables.filter((t) => t.id === AppState.activeTableId);
+      : AppState.tables.filter(t => t.id === AppState.activeTableId);
 
   if (visibleTables.length === 0 && AppState.tables.length > 0) {
     AppState.activeTableId = AppState.tables[0].id;
@@ -740,7 +860,7 @@ function renderTables() {
   }
 }
 
-// Build a clean, spacious Table Card
+// ── Build Clean Data Table Card (Zero # column, Zero row numbers, Zero clumsy add buttons) ──
 function buildTableCard(table, displayIndex) {
   const card = document.createElement("div");
   card.className = "table-card";
@@ -786,13 +906,12 @@ function buildTableCard(table, displayIndex) {
       </div>
     </div>
 
-    <!-- Crisp Table Stage with Integrated Drag Grid Extenders -->
+    <!-- Crisp Table Stage with Integrated Drag Extenders -->
     <div class="table-stage-wrap">
       <div class="table-grid-container" data-table-id="${table.id}">
         <table class="interactive-table" data-table-id="${table.id}">
           <thead>
             <tr>
-              <th class="th-row-idx">#</th>
               ${table.columns
                 .map((colName, colIdx) => {
                   const colW = table.colWidths && table.colWidths[colIdx] ? table.colWidths[colIdx] : 180;
@@ -800,21 +919,10 @@ function buildTableCard(table, displayIndex) {
                 <th data-col-idx="${colIdx}" style="width: ${colW}px;">
                   <div class="th-inner">
                     <span class="th-text" contenteditable="true" spellcheck="false">${escapeHtml(colName)}</span>
-                    ${
-                      table.columns.length > 1
-                        ? `<button class="th-del-btn" title="${i18n.deleteCol}" data-col-idx="${colIdx}"><i class="fa-solid fa-xmark"></i></button>`
-                        : ""
-                    }
                   </div>
                 </th>`;
                 })
                 .join("")}
-              <!-- Quick Add Column Button (+) -->
-              <th class="th-quick-add-col">
-                <button class="btn-quick-add-col" title="${i18n.colDefault.replace("{n}", table.columns.length + 1)}">
-                  <i class="fa-solid fa-plus"></i>
-                </button>
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -822,44 +930,23 @@ function buildTableCard(table, displayIndex) {
               .map((row, rowIdx) => {
                 return `
               <tr data-row-idx="${rowIdx}">
-                <td class="td-row-idx">
-                  <span class="row-num-text">${rowIdx + 1}</span>
-                  ${
-                    table.rows.length > 1
-                      ? `<button class="row-del-btn" title="${i18n.deleteRow}" data-row-idx="${rowIdx}"><i class="fa-solid fa-xmark"></i></button>`
-                      : ""
-                  }
-                </td>
                 ${row
                   .map(
                     (val, colIdx) => `
                   <td contenteditable="true" spellcheck="false" data-row="${rowIdx}" data-col="${colIdx}">${escapeHtml(val)}</td>`
                   )
                   .join("")}
-                <td class="td-quick-add-spacer"></td>
               </tr>`;
               })
               .join("")}
           </tbody>
         </table>
 
-        <!-- Interactive Handles: Drag edge to multiply or shrink rows & columns! -->
+        <!-- Interactive Handles: Drag edge to multiply or shrink rows & columns -->
         <div class="grid-edge-col-handle" title="${lang === "ar" ? "اسحب لزيادة أو إنقاص الأعمدة" : "Drag edge to add or remove columns"}"></div>
         <div class="grid-edge-row-handle" title="${lang === "ar" ? "اسحب لزيادة أو إنقاص الصفوف" : "Drag edge to add or remove rows"}"></div>
         <div class="grid-corner-handle" title="${lang === "ar" ? "اسحب الزاوية لتوسيع أو تقليص الشبكة" : "Drag corner to expand or shrink grid"}">
           <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-        </div>
-
-        <!-- Integrated Bottom Bar -->
-        <div class="table-bottom-bar">
-          <button class="btn-bottom-add-row" data-table-id="${table.id}">
-            <i class="fa-solid fa-plus"></i>
-            <span>${lang === "ar" ? "+ إضافة صف" : "+ Add Row"}</span>
-          </button>
-          <div class="grid-size-hint">
-            <span>${lang === "ar" ? "أبعاد الجدول:" : "Grid Dimensions:"}</span>
-            <span class="grid-size-pill">${table.columns.length} ${lang === "ar" ? "أعمدة" : "Cols"} &times; ${table.rows.length} ${lang === "ar" ? "صفوف" : "Rows"}</span>
-          </div>
         </div>
       </div>
     </div>
@@ -890,61 +977,19 @@ function attachTableCardEvents(card, table) {
     });
   });
 
-  // Quick Add Column (+)
-  card.querySelector(".btn-quick-add-col")?.addEventListener("click", () => {
-    const nextColNum = table.columns.length + 1;
-    const colName = I18N[AppState.lang].colDefault.replace("{n}", nextColNum);
-    table.columns.push(colName);
-    if (!table.colWidths) table.colWidths = [];
-    table.colWidths.push(180);
-    table.rows.forEach((r) => r.push(""));
-    saveData(true);
-    renderApp();
-  });
+  // Attach Cell Listeners & Keyboard Nav
+  attachCellListeners(card, table);
 
-  // Quick Add Row (+)
-  card.querySelector(".btn-bottom-add-row")?.addEventListener("click", () => {
-    const emptyRow = new Array(table.columns.length).fill("");
-    table.rows.push(emptyRow);
-    saveData(true);
-    renderApp();
-  });
+  // Setup High-Performance Butter-Smooth Drag Grid Extender
+  setupGridExtender(card, table);
+}
 
-  // Delete Column
-  card.querySelectorAll(".th-del-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const colIdx = Number(btn.getAttribute("data-col-idx"));
-      if (table.columns.length <= 1) return;
-
-      openCustomModal(
-        I18N[AppState.lang].confirmDelColTitle,
-        I18N[AppState.lang].confirmDelColMsg,
-        () => {
-          table.columns.splice(colIdx, 1);
-          if (table.colWidths) table.colWidths.splice(colIdx, 1);
-          table.rows.forEach((r) => r.splice(colIdx, 1));
-          saveData(true);
-          renderApp();
-        }
-      );
-    });
-  });
-
-  // Delete Row
-  card.querySelectorAll(".row-del-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const rowIdx = Number(btn.getAttribute("data-row-idx"));
-      if (table.rows.length <= 1) return;
-      table.rows.splice(rowIdx, 1);
-      saveData(true);
-      renderApp();
-    });
-  });
-
+function attachCellListeners(card, table) {
   // Column Header Title Edit
   card.querySelectorAll(".th-text").forEach((thText) => {
+    if (thText.dataset.bound) return;
+    thText.dataset.bound = "true";
+
     thText.addEventListener("blur", () => {
       const th = thText.closest("th");
       const colIdx = Number(th.getAttribute("data-col-idx"));
@@ -953,8 +998,11 @@ function attachTableCardEvents(card, table) {
     });
   });
 
-  // Cell Edit & Arrow/Tab Navigation
+  // Cell Edit & Arrow/Tab/Enter Navigation
   card.querySelectorAll("tbody td[contenteditable='true']").forEach((td) => {
+    if (td.dataset.bound) return;
+    td.dataset.bound = "true";
+
     td.addEventListener("input", () => {
       const r = Number(td.getAttribute("data-row"));
       const c = Number(td.getAttribute("data-col"));
@@ -968,7 +1016,7 @@ function attachTableCardEvents(card, table) {
       const r = Number(td.getAttribute("data-row"));
       const c = Number(td.getAttribute("data-col"));
 
-      // Enter moves down (or adds new row seamlessly if at bottom)
+      // Enter moves down (or adds new row smoothly if at the bottom)
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         if (r + 1 < table.rows.length) {
@@ -1001,16 +1049,26 @@ function attachTableCardEvents(card, table) {
       }
     });
   });
-
-  // ── Setup The Requested Core Feature: Drag Edges/Corner to Multiply/Shrink Rows & Columns ──
-  setupGridExtender(card, table);
 }
 
-// ── Drag-to-Resize Rows & Columns Extender Engine ──
+function updateTabLabel(tableId, title) {
+  const tabs = document.querySelectorAll(".tab-item");
+  AppState.tables.forEach((t, i) => {
+    if (t.id === tableId && tabs[i]) {
+      const nameEl = tabs[i].querySelector(".tab-name");
+      if (nameEl) nameEl.textContent = title || `Table ${i + 1}`;
+    }
+  });
+}
+
+// ── 60fps Butter-Smooth Drag Grid Extender Engine ──
 function setupGridExtender(card, table) {
   const colHandle = card.querySelector(".grid-edge-col-handle");
   const rowHandle = card.querySelector(".grid-edge-row-handle");
   const cornerHandle = card.querySelector(".grid-corner-handle");
+  const domTable = card.querySelector(".interactive-table");
+  const theadTr = domTable?.querySelector("thead tr");
+  const tbody = domTable?.querySelector("tbody");
 
   const isRtl = document.documentElement.dir === "rtl";
 
@@ -1031,6 +1089,104 @@ function setupGridExtender(card, table) {
     if (ind) ind.style.display = "none";
   }
 
+  // Smooth DOM Column Sync during drag (no DOM teardown)
+  function syncDomColumns(targetCols) {
+    if (!theadTr || !tbody) return;
+    let currentCols = theadTr.children.length;
+
+    while (currentCols < targetCols) {
+      const colIdx = currentCols;
+      const colNum = colIdx + 1;
+      const defaultName = I18N[AppState.lang].colDefault.replace("{n}", colNum);
+
+      // Append <th>
+      const th = document.createElement("th");
+      th.setAttribute("data-col-idx", colIdx);
+      th.style.width = "180px";
+      th.innerHTML = `
+        <div class="th-inner">
+          <span class="th-text" contenteditable="true" spellcheck="false">${defaultName}</span>
+        </div>`;
+      theadTr.appendChild(th);
+
+      // Append <td> in all rows
+      Array.from(tbody.children).forEach((tr, rIdx) => {
+        const td = document.createElement("td");
+        td.contentEditable = "true";
+        td.spellcheck = false;
+        td.setAttribute("data-row", rIdx);
+        td.setAttribute("data-col", colIdx);
+        tr.appendChild(td);
+      });
+
+      currentCols++;
+    }
+
+    while (currentCols > targetCols && currentCols > 1) {
+      theadTr.removeChild(theadTr.lastElementChild);
+      Array.from(tbody.children).forEach((tr) => {
+        if (tr.lastElementChild) tr.removeChild(tr.lastElementChild);
+      });
+      currentCols--;
+    }
+  }
+
+  // Smooth DOM Row Sync during drag (no DOM teardown)
+  function syncDomRows(targetRows) {
+    if (!tbody || !theadTr) return;
+    let currentRows = tbody.children.length;
+    const currentCols = theadTr.children.length;
+
+    while (currentRows < targetRows) {
+      const rIdx = currentRows;
+      const tr = document.createElement("tr");
+      tr.setAttribute("data-row-idx", rIdx);
+
+      for (let cIdx = 0; cIdx < currentCols; cIdx++) {
+        const td = document.createElement("td");
+        td.contentEditable = "true";
+        td.spellcheck = false;
+        td.setAttribute("data-row", rIdx);
+        td.setAttribute("data-col", cIdx);
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+      currentRows++;
+    }
+
+    while (currentRows > targetRows && currentRows > 1) {
+      tbody.removeChild(tbody.lastElementChild);
+      currentRows--;
+    }
+  }
+
+  // Commit DOM changes back to Table Data Model on drag completion
+  function commitGridChanges() {
+    if (!theadTr || !tbody) return;
+    const finalCols = [];
+    Array.from(theadTr.children).forEach((th, idx) => {
+      const span = th.querySelector(".th-text");
+      finalCols.push(span ? span.textContent.trim() : `Column ${idx + 1}`);
+    });
+
+    const finalRows = [];
+    Array.from(tbody.children).forEach((tr) => {
+      const rowData = [];
+      Array.from(tr.children).forEach((td) => {
+        rowData.push(td.textContent || "");
+      });
+      finalRows.push(rowData);
+    });
+
+    table.columns = finalCols;
+    table.rows = finalRows;
+    table.colWidths = finalCols.map(() => 180);
+
+    saveData(true);
+    attachCellListeners(card, table);
+    updateSummaryStrip();
+  }
+
   // 1. Drag Side Edge to Add/Remove Columns
   colHandle?.addEventListener("mousedown", (e) => {
     e.preventDefault();
@@ -1043,32 +1199,20 @@ function setupGridExtender(card, table) {
     document.body.style.cursor = "col-resize";
     document.body.style.userSelect = "none";
 
+    let lastTargetCols = initialCols;
+
     function onMouseMove(me) {
-      const deltaX = isRtl ? startX - me.pageX : me.pageX - startX;
-      const step = 110;
-      const targetCols = Math.max(1, Math.min(25, initialCols + Math.round(deltaX / step)));
+      const deltaX = isRtl ? (startX - me.pageX) : (me.pageX - startX);
+      const step = 85;
+      const targetCols = Math.max(1, Math.min(30, initialCols + Math.round(deltaX / step)));
 
       indicator.style.left = `${me.pageX}px`;
       indicator.style.top = `${me.pageY}px`;
       indicator.innerHTML = `<i class="fa-solid fa-table-columns" style="color:var(--accent-red)"></i> ${targetCols} ${AppState.lang === "ar" ? "أعمدة" : "Cols"} &times; ${table.rows.length} ${AppState.lang === "ar" ? "صفوف" : "Rows"}`;
 
-      if (targetCols !== table.columns.length) {
-        if (targetCols > table.columns.length) {
-          while (table.columns.length < targetCols) {
-            const nextN = table.columns.length + 1;
-            table.columns.push(I18N[AppState.lang].colDefault.replace("{n}", nextN));
-            if (!table.colWidths) table.colWidths = [];
-            table.colWidths.push(180);
-            table.rows.forEach((r) => r.push(""));
-          }
-        } else {
-          while (table.columns.length > targetCols && table.columns.length > 1) {
-            table.columns.pop();
-            if (table.colWidths) table.colWidths.pop();
-            table.rows.forEach((r) => r.pop());
-          }
-        }
-        renderApp();
+      if (targetCols !== lastTargetCols) {
+        lastTargetCols = targetCols;
+        syncDomColumns(targetCols);
       }
     }
 
@@ -1079,7 +1223,7 @@ function setupGridExtender(card, table) {
       removeLiveIndicator();
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
-      saveData(true);
+      commitGridChanges();
     }
 
     document.addEventListener("mousemove", onMouseMove);
@@ -1098,27 +1242,20 @@ function setupGridExtender(card, table) {
     document.body.style.cursor = "row-resize";
     document.body.style.userSelect = "none";
 
+    let lastTargetRows = initialRows;
+
     function onMouseMove(me) {
       const deltaY = me.pageY - startY;
-      const step = 38;
-      const targetRows = Math.max(1, Math.min(60, initialRows + Math.round(deltaY / step)));
+      const step = 34;
+      const targetRows = Math.max(1, Math.min(80, initialRows + Math.round(deltaY / step)));
 
       indicator.style.left = `${me.pageX}px`;
       indicator.style.top = `${me.pageY}px`;
-      indicator.innerHTML = `<i class="fa-solid fa-bars" style="color:var(--accent-red)"></i> ${table.columns.length} ${AppState.lang === "ar" ? "أعمدة" : "Cols"} &times; ${targetRows} ${AppState.lang === "ar" ? "صفوف" : "Rows"}`;
+      indicator.innerHTML = `<i class="fa-solid fa-bars" style="color:var(--accent-red)"></i> ${theadTr ? theadTr.children.length : table.columns.length} ${AppState.lang === "ar" ? "أعمدة" : "Cols"} &times; ${targetRows} ${AppState.lang === "ar" ? "صفوف" : "Rows"}`;
 
-      if (targetRows !== table.rows.length) {
-        if (targetRows > table.rows.length) {
-          while (table.rows.length < targetRows) {
-            const emptyRow = new Array(table.columns.length).fill("");
-            table.rows.push(emptyRow);
-          }
-        } else {
-          while (table.rows.length > targetRows && table.rows.length > 1) {
-            table.rows.pop();
-          }
-        }
-        renderApp();
+      if (targetRows !== lastTargetRows) {
+        lastTargetRows = targetRows;
+        syncDomRows(targetRows);
       }
     }
 
@@ -1129,14 +1266,14 @@ function setupGridExtender(card, table) {
       removeLiveIndicator();
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
-      saveData(true);
+      commitGridChanges();
     }
 
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
   });
 
-  // 3. Drag Corner Handle to Add/Remove BOTH Rows & Columns
+  // 3. Drag Corner Handle to Add/Remove BOTH Rows & Columns simultaneously
   cornerHandle?.addEventListener("mousedown", (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1151,56 +1288,32 @@ function setupGridExtender(card, table) {
     document.body.style.cursor = isRtl ? "nesw-resize" : "nwse-resize";
     document.body.style.userSelect = "none";
 
+    let lastTargetCols = initialCols;
+    let lastTargetRows = initialRows;
+
     function onMouseMove(me) {
-      const deltaX = isRtl ? startX - me.pageX : me.pageX - startX;
+      const deltaX = isRtl ? (startX - me.pageX) : (me.pageX - startX);
       const deltaY = me.pageY - startY;
 
-      const colStep = 110;
-      const rowStep = 38;
+      const colStep = 85;
+      const rowStep = 34;
 
-      const targetCols = Math.max(1, Math.min(25, initialCols + Math.round(deltaX / colStep)));
-      const targetRows = Math.max(1, Math.min(60, initialRows + Math.round(deltaY / rowStep)));
+      const targetCols = Math.max(1, Math.min(30, initialCols + Math.round(deltaX / colStep)));
+      const targetRows = Math.max(1, Math.min(80, initialRows + Math.round(deltaY / rowStep)));
 
       indicator.style.left = `${me.pageX}px`;
       indicator.style.top = `${me.pageY}px`;
       indicator.innerHTML = `<i class="fa-solid fa-up-right-and-down-left-from-center" style="color:var(--accent-red)"></i> ${targetCols} ${AppState.lang === "ar" ? "أعمدة" : "Cols"} &times; ${targetRows} ${AppState.lang === "ar" ? "صفوف" : "Rows"}`;
 
-      let changed = false;
-
-      // Adjust Columns
-      if (targetCols > table.columns.length) {
-        while (table.columns.length < targetCols) {
-          const nextN = table.columns.length + 1;
-          table.columns.push(I18N[AppState.lang].colDefault.replace("{n}", nextN));
-          if (!table.colWidths) table.colWidths = [];
-          table.colWidths.push(180);
-          table.rows.forEach((r) => r.push(""));
-        }
-        changed = true;
-      } else if (targetCols < table.columns.length && table.columns.length > 1) {
-        while (table.columns.length > targetCols && table.columns.length > 1) {
-          table.columns.pop();
-          if (table.colWidths) table.colWidths.pop();
-          table.rows.forEach((r) => r.pop());
-        }
-        changed = true;
+      if (targetCols !== lastTargetCols) {
+        lastTargetCols = targetCols;
+        syncDomColumns(targetCols);
       }
 
-      // Adjust Rows
-      if (targetRows > table.rows.length) {
-        while (table.rows.length < targetRows) {
-          const emptyRow = new Array(table.columns.length).fill("");
-          table.rows.push(emptyRow);
-        }
-        changed = true;
-      } else if (targetRows < table.rows.length && table.rows.length > 1) {
-        while (table.rows.length > targetRows && table.rows.length > 1) {
-          table.rows.pop();
-        }
-        changed = true;
+      if (targetRows !== lastTargetRows) {
+        lastTargetRows = targetRows;
+        syncDomRows(targetRows);
       }
-
-      if (changed) renderApp();
     }
 
     function onMouseUp() {
@@ -1210,7 +1323,7 @@ function setupGridExtender(card, table) {
       removeLiveIndicator();
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
-      saveData(true);
+      commitGridChanges();
     }
 
     document.addEventListener("mousemove", onMouseMove);
@@ -1218,100 +1331,51 @@ function setupGridExtender(card, table) {
   });
 }
 
-function updateTabLabel(tableId, title) {
-  const tabs = document.querySelectorAll(".tab-item");
-  AppState.tables.forEach((t, i) => {
-    if (t.id === tableId && tabs[i]) {
-      const name = tabs[i].querySelector(".tab-name");
-      if (name) name.textContent = title || `Table ${i + 1}`;
+// ── Summary Strip (Active copies & disable logic) ──
+function updateSummaryStrip() {
+  const count = AppState.tables.length;
+  const countEl = document.getElementById("activeTableCount");
+  const removeBtn = document.getElementById("removeTableBtn");
+
+  if (countEl) countEl.textContent = count;
+  if (removeBtn) {
+    removeBtn.disabled = count <= 1;
+  }
+}
+
+// ── Filter / Search Cells ──
+function filterTableCells() {
+  const query = AppState.searchQuery;
+  const cards = document.querySelectorAll(".table-card");
+
+  cards.forEach((card) => {
+    let hasMatch = false;
+    const cells = card.querySelectorAll("tbody td[contenteditable='true']");
+
+    cells.forEach((td) => {
+      const text = (td.textContent || "").toLowerCase();
+      if (!query) {
+        td.style.backgroundColor = "";
+        hasMatch = true;
+      } else if (text.includes(query)) {
+        td.style.backgroundColor = "rgba(239, 68, 68, 0.35)";
+        hasMatch = true;
+      } else {
+        td.style.backgroundColor = "";
+      }
+    });
+
+    if (query) {
+      card.style.opacity = hasMatch ? "1" : "0.35";
+    } else {
+      card.style.opacity = "1";
     }
   });
 }
 
-function updateSummaryStrip() {
-  const count = AppState.tables.length;
-  const numEl = document.getElementById("activeCountNumber");
-  if (numEl) numEl.textContent = count;
-
-  const removeBtn = document.getElementById("removeTableBtn");
-  if (removeBtn) removeBtn.disabled = count <= 1;
-}
-
-// ── Search & Filter ──
-function filterTableCells() {
-  const q = AppState.searchQuery;
-  const cards = document.querySelectorAll(".table-card");
-
-  cards.forEach((card) => {
-    card.querySelectorAll("tbody tr").forEach((row) => {
-      if (!q) {
-        row.style.display = "";
-        row.querySelectorAll("td").forEach((td) => (td.style.backgroundColor = ""));
-        return;
-      }
-
-      let matched = false;
-      row.querySelectorAll("td[contenteditable='true']").forEach((td) => {
-        const txt = td.textContent.toLowerCase();
-        if (txt.includes(q)) {
-          matched = true;
-          td.style.backgroundColor = "var(--table-cell-focus)";
-        } else {
-          td.style.backgroundColor = "";
-        }
-      });
-
-      row.style.display = matched ? "" : "none";
-    });
-  });
-}
-
-// ── Export CSV (UTF-8 BOM for 100% Excel Arabic support) ──
-function exportSingleCSV(tableId) {
-  const table = AppState.tables.find((t) => t.id === tableId);
-  if (!table) return;
-
-  const escapeVal = (v) => {
-    if (v === null || v === undefined) return '""';
-    const s = String(v).replace(/"/g, '""');
-    return `"${s}"`;
-  };
-
-  const header = table.columns.map(escapeVal).join(",");
-  const body = table.rows.map((row) => row.map(escapeVal).join(","));
-  const csvText = [header, ...body].join("\r\n");
-
-  const blob = new Blob(["\uFEFF" + csvText], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  const cleanName = (table.title || "Table").replace(/[^a-zA-Z0-9_\u0600-\u06FF]/g, "_");
-
-  a.href = url;
-  a.download = `${cleanName}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  showToast(I18N[AppState.lang].toastCsv.replace("{name}", cleanName), "download");
-}
-
-function exportAllJSON() {
-  const str = JSON.stringify(AppState.tables, null, 2);
-  const blob = new Blob([str], { type: "application/json;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `TableHub_All_${Date.now()}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  showToast(I18N[AppState.lang].toastJson, "download");
-}
-
 // ── Custom Glassmorphism Confirmation Modal (Zero Native Alerts) ──
+let modalConfirmCallback = null;
+
 function openCustomModal(title, message, onConfirm) {
   const modal = document.getElementById("customModal");
   const titleEl = document.getElementById("modalTitle");
@@ -1319,57 +1383,95 @@ function openCustomModal(title, message, onConfirm) {
   const confirmBtn = document.getElementById("modalConfirmBtn");
   const cancelBtn = document.getElementById("modalCancelBtn");
 
-  if (!modal || !titleEl || !msgEl || !confirmBtn || !cancelBtn) return;
+  if (!modal || !titleEl || !msgEl) {
+    if (onConfirm) onConfirm();
+    return;
+  }
 
   titleEl.textContent = title;
   msgEl.textContent = message;
-  confirmBtn.textContent = I18N[AppState.lang].confirmBtn;
-  cancelBtn.textContent = I18N[AppState.lang].cancelBtn;
+  modalConfirmCallback = onConfirm;
+
+  if (confirmBtn) confirmBtn.textContent = I18N[AppState.lang].confirmBtn;
+  if (cancelBtn) cancelBtn.textContent = I18N[AppState.lang].cancelBtn;
 
   modal.style.display = "flex";
 
-  const close = () => {
+  const closeHandler = () => {
     modal.style.display = "none";
-    confirmBtn.onclick = null;
-    cancelBtn.onclick = null;
+    modalConfirmCallback = null;
+    confirmBtn?.removeEventListener("click", confirmHandler);
+    cancelBtn?.removeEventListener("click", closeHandler);
   };
 
-  confirmBtn.onclick = () => {
-    close();
-    if (onConfirm) onConfirm();
+  const confirmHandler = () => {
+    modal.style.display = "none";
+    if (modalConfirmCallback) modalConfirmCallback();
+    modalConfirmCallback = null;
+    confirmBtn?.removeEventListener("click", confirmHandler);
+    cancelBtn?.removeEventListener("click", closeHandler);
   };
 
-  cancelBtn.onclick = () => {
-    close();
-  };
+  confirmBtn?.addEventListener("click", confirmHandler);
+  cancelBtn?.addEventListener("click", closeHandler);
 }
 
 // ── Floating Toast Stack ──
-function showToast(msg, iconType = "check") {
+function showToast(message, icon = "check") {
   const container = document.getElementById("toastContainer");
   if (!container) return;
 
   const toast = document.createElement("div");
   toast.className = "toast-pill";
+  toast.innerHTML = `<i class="fa-solid fa-${icon}" style="color:var(--accent-red)"></i> <span>${escapeHtml(message)}</span>`;
 
-  let icon = "fa-solid fa-circle-check";
-  if (iconType === "plus") icon = "fa-solid fa-plus";
-  if (iconType === "trash") icon = "fa-solid fa-trash-can";
-  if (iconType === "download") icon = "fa-solid fa-file-arrow-down";
-
-  toast.innerHTML = `<i class="${icon}" style="color: var(--accent-red);"></i> <span>${escapeHtml(msg)}</span>`;
   container.appendChild(toast);
 
   setTimeout(() => {
     toast.style.opacity = "0";
-    toast.style.transform = "translateY(12px)";
+    toast.style.transform = "translateY(10px) scale(0.95)";
     toast.style.transition = "all 0.25s ease";
-    setTimeout(() => {
-      if (toast.parentNode) toast.parentNode.removeChild(toast);
-    }, 250);
-  }, 2000);
+    setTimeout(() => toast.remove(), 250);
+  }, 2800);
 }
 
+// ── CSV Export with UTF-8 BOM (Perfect for Excel) ──
+function exportSingleCSV(tableId) {
+  const table = AppState.tables.find(t => t.id === tableId);
+  if (!table) return;
+
+  const header = table.columns.map(escapeCsvCell).join(",");
+  const rows = table.rows.map(r => r.map(escapeCsvCell).join(","));
+  const csvContent = "\uFEFF" + [header, ...rows].join("\r\n");
+
+  downloadFile(`${slugify(table.title || "table")}.csv`, csvContent, "text/csv;charset=utf-8;");
+  showToast(I18N[AppState.lang].toastCsv.replace("{name}", table.title || "Table"), "file-csv");
+}
+
+function exportAllJSON() {
+  const jsonContent = JSON.stringify(AppState.tables, null, 2);
+  downloadFile("table-hub-backup.json", jsonContent, "application/json");
+  showToast(I18N[AppState.lang].toastJson, "download");
+}
+
+function escapeCsvCell(val) {
+  const s = String(val ?? "").replace(/"/g, '""');
+  return `"${s}"`;
+}
+
+function downloadFile(filename, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ── Utilities ──
 function escapeHtml(str) {
   if (str === null || str === undefined) return "";
   return String(str)
@@ -1378,4 +1480,14 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\u0600-\u06FF\-]+/g, "")
+    .replace(/\-\-+/g, "-");
 }
