@@ -434,9 +434,57 @@ function toggleAuthMode() {
   if (nameGroup) nameGroup.style.display = isSignIn ? "none" : "flex";
 }
 
+// ── Google OAuth Client Configuration ──
+// بمجرد وضع الـ Client ID هنا، ستفتح شاشة جوجل الرسمية المباشرة فوراً
+const GOOGLE_CLIENT_ID = "";
+
+function decodeJwtResponse(token) {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
+
+function handleGoogleCredentialResponse(response) {
+  const payload = decodeJwtResponse(response.credential);
+  if (payload && payload.email) {
+    const user = {
+      id: Date.now(),
+      name: payload.name || payload.email.split("@")[0],
+      email: payload.email,
+      provider: "google"
+    };
+    completeGoogleLogin(user);
+  }
+}
+
 // ── Genuine Google OAuth Account Chooser ──
 function openGoogleOAuthModal() {
   closeAuthModal();
+
+  // إذا تم توفير Client ID الحقيقي، يتم تشغيل نافذة جوجل الرسمية مباشرة
+  if (GOOGLE_CLIENT_ID && window.google && window.google.accounts && window.google.accounts.id) {
+    try {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredentialResponse
+      });
+      window.google.accounts.id.prompt();
+      return;
+    } catch (err) {
+      console.warn("Google Identity prompt fallback", err);
+    }
+  }
+
   const modal = document.getElementById("googleOAuthModal");
   if (!modal) return;
 
