@@ -749,10 +749,6 @@ function buildTableCard(table, displayIndex) {
   const lang = AppState.lang;
   const i18n = I18N[lang];
 
-  const boxStyle = [];
-  if (table.boxWidth) boxStyle.push(`width: ${table.boxWidth}`);
-  if (table.boxHeight) boxStyle.push(`height: ${table.boxHeight}`);
-
   card.innerHTML = `
     <!-- Card Header -->
     <div class="card-header">
@@ -790,54 +786,81 @@ function buildTableCard(table, displayIndex) {
       </div>
     </div>
 
-    <!-- Smooth Resizable Table Container (No glitchy native box) -->
-    <div class="table-resizable-wrap" style="${boxStyle.join("; ")}" data-table-id="${table.id}">
-      <table class="interactive-table" data-table-id="${table.id}">
-        <thead>
-          <tr>
-            ${table.columns
-              .map((colName, colIdx) => {
-                const colW = table.colWidths && table.colWidths[colIdx] ? table.colWidths[colIdx] : 180;
+    <!-- Crisp Table Stage with Integrated Drag Grid Extenders -->
+    <div class="table-stage-wrap">
+      <div class="table-grid-container" data-table-id="${table.id}">
+        <table class="interactive-table" data-table-id="${table.id}">
+          <thead>
+            <tr>
+              <th class="th-row-idx">#</th>
+              ${table.columns
+                .map((colName, colIdx) => {
+                  const colW = table.colWidths && table.colWidths[colIdx] ? table.colWidths[colIdx] : 180;
+                  return `
+                <th data-col-idx="${colIdx}" style="width: ${colW}px;">
+                  <div class="th-inner">
+                    <span class="th-text" contenteditable="true" spellcheck="false">${escapeHtml(colName)}</span>
+                    ${
+                      table.columns.length > 1
+                        ? `<button class="th-del-btn" title="${i18n.deleteCol}" data-col-idx="${colIdx}"><i class="fa-solid fa-xmark"></i></button>`
+                        : ""
+                    }
+                  </div>
+                </th>`;
+                })
+                .join("")}
+              <!-- Quick Add Column Button (+) -->
+              <th class="th-quick-add-col">
+                <button class="btn-quick-add-col" title="${i18n.colDefault.replace("{n}", table.columns.length + 1)}">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            ${table.rows
+              .map((row, rowIdx) => {
                 return `
-              <th data-col-idx="${colIdx}" style="width: ${colW}px;">
-                <div class="th-inner">
-                  <span class="th-text" contenteditable="true" spellcheck="false">${escapeHtml(colName)}</span>
+              <tr data-row-idx="${rowIdx}">
+                <td class="td-row-idx">
+                  <span class="row-num-text">${rowIdx + 1}</span>
                   ${
-                    table.columns.length > 1
-                      ? `<button class="th-del-btn" title="${i18n.deleteCol}" data-col-idx="${colIdx}"><i class="fa-solid fa-xmark"></i></button>`
+                    table.rows.length > 1
+                      ? `<button class="row-del-btn" title="${i18n.deleteRow}" data-row-idx="${rowIdx}"><i class="fa-solid fa-xmark"></i></button>`
                       : ""
                   }
-                </div>
-                <!-- Interactive Drag-to-Resize Column Handle -->
-                <div class="col-resize-handle" data-col-idx="${colIdx}"></div>
-              </th>`;
+                </td>
+                ${row
+                  .map(
+                    (val, colIdx) => `
+                  <td contenteditable="true" spellcheck="false" data-row="${rowIdx}" data-col="${colIdx}">${escapeHtml(val)}</td>`
+                  )
+                  .join("")}
+                <td class="td-quick-add-spacer"></td>
+              </tr>`;
               })
               .join("")}
-          </tr>
-        </thead>
-        <tbody>
-          ${table.rows
-            .map((row, rowIdx) => {
-              const rowH = table.rowHeights && table.rowHeights[rowIdx] ? `style="height: ${table.rowHeights[rowIdx]}px;"` : "";
-              return `
-            <tr data-row-idx="${rowIdx}" ${rowH}>
-              ${row
-                .map(
-                  (val, colIdx) => `
-                <td contenteditable="true" spellcheck="false" data-row="${rowIdx}" data-col="${colIdx}">${escapeHtml(val)}</td>`
-                )
-                .join("")}
-              <!-- Interactive Drag-to-Resize Row Handle -->
-              <div class="row-resize-handle" data-row-idx="${rowIdx}"></div>
-            </tr>`;
-            })
-            .join("")}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
 
-      <!-- Custom Sleek Corner Resize Grip (Butter-Smooth) -->
-      <div class="table-corner-grip" data-table-id="${table.id}" title="${i18n.hintResizeBox}">
-        <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+        <!-- Interactive Handles: Drag edge to multiply or shrink rows & columns! -->
+        <div class="grid-edge-col-handle" title="${lang === "ar" ? "اسحب لزيادة أو إنقاص الأعمدة" : "Drag edge to add or remove columns"}"></div>
+        <div class="grid-edge-row-handle" title="${lang === "ar" ? "اسحب لزيادة أو إنقاص الصفوف" : "Drag edge to add or remove rows"}"></div>
+        <div class="grid-corner-handle" title="${lang === "ar" ? "اسحب الزاوية لتوسيع أو تقليص الشبكة" : "Drag corner to expand or shrink grid"}">
+          <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+        </div>
+
+        <!-- Integrated Bottom Bar -->
+        <div class="table-bottom-bar">
+          <button class="btn-bottom-add-row" data-table-id="${table.id}">
+            <i class="fa-solid fa-plus"></i>
+            <span>${lang === "ar" ? "+ إضافة صف" : "+ Add Row"}</span>
+          </button>
+          <div class="grid-size-hint">
+            <span>${lang === "ar" ? "أبعاد الجدول:" : "Grid Dimensions:"}</span>
+            <span class="grid-size-pill">${table.columns.length} ${lang === "ar" ? "أعمدة" : "Cols"} &times; ${table.rows.length} ${lang === "ar" ? "صفوف" : "Rows"}</span>
+          </div>
+        </div>
       </div>
     </div>
   `;
@@ -867,6 +890,26 @@ function attachTableCardEvents(card, table) {
     });
   });
 
+  // Quick Add Column (+)
+  card.querySelector(".btn-quick-add-col")?.addEventListener("click", () => {
+    const nextColNum = table.columns.length + 1;
+    const colName = I18N[AppState.lang].colDefault.replace("{n}", nextColNum);
+    table.columns.push(colName);
+    if (!table.colWidths) table.colWidths = [];
+    table.colWidths.push(180);
+    table.rows.forEach((r) => r.push(""));
+    saveData(true);
+    renderApp();
+  });
+
+  // Quick Add Row (+)
+  card.querySelector(".btn-bottom-add-row")?.addEventListener("click", () => {
+    const emptyRow = new Array(table.columns.length).fill("");
+    table.rows.push(emptyRow);
+    saveData(true);
+    renderApp();
+  });
+
   // Delete Column
   card.querySelectorAll(".th-del-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -885,6 +928,18 @@ function attachTableCardEvents(card, table) {
           renderApp();
         }
       );
+    });
+  });
+
+  // Delete Row
+  card.querySelectorAll(".row-del-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const rowIdx = Number(btn.getAttribute("data-row-idx"));
+      if (table.rows.length <= 1) return;
+      table.rows.splice(rowIdx, 1);
+      saveData(true);
+      renderApp();
     });
   });
 
@@ -947,147 +1002,219 @@ function attachTableCardEvents(card, table) {
     });
   });
 
-  // ── Butter-Smooth Custom Corner Resize Engine ──
-  setupSmoothCornerResize(card, table);
-
-  // ── Drag-to-Resize Column Borders ──
-  setupColumnResize(card, table);
-
-  // ── Drag-to-Resize Row Borders ──
-  setupRowResize(card, table);
+  // ── Setup The Requested Core Feature: Drag Edges/Corner to Multiply/Shrink Rows & Columns ──
+  setupGridExtender(card, table);
 }
 
-// ── Smooth Custom Corner Resize (Zero Jitter, Zero Native Glitches) ──
-function setupSmoothCornerResize(card, table) {
-  const grip = card.querySelector(".table-corner-grip");
-  const wrap = card.querySelector(".table-resizable-wrap");
-  if (!grip || !wrap) return;
+// ── Drag-to-Resize Rows & Columns Extender Engine ──
+function setupGridExtender(card, table) {
+  const colHandle = card.querySelector(".grid-edge-col-handle");
+  const rowHandle = card.querySelector(".grid-edge-row-handle");
+  const cornerHandle = card.querySelector(".grid-corner-handle");
 
   const isRtl = document.documentElement.dir === "rtl";
 
-  grip.addEventListener("mousedown", (e) => {
+  function createLiveIndicator() {
+    let ind = document.getElementById("gridLiveIndicator");
+    if (!ind) {
+      ind = document.createElement("div");
+      ind.id = "gridLiveIndicator";
+      ind.className = "grid-live-indicator";
+      document.body.appendChild(ind);
+    }
+    ind.style.display = "flex";
+    return ind;
+  }
+
+  function removeLiveIndicator() {
+    const ind = document.getElementById("gridLiveIndicator");
+    if (ind) ind.style.display = "none";
+  }
+
+  // 1. Drag Side Edge to Add/Remove Columns
+  colHandle?.addEventListener("mousedown", (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     const startX = e.pageX;
-    const startY = e.pageY;
-    const startW = wrap.offsetWidth;
-    const startH = wrap.offsetHeight;
-    const cardMaxW = card.offsetWidth;
-
-    grip.classList.add("active");
+    const initialCols = table.columns.length;
+    const indicator = createLiveIndicator();
+    colHandle.classList.add("dragging");
+    document.body.style.cursor = "col-resize";
     document.body.style.userSelect = "none";
 
-    let rafId = null;
+    function onMouseMove(me) {
+      const deltaX = isRtl ? startX - me.pageX : me.pageX - startX;
+      const step = 110;
+      const targetCols = Math.max(1, Math.min(25, initialCols + Math.round(deltaX / step)));
 
-    function onMouseMove(moveEvent) {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        const deltaX = isRtl
-          ? startX - moveEvent.pageX
-          : moveEvent.pageX - startX;
-        const deltaY = moveEvent.pageY - startY;
+      indicator.style.left = `${me.pageX}px`;
+      indicator.style.top = `${me.pageY}px`;
+      indicator.innerHTML = `<i class="fa-solid fa-table-columns" style="color:var(--accent-red)"></i> ${targetCols} ${AppState.lang === "ar" ? "أعمدة" : "Cols"} &times; ${table.rows.length} ${AppState.lang === "ar" ? "صفوف" : "Rows"}`;
 
-        const newW = Math.max(300, Math.min(cardMaxW, startW + deltaX));
-        const newH = Math.max(140, startH + deltaY);
-
-        wrap.style.width = `${newW}px`;
-        wrap.style.height = `${newH}px`;
-        table.boxWidth = `${newW}px`;
-        table.boxHeight = `${newH}px`;
-      });
+      if (targetCols !== table.columns.length) {
+        if (targetCols > table.columns.length) {
+          while (table.columns.length < targetCols) {
+            const nextN = table.columns.length + 1;
+            table.columns.push(I18N[AppState.lang].colDefault.replace("{n}", nextN));
+            if (!table.colWidths) table.colWidths = [];
+            table.colWidths.push(180);
+            table.rows.forEach((r) => r.push(""));
+          }
+        } else {
+          while (table.columns.length > targetCols && table.columns.length > 1) {
+            table.columns.pop();
+            if (table.colWidths) table.colWidths.pop();
+            table.rows.forEach((r) => r.pop());
+          }
+        }
+        renderApp();
+      }
     }
 
     function onMouseUp() {
-      grip.classList.remove("active");
+      colHandle.classList.remove("dragging");
+      document.body.style.cursor = "";
       document.body.style.userSelect = "";
+      removeLiveIndicator();
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
-      if (rafId) cancelAnimationFrame(rafId);
       saveData(true);
     }
 
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
   });
-}
 
-// ── Interactive Drag-to-Resize Columns ──
-function setupColumnResize(card, table) {
-  const handles = card.querySelectorAll(".col-resize-handle");
-  const isRtl = document.documentElement.dir === "rtl";
+  // 2. Drag Bottom Edge to Add/Remove Rows
+  rowHandle?.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  handles.forEach((handle) => {
-    handle.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const colIdx = Number(handle.getAttribute("data-col-idx"));
-      const th = handle.closest("th");
-      const startX = e.pageX;
-      const startWidth = th.offsetWidth;
+    const startY = e.pageY;
+    const initialRows = table.rows.length;
+    const indicator = createLiveIndicator();
+    rowHandle.classList.add("dragging");
+    document.body.style.cursor = "row-resize";
+    document.body.style.userSelect = "none";
 
-      handle.classList.add("resizing");
-      document.body.style.userSelect = "none";
+    function onMouseMove(me) {
+      const deltaY = me.pageY - startY;
+      const step = 38;
+      const targetRows = Math.max(1, Math.min(60, initialRows + Math.round(deltaY / step)));
 
-      function onMouseMove(moveEvent) {
-        const delta = isRtl
-          ? startX - moveEvent.pageX
-          : moveEvent.pageX - startX;
-        const newWidth = Math.max(70, startWidth + delta);
+      indicator.style.left = `${me.pageX}px`;
+      indicator.style.top = `${me.pageY}px`;
+      indicator.innerHTML = `<i class="fa-solid fa-bars" style="color:var(--accent-red)"></i> ${table.columns.length} ${AppState.lang === "ar" ? "أعمدة" : "Cols"} &times; ${targetRows} ${AppState.lang === "ar" ? "صفوف" : "Rows"}`;
 
-        th.style.width = `${newWidth}px`;
-        if (!table.colWidths) table.colWidths = [];
-        table.colWidths[colIdx] = newWidth;
+      if (targetRows !== table.rows.length) {
+        if (targetRows > table.rows.length) {
+          while (table.rows.length < targetRows) {
+            const emptyRow = new Array(table.columns.length).fill("");
+            table.rows.push(emptyRow);
+          }
+        } else {
+          while (table.rows.length > targetRows && table.rows.length > 1) {
+            table.rows.pop();
+          }
+        }
+        renderApp();
       }
+    }
 
-      function onMouseUp() {
-        handle.classList.remove("resizing");
-        document.body.style.userSelect = "";
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-        saveData(true);
-      }
+    function onMouseUp() {
+      rowHandle.classList.remove("dragging");
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+      removeLiveIndicator();
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      saveData(true);
+    }
 
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
   });
-}
 
-// ── Interactive Drag-to-Resize Rows ──
-function setupRowResize(card, table) {
-  const handles = card.querySelectorAll(".row-resize-handle");
+  // 3. Drag Corner Handle to Add/Remove BOTH Rows & Columns
+  cornerHandle?.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  handles.forEach((handle) => {
-    handle.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const rowIdx = Number(handle.getAttribute("data-row-idx"));
-      const tr = handle.closest("tr");
-      const startY = e.pageY;
-      const startHeight = tr.offsetHeight;
+    const startX = e.pageX;
+    const startY = e.pageY;
+    const initialCols = table.columns.length;
+    const initialRows = table.rows.length;
+    const indicator = createLiveIndicator();
 
-      handle.classList.add("resizing");
-      document.body.style.userSelect = "none";
+    cornerHandle.classList.add("dragging");
+    document.body.style.cursor = isRtl ? "nesw-resize" : "nwse-resize";
+    document.body.style.userSelect = "none";
 
-      function onMouseMove(moveEvent) {
-        const delta = moveEvent.pageY - startY;
-        const newHeight = Math.max(32, startHeight + delta);
+    function onMouseMove(me) {
+      const deltaX = isRtl ? startX - me.pageX : me.pageX - startX;
+      const deltaY = me.pageY - startY;
 
-        tr.style.height = `${newHeight}px`;
-        if (!table.rowHeights) table.rowHeights = [];
-        table.rowHeights[rowIdx] = newHeight;
+      const colStep = 110;
+      const rowStep = 38;
+
+      const targetCols = Math.max(1, Math.min(25, initialCols + Math.round(deltaX / colStep)));
+      const targetRows = Math.max(1, Math.min(60, initialRows + Math.round(deltaY / rowStep)));
+
+      indicator.style.left = `${me.pageX}px`;
+      indicator.style.top = `${me.pageY}px`;
+      indicator.innerHTML = `<i class="fa-solid fa-up-right-and-down-left-from-center" style="color:var(--accent-red)"></i> ${targetCols} ${AppState.lang === "ar" ? "أعمدة" : "Cols"} &times; ${targetRows} ${AppState.lang === "ar" ? "صفوف" : "Rows"}`;
+
+      let changed = false;
+
+      // Adjust Columns
+      if (targetCols > table.columns.length) {
+        while (table.columns.length < targetCols) {
+          const nextN = table.columns.length + 1;
+          table.columns.push(I18N[AppState.lang].colDefault.replace("{n}", nextN));
+          if (!table.colWidths) table.colWidths = [];
+          table.colWidths.push(180);
+          table.rows.forEach((r) => r.push(""));
+        }
+        changed = true;
+      } else if (targetCols < table.columns.length && table.columns.length > 1) {
+        while (table.columns.length > targetCols && table.columns.length > 1) {
+          table.columns.pop();
+          if (table.colWidths) table.colWidths.pop();
+          table.rows.forEach((r) => r.pop());
+        }
+        changed = true;
       }
 
-      function onMouseUp() {
-        handle.classList.remove("resizing");
-        document.body.style.userSelect = "";
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-        saveData(true);
+      // Adjust Rows
+      if (targetRows > table.rows.length) {
+        while (table.rows.length < targetRows) {
+          const emptyRow = new Array(table.columns.length).fill("");
+          table.rows.push(emptyRow);
+        }
+        changed = true;
+      } else if (targetRows < table.rows.length && table.rows.length > 1) {
+        while (table.rows.length > targetRows && table.rows.length > 1) {
+          table.rows.pop();
+        }
+        changed = true;
       }
 
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
+      if (changed) renderApp();
+    }
+
+    function onMouseUp() {
+      cornerHandle.classList.remove("dragging");
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+      removeLiveIndicator();
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      saveData(true);
+    }
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
   });
 }
 
