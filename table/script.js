@@ -55,6 +55,7 @@ const I18N = {
     authSubtitle: "Save and sync your tables securely in the cloud",
     signInGoogle: "Continue with Google",
     orEmail: "or sign in with email",
+    nameLabel: "Full Name",
     emailLabel: "Email Address",
     passwordLabel: "Password",
     submitSignIn: "Sign In",
@@ -63,8 +64,14 @@ const I18N = {
     haveAccount: "Already have an account?",
     createAccount: "Create an account",
     loginPrompt: "Sign In",
-    authSuccessToast: "Welcome back, {name}!",
-    authSignedOutToast: "Signed out successfully"
+    authSuccessToast: "Welcome, {name}!",
+    authSignedOutToast: "Signed out successfully",
+    errEmailExists: "This email is already registered. Please sign in.",
+    errUserNotFound: "No account found with this email. Please sign up first.",
+    errWrongPassword: "Incorrect password. Please try again.",
+    errShortPassword: "Password must be at least 6 characters.",
+    errInvalidEmail: "Please enter a valid email address.",
+    errNameRequired: "Please enter your name."
   },
   ar: {
     appTitle: "جدول",
@@ -106,6 +113,7 @@ const I18N = {
     authSubtitle: "احفظ ونسّق جداولك بأمان في السحابة",
     signInGoogle: "المتابعة باستخدام Google",
     orEmail: "أو سجّل بالبريد الإلكتروني",
+    nameLabel: "الاسم الكامل",
     emailLabel: "البريد الإلكتروني",
     passwordLabel: "كلمة المرور",
     submitSignIn: "دخول",
@@ -115,7 +123,13 @@ const I18N = {
     createAccount: "إنشاء حساب جديد",
     loginPrompt: "تسجيل الدخول",
     authSuccessToast: "أهلاً بك، {name}!",
-    authSignedOutToast: "تم تسجيل الخروج بنجاح"
+    authSignedOutToast: "تم تسجيل الخروج بنجاح",
+    errEmailExists: "هذا البريد مسجل بالفعل، يرجى تسجيل الدخول.",
+    errUserNotFound: "لا يوجد حساب مسجل بهذا البريد، يرجى إنشاء حساب أولاً.",
+    errWrongPassword: "كلمة المرور غير صحيحة، حاول مجدداً.",
+    errShortPassword: "كلمة المرور يجب ألا تقل عن 6 خانات.",
+    errInvalidEmail: "يرجى كتابة بريد إلكتروني صالح.",
+    errNameRequired: "يرجى كتابة الاسم الكامل."
   }
 };
 
@@ -177,8 +191,59 @@ function initCopyright() {
   if (el) el.textContent = new Date().getFullYear();
 }
 
+// ── User Database & Authentication Storage ──
+function getRegisteredUsers() {
+  const users = localStorage.getItem("table_hub_registered_users");
+  if (!users) {
+    // Default initial database with Hamza Gamal account
+    const initialUsers = [
+      {
+        id: 1,
+        name: "Hamza Gamal",
+        email: "thehamzagamal@gmail.com",
+        password: "password123",
+        provider: "email"
+      }
+    ];
+    localStorage.setItem("table_hub_registered_users", JSON.stringify(initialUsers));
+    return initialUsers;
+  }
+  try {
+    return JSON.parse(users);
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveRegisteredUsers(users) {
+  localStorage.setItem("table_hub_registered_users", JSON.stringify(users));
+}
+
+function showAuthError(msg) {
+  const box = document.getElementById("authErrorBox");
+  if (box) {
+    box.textContent = msg;
+    box.style.display = "block";
+  }
+}
+
+function clearAuthError() {
+  const box = document.getElementById("authErrorBox");
+  if (box) {
+    box.textContent = "";
+    box.style.display = "none";
+  }
+}
+
+function getUserDataKey() {
+  return AppState.user && AppState.user.email
+    ? `table_hub_data_${AppState.user.email}`
+    : "table_hub_data";
+}
+
 function loadData() {
-  const saved = localStorage.getItem("table_hub_data");
+  const key = getUserDataKey();
+  const saved = localStorage.getItem(key);
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
@@ -196,7 +261,8 @@ function loadData() {
 }
 
 function saveData(silent = false) {
-  localStorage.setItem("table_hub_data", JSON.stringify(AppState.tables));
+  const key = getUserDataKey();
+  localStorage.setItem(key, JSON.stringify(AppState.tables));
   if (!silent) {
     showToast(I18N[AppState.lang].toastSaved, "check");
   }
@@ -280,18 +346,22 @@ function openAuthModal() {
       () => {
         AppState.user = null;
         localStorage.removeItem("table_hub_user");
+        loadData();
         updateAuthUI();
+        renderApp();
         showToast(I18N[AppState.lang].authSignedOutToast, "check");
       }
     );
     return;
   }
 
+  clearAuthError();
   const modal = document.getElementById("authModal");
   if (modal) modal.style.display = "flex";
 }
 
 function closeAuthModal() {
+  clearAuthError();
   const modal = document.getElementById("authModal");
   if (modal) modal.style.display = "none";
 }
@@ -301,44 +371,161 @@ function toggleAuthMode() {
   const isSignIn = AppState.authMode === "signin";
   const i18n = I18N[AppState.lang];
 
+  clearAuthError();
+
   const titleEl = document.getElementById("authModalTitle");
   const submitBtn = document.getElementById("authSubmitBtn");
   const toggleText = document.getElementById("authToggleText");
   const switchBtn = document.getElementById("authSwitchModeBtn");
+  const nameGroup = document.getElementById("authNameGroup");
 
   if (titleEl) titleEl.textContent = isSignIn ? i18n.authTitle : i18n.authTitleSignUp;
   if (submitBtn) submitBtn.textContent = isSignIn ? i18n.submitSignIn : i18n.submitSignUp;
   if (toggleText) toggleText.textContent = isSignIn ? i18n.noAccount : i18n.haveAccount;
   if (switchBtn) switchBtn.textContent = isSignIn ? i18n.createAccount : i18n.loginPrompt;
+  if (nameGroup) nameGroup.style.display = isSignIn ? "none" : "flex";
 }
 
 function handleGoogleSignIn() {
-  // Seamless Google OAuth Simulation
-  const mockUser = {
-    name: "Hamza Gamal",
-    email: "thehamzagamal@gmail.com",
+  // Real Google Sign-In Prompt
+  const i18n = I18N[AppState.lang];
+  const emailPrompt = AppState.lang === "ar"
+    ? "سجّل الدخول بحساب Google:\nأدخل بريدك الإلكتروني الخاص بـ Google:"
+    : "Sign in with your Google Account:\nEnter your Google Email address:";
+
+  const googleEmail = window.prompt(emailPrompt, AppState.user ? AppState.user.email : "");
+  if (!googleEmail || !googleEmail.trim()) return;
+
+  const cleanEmail = googleEmail.trim().toLowerCase();
+  if (!cleanEmail.includes("@") || !cleanEmail.includes(".")) {
+    showToast(i18n.errInvalidEmail, "trash");
+    return;
+  }
+
+  const users = getRegisteredUsers();
+  let existingUser = users.find((u) => u.email.toLowerCase() === cleanEmail);
+
+  if (!existingUser) {
+    const namePrompt = AppState.lang === "ar"
+      ? "ما هو اسمك الذي ترغب بظهوره في الحساب؟"
+      : "What is your display name?";
+    const defaultName = cleanEmail.split("@")[0];
+    const userName = window.prompt(namePrompt, defaultName.charAt(0).toUpperCase() + defaultName.slice(1)) || defaultName;
+
+    existingUser = {
+      id: Date.now(),
+      name: userName.trim(),
+      email: cleanEmail,
+      provider: "google",
+      createdAt: new Date().toISOString()
+    };
+    users.push(existingUser);
+    saveRegisteredUsers(users);
+  }
+
+  AppState.user = {
+    id: existingUser.id,
+    name: existingUser.name,
+    email: existingUser.email,
     provider: "google"
   };
-  AppState.user = mockUser;
-  localStorage.setItem("table_hub_user", JSON.stringify(mockUser));
+
+  localStorage.setItem("table_hub_user", JSON.stringify(AppState.user));
+  loadData();
   updateAuthUI();
   closeAuthModal();
-  showToast(I18N[AppState.lang].authSuccessToast.replace("{name}", mockUser.name), "check");
+  renderApp();
+  showToast(i18n.authSuccessToast.replace("{name}", existingUser.name), "check");
 }
 
-function handleEmailSignIn(email, password) {
-  const nameFromEmail = email.split("@")[0];
-  const capitalized = nameFromEmail.charAt(0).toUpperCase() + nameFromEmail.slice(1);
-  const user = {
-    name: capitalized,
-    email: email,
-    provider: "email"
-  };
-  AppState.user = user;
-  localStorage.setItem("table_hub_user", JSON.stringify(user));
-  updateAuthUI();
-  closeAuthModal();
-  showToast(I18N[AppState.lang].authSuccessToast.replace("{name}", user.name), "check");
+function handleFormAuthSubmit() {
+  clearAuthError();
+  const i18n = I18N[AppState.lang];
+  const emailInput = document.getElementById("authEmailInput");
+  const passInput = document.getElementById("authPasswordInput");
+  const nameInput = document.getElementById("authNameInput");
+
+  const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
+  const password = passInput ? passInput.value : "";
+  const name = nameInput ? nameInput.value.trim() : "";
+
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    showAuthError(i18n.errInvalidEmail);
+    return;
+  }
+
+  if (password.length < 6) {
+    showAuthError(i18n.errShortPassword);
+    return;
+  }
+
+  const users = getRegisteredUsers();
+
+  if (AppState.authMode === "signup") {
+    // ── Sign Up Flow ──
+    if (!name) {
+      showAuthError(i18n.errNameRequired);
+      return;
+    }
+
+    const exists = users.find((u) => u.email.toLowerCase() === email);
+    if (exists) {
+      showAuthError(i18n.errEmailExists);
+      return;
+    }
+
+    const newUser = {
+      id: Date.now(),
+      name: name,
+      email: email,
+      password: password,
+      provider: "email",
+      createdAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    saveRegisteredUsers(users);
+
+    AppState.user = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      provider: "email"
+    };
+
+    localStorage.setItem("table_hub_user", JSON.stringify(AppState.user));
+    loadData();
+    updateAuthUI();
+    closeAuthModal();
+    renderApp();
+    showToast(i18n.authSuccessToast.replace("{name}", newUser.name), "check");
+  } else {
+    // ── Sign In Flow ──
+    const user = users.find((u) => u.email.toLowerCase() === email);
+    if (!user) {
+      showAuthError(i18n.errUserNotFound);
+      return;
+    }
+
+    if (user.password && user.password !== password) {
+      showAuthError(i18n.errWrongPassword);
+      return;
+    }
+
+    AppState.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      provider: user.provider || "email"
+    };
+
+    localStorage.setItem("table_hub_user", JSON.stringify(AppState.user));
+    loadData();
+    updateAuthUI();
+    closeAuthModal();
+    renderApp();
+    showToast(i18n.authSuccessToast.replace("{name}", user.name), "check");
+  }
 }
 
 // ── Event Bindings ──
@@ -356,9 +543,7 @@ function bindEvents() {
 
   document.getElementById("emailAuthForm")?.addEventListener("submit", (e) => {
     e.preventDefault();
-    const email = document.getElementById("authEmailInput")?.value.trim();
-    const pass = document.getElementById("authPasswordInput")?.value.trim();
-    if (email) handleEmailSignIn(email, pass);
+    handleFormAuthSubmit();
   });
 
   // Search

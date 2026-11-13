@@ -976,6 +976,17 @@ html[dir="rtl"] .auth-close-x { left: 16px; }
 }
 
 /* Form inputs */
+.auth-error-box {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid var(--accent-red);
+  color: #f87171;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+}
+
 .auth-form {
   display: flex;
   flex-direction: column;
