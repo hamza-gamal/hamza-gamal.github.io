@@ -1,16 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
    TABLE HUB STUDIO - BALANCED RED & BLACK LUXURY STYLING
    Author: Hamza Gamal (https://hamza-gamal.github.io/portfolio)
+   Standard Clean Browser Cursors (No Custom SVG)
    ═══════════════════════════════════════════════════════════════ */
 
-/* ── Cursors ── */
 :root {
-  /* Default Gradient Arrow */
-  --cur-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fca5a5'/%3E%3Cstop offset='50%25' stop-color='%23ef4444'/%3E%3Cstop offset='100%25' stop-color='%23b91c1c'/%3E%3C/linearGradient%3E%3Cfilter id='f' x='-20%25' y='-20%25' width='150%25' height='150%25'%3E%3CfeDropShadow dx='0' dy='1' stdDeviation='1.2' flood-color='%23000' flood-opacity='0.6'/%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='2.5' flood-color='%23ef4444' flood-opacity='0.6'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M4 3l13 7-6 2-3 7L4 3z' fill='url(%23g)' stroke='%23ffffff' stroke-width='1.2' stroke-linejoin='round' filter='url(%23f)'/%3E%3C/svg%3E") 4 3, auto;
-
-  /* Sleek Straight Pointing Red Hand (User's Favorite HG Cursor) */
-  --cur-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ef4444' stroke='%23ffffff' stroke-width='1.5' stroke-linejoin='round' d='M8 1a2 2 0 0 1 2 2v7.5a.5.5 0 0 0 1 0V4a2 2 0 0 1 4 0v6.5a.5.5 0 0 0 1 0V6a2 2 0 0 1 4 0v8a7 7 0 0 1-7 7H8a7 7 0 0 1-7-7v-4a2 2 0 0 1 4 0v3.5a.5.5 0 0 0 1 0V3a2 2 0 0 1 2-2z'/%3E%3C/svg%3E"), pointer !important;
-
   --font-en: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-ar: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --transition-fast: 0.16s ease;
@@ -24,10 +18,10 @@
 /* ── Dark Mode: Balanced Red & Black ── */
 [data-theme="dark"] {
   --bg-body: #09090b;
-  --bg-header: rgba(13, 13, 16, 0.88);
+  --bg-header: rgba(13, 13, 16, 0.9);
   --bg-surface: #121217;
   --bg-surface-elevated: #181820;
-  --bg-surface-hover: #20202a;
+  --bg-surface-hover: #22222d;
   
   --border-subtle: #202029;
   --border-strong: #2e2e3a;
@@ -56,7 +50,7 @@
 /* ── Light Mode: Balanced Red & White ── */
 [data-theme="light"] {
   --bg-body: #f8fafc;
-  --bg-header: rgba(255, 255, 255, 0.9);
+  --bg-header: rgba(255, 255, 255, 0.92);
   --bg-surface: #ffffff;
   --bg-surface-elevated: #f1f5f9;
   --bg-surface-hover: #e2e8f0;
@@ -85,7 +79,7 @@
   --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.1);
 }
 
-/* ── Resets & Global ── */
+/* ── Standard Clean Browser Cursors (Per User Request) ── */
 * {
   margin: 0;
   padding: 0;
@@ -103,7 +97,7 @@ body {
   color: var(--text-main);
   font-family: var(--font-en);
   line-height: 1.5;
-  cursor: var(--cur-default);
+  cursor: default;
   transition: background-color var(--transition-smooth), color var(--transition-smooth);
   display: flex;
   flex-direction: column;
@@ -115,18 +109,16 @@ html[dir="rtl"] body {
   font-family: var(--font-ar);
 }
 
-/* Cursor assignments */
 button,
 a,
-input,
-th,
-td,
 .tab-item,
 .link-portfolio,
 .scale-btn,
 .action-icon-btn,
-.action-pill-btn {
-  cursor: var(--cur-pointer);
+.action-pill-btn,
+.auth-submit-btn,
+.google-auth-btn {
+  cursor: pointer;
 }
 
 /* ── Scrollbars ── */
@@ -145,7 +137,7 @@ td,
   background: var(--accent-red);
 }
 
-/* ── Hamza Gamal Portfolio Link (Tooltip strictly UNDERNEATH) ── */
+/* ── Hamza Gamal Portfolio Link (Anchored to never overflow off-screen) ── */
 .link-portfolio {
   position: relative;
   display: inline-flex;
@@ -179,13 +171,11 @@ td,
   transform: rotate(6deg) scale(1.05);
 }
 
-/* Tooltip Badge Placed UNDERNEATH the Logo */
+/* Tooltip Badge: Placed underneath and anchored inside the screen edge */
 .link-portfolio::after {
   content: "Hamza Gamal | Portfolio";
   position: absolute;
   top: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
   white-space: nowrap;
   background: #111116;
   color: #ffffff;
@@ -202,13 +192,11 @@ td,
   z-index: 1000;
 }
 
-/* Tooltip Arrow pointing UP from the top of the badge */
+/* Tooltip Arrow */
 .link-portfolio::before {
   content: "";
   position: absolute;
   top: calc(100% + 2px);
-  left: 50%;
-  transform: translateX(-50%);
   width: 0;
   height: 0;
   border: 5px solid transparent;
@@ -220,12 +208,44 @@ td,
   z-index: 1000;
 }
 
-.link-portfolio:hover::after {
+/* In LTR: Logo is on the right -> Badge anchors to right edge so it expands inward */
+html[dir="ltr"] .link-portfolio::after {
+  right: 0;
+  left: auto;
+  transform: translateY(6px);
+}
+html[dir="ltr"] .link-portfolio::before {
+  right: 14px;
+  left: auto;
+  transform: none;
+}
+html[dir="ltr"] .link-portfolio:hover::after {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
 }
-.link-portfolio:hover::before {
+html[dir="ltr"] .link-portfolio:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* In RTL: Logo is on the left -> Badge anchors to left edge so it expands inward */
+html[dir="rtl"] .link-portfolio::after {
+  left: 0;
+  right: auto;
+  transform: translateY(6px);
+}
+html[dir="rtl"] .link-portfolio::before {
+  left: 14px;
+  right: auto;
+  transform: none;
+}
+html[dir="rtl"] .link-portfolio:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+html[dir="rtl"] .link-portfolio:hover::before {
   opacity: 1;
   visibility: visible;
 }
@@ -392,6 +412,18 @@ html[dir="rtl"] .search-clear-btn { left: 10px; }
   border-color: var(--accent-red);
   background: var(--accent-red-subtle);
   transform: translateY(-1px);
+}
+
+/* Auth Sign In Button */
+.auth-btn {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+  border-color: var(--border-red);
+  color: var(--accent-red);
+}
+.auth-btn:hover {
+  background: var(--accent-red);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
 }
 
 [data-theme="dark"] .icon-light { display: none; }
@@ -580,7 +612,8 @@ html[dir="rtl"] .search-clear-btn { left: 10px; }
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   margin-bottom: 24px;
-  transition: all var(--transition-fast);
+  transition: border-color var(--transition-fast);
+  position: relative;
 }
 
 .table-card:hover {
@@ -668,37 +701,49 @@ html[dir="rtl"] .search-clear-btn { left: 10px; }
   background: rgba(239, 68, 68, 0.18);
 }
 
-/* ── Resizable Table Container (Freely Resizable Like <textarea>) ── */
+/* ── Smooth Resizable Table Container (No glitchy native textarea box!) ── */
 .table-resizable-wrap {
   position: relative;
-  resize: both;
   overflow: auto;
-  min-width: 300px;
+  min-width: 320px;
   min-height: 140px;
   max-width: 100%;
-  padding: 16px 20px 24px;
-  border-radius: var(--radius-sm);
-  transition: outline 0.15s ease;
+  padding: 16px 20px 28px;
+  transition: box-shadow var(--transition-fast);
 }
 
-.table-resizable-wrap:hover {
-  outline: 1px dashed var(--border-red);
-}
-
-/* Custom visual corner grip like <textarea> */
-.table-resizable-wrap::after {
-  content: "";
+/* Sleek Corner Grip (Replacing ugly native browser square) */
+.table-corner-grip {
   position: absolute;
-  bottom: 4px;
-  width: 14px;
-  height: 14px;
-  background-image: radial-gradient(var(--accent-red) 1.5px, transparent 1.5px);
-  background-size: 4px 4px;
-  opacity: 0.7;
-  pointer-events: none;
+  bottom: 6px;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  opacity: 0.5;
+  transition: all var(--transition-fast);
+  user-select: none;
+  z-index: 10;
 }
-html[dir="ltr"] .table-resizable-wrap::after { right: 4px; }
-html[dir="rtl"] .table-resizable-wrap::after { left: 4px; }
+html[dir="ltr"] .table-corner-grip {
+  right: 6px;
+  cursor: nwse-resize;
+}
+html[dir="rtl"] .table-corner-grip {
+  left: 6px;
+  cursor: nesw-resize;
+}
+
+.table-corner-grip:hover,
+.table-corner-grip.active {
+  opacity: 1;
+  color: var(--accent-red);
+  transform: scale(1.25);
+}
 
 /* The Table */
 .interactive-table {
@@ -772,7 +817,7 @@ html[dir="rtl"] .table-resizable-wrap::after { left: 4px; }
   top: 0;
   bottom: 0;
   width: 8px;
-  cursor: col-resize !important;
+  cursor: col-resize;
   z-index: 5;
   user-select: none;
 }
@@ -820,7 +865,7 @@ html[dir="rtl"] .col-resize-handle { left: -4px; }
   left: 0;
   right: 0;
   height: 6px;
-  cursor: row-resize !important;
+  cursor: row-resize;
   z-index: 4;
 }
 .row-resize-handle:hover,
@@ -829,7 +874,209 @@ html[dir="rtl"] .col-resize-handle { left: -4px; }
   box-shadow: 0 0 6px var(--accent-red);
 }
 
-/* ── Custom Glassmorphism Confirmation Modal (Zero Native Alerts) ── */
+/* ── Authentication Modal Card ── */
+.auth-modal-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--shadow-lg), var(--accent-red-glow);
+  animation: modalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.auth-close-x {
+  position: absolute;
+  top: 14px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 4px;
+}
+html[dir="ltr"] .auth-close-x { right: 16px; }
+html[dir="rtl"] .auth-close-x { left: 16px; }
+.auth-close-x:hover { color: var(--accent-red); }
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.auth-brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+}
+.auth-brand-icon img {
+  width: 26px;
+  height: 26px;
+}
+
+.auth-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.auth-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Google OAuth Button */
+.google-auth-btn {
+  width: 100%;
+  padding: 10px 16px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all var(--transition-fast);
+  margin-bottom: 18px;
+}
+.google-auth-btn:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-red);
+  transform: translateY(-1px);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 18px 0;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.auth-divider span {
+  padding: 0 12px;
+}
+
+/* Form inputs */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: start;
+}
+
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.form-input {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 9px 14px;
+  color: var(--text-main);
+  font-size: 0.88rem;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+.form-input:focus {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 2px var(--accent-red-subtle);
+}
+
+.auth-submit-btn {
+  margin-top: 6px;
+  padding: 11px;
+  background: var(--accent-red);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 800;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+}
+.auth-submit-btn:hover {
+  background: var(--accent-red-hover);
+  transform: translateY(-1px);
+}
+
+.auth-footer-toggle {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.auth-link-btn {
+  background: none;
+  border: none;
+  color: var(--accent-red);
+  font-weight: 700;
+  font-size: inherit;
+  padding: 0;
+}
+.auth-link-btn:hover {
+  text-decoration: underline;
+}
+
+/* User Profile Badge (When signed in) */
+.user-avatar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 6px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.user-avatar-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+/* ── Custom Glassmorphism Confirmation Modal ── */
 .custom-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1052,6 +1299,7 @@ html[dir="rtl"] .toast-stack { left: 20px; }
   .card-actions-group,
   .col-resize-handle,
   .row-resize-handle,
+  .table-corner-grip,
   .th-del-btn,
   .toast-stack,
   .custom-modal-backdrop {
@@ -1062,7 +1310,6 @@ html[dir="rtl"] .toast-stack { left: 20px; }
     color: #000000 !important;
   }
   .table-resizable-wrap {
-    resize: none !important;
     overflow: visible !important;
     padding: 0 !important;
   }

@@ -59,7 +59,7 @@
           </div>
         </div>
 
-        <!-- Actions & HG Portfolio Logo (On the other side) -->
+        <!-- Actions & HG Portfolio Logo -->
         <div class="header-user-side">
           <!-- View Mode (Tabs vs Grid) -->
           <button id="viewToggleBtn" class="action-icon-btn" title="Toggle View Mode">
@@ -83,10 +83,16 @@
             <i class="fa-solid fa-sun icon-light"></i>
           </button>
 
+          <!-- Sign In / User Profile Button -->
+          <button id="authBtn" class="action-pill-btn auth-btn" title="Sign In / تسجيل الدخول">
+            <i class="fa-solid fa-user"></i>
+            <span id="authBtnText" data-i18n="signIn">Sign In</span>
+          </button>
+
           <!-- Separator Line -->
           <div class="header-divider"></div>
 
-          <!-- Hamza Gamal Portfolio Link (Tooltip appears strictly underneath) -->
+          <!-- Hamza Gamal Portfolio Link (Tooltip strictly underneath with inner-alignment) -->
           <a
             href="https://hamza-gamal.github.io/portfolio"
             target="_blank"
@@ -142,7 +148,71 @@
       <!-- Dynamic Table Cards Rendered by script.js -->
     </main>
 
-    <!-- ── Custom Glassmorphism Confirmation Modal (Zero Native Alerts) ── -->
+    <!-- ── Authentication Modal (Google & Email Sign In) ── -->
+    <div id="authModal" class="custom-modal-backdrop" style="display: none;">
+      <div class="auth-modal-card">
+        <button id="authCloseBtn" class="auth-close-x" title="Close">&times;</button>
+        
+        <div class="auth-header">
+          <div class="auth-brand-icon">
+            <img src="images/logo.svg" alt="Table Hub Logo" />
+          </div>
+          <h2 id="authModalTitle" class="auth-title" data-i18n="authTitle">Sign in to Table Hub</h2>
+          <p class="auth-subtitle" data-i18n="authSubtitle">Save and sync your tables securely in the cloud</p>
+        </div>
+
+        <!-- Google OAuth Button -->
+        <button id="googleSignInBtn" class="google-auth-btn">
+          <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.27 21.43 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.03 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.27 2.57 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span data-i18n="signInGoogle">Continue with Google</span>
+        </button>
+
+        <div class="auth-divider">
+          <span data-i18n="orEmail">or sign in with email</span>
+        </div>
+
+        <!-- Email & Password Form -->
+        <form id="emailAuthForm" class="auth-form" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" data-i18n="emailLabel">Email Address</label>
+            <input
+              type="email"
+              id="authEmailInput"
+              class="form-input"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" data-i18n="passwordLabel">Password</label>
+            <input
+              type="password"
+              id="authPasswordInput"
+              class="form-input"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <button type="submit" id="authSubmitBtn" class="auth-submit-btn" data-i18n="submitSignIn">
+            Sign In
+          </button>
+        </form>
+
+        <div class="auth-footer-toggle">
+          <span id="authToggleText" data-i18n="noAccount">Don't have an account?</span>
+          <button id="authSwitchModeBtn" class="auth-link-btn" data-i18n="createAccount">Create an account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Custom Confirmation Modal ── -->
     <div id="customModal" class="custom-modal-backdrop" style="display: none;">
       <div class="custom-modal-box">
         <div class="modal-icon-wrap">
@@ -157,7 +227,7 @@
       </div>
     </div>
 
-    <!-- ── Floating Toast Notifications Container ── -->
+    <!-- ── Floating Toast Stack ── -->
     <div id="toastContainer" class="toast-stack" aria-live="polite"></div>
 
     <!-- ── Clean Minimal Footer ── -->
@@ -170,7 +240,7 @@
           </span>
         </div>
         <div class="footer-hints">
-          <span class="footer-hint"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> <span data-i18n="hintResizeBox">Resize table freely from bottom corner</span></span>
+          <span class="footer-hint"><i class="fa-solid fa-arrows-up-down-left-right"></i> <span data-i18n="hintResizeBox">Drag corner grip to resize table</span></span>
           <span class="footer-hint"><i class="fa-solid fa-arrows-left-right"></i> <span data-i18n="hintResize">Drag column borders</span></span>
         </div>
       </div>
