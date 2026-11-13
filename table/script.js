@@ -803,7 +803,12 @@ function renderTabs() {
     const tab = document.createElement("div");
     tab.className = `tab-item ${table.id === AppState.activeTableId ? "active" : ""}`;
     tab.innerHTML = `
-      <span class="tab-name">${escapeHtml(table.title || `Table ${idx + 1}`)}</span>
+      <span 
+        class="tab-name" 
+        contenteditable="true" 
+        spellcheck="false" 
+        title="${AppState.lang === "ar" ? "انقر لتعديل اسم الجدول" : "Click to rename table"}"
+      >${escapeHtml(table.title || `Table ${idx + 1}`)}</span>
       ${
         AppState.tables.length > 1
           ? `<i class="fa-solid fa-xmark tab-close-x" title="Close" data-id="${table.id}"></i>`
@@ -811,11 +816,43 @@ function renderTabs() {
       }
     `;
 
+    const tabNameEl = tab.querySelector(".tab-name");
+
+    // Click on tab switches active table
     tab.addEventListener("click", (e) => {
       if (e.target.classList.contains("tab-close-x")) return;
+      if (e.target === tabNameEl) {
+        // Just select active table without rebuilding DOM so cursor is preserved
+        if (AppState.activeTableId !== table.id) {
+          AppState.activeTableId = table.id;
+          renderApp();
+          const freshTabName = document.querySelector(`.tab-item.active .tab-name`);
+          if (freshTabName) freshTabName.focus();
+        }
+        return;
+      }
       AppState.activeTableId = table.id;
       if (AppState.viewMode === "grid") AppState.viewMode = "tabs";
       renderApp();
+    });
+
+    // Inline edit tab title
+    tabNameEl.addEventListener("input", () => {
+      const newTitle = tabNameEl.textContent.trim();
+      table.title = newTitle || `Table ${idx + 1}`;
+      
+      // Sync with card header title input if rendered
+      const cardTitleInput = document.querySelector(`#table-card-${table.id} .card-table-title`);
+      if (cardTitleInput) cardTitleInput.value = table.title;
+
+      saveData(true);
+    });
+
+    tabNameEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        tabNameEl.blur();
+      }
     });
 
     const closeBtn = tab.querySelector(".tab-close-x");
