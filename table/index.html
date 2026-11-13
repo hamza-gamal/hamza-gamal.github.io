@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table Hub | Studio</title>
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="images/logo.png" />
+    <meta name="theme-color" content="#dc2626" />
+
+    <!-- Google Fonts: Inter, Cairo, Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ── Header ── -->
+    <header class="app-header">
+      <div class="header-inner">
+        <!-- Left: Hamza Gamal Portfolio Link + Brand -->
+        <div class="header-left">
+          <a
+            href="https://hamza-gamal.github.io/portfolio"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-portfolio"
+            aria-label="Hamza Gamal Portfolio"
+          >
+            <img src="images/HG.png" alt="Hamza Gamal" />
+          </a>
+
+          <div class="brand-box">
+            <div class="brand-logo-wrap">
+              <img src="images/logo.svg" alt="Table Hub" class="brand-logo" />
+            </div>
+            <div class="brand-text">
+              <h1 class="brand-title">
+                <span data-i18n="appTitle">Table Hub</span>
+                <span class="brand-badge">HG</span>
+              </h1>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center: Clean Search Bar -->
+        <div class="header-center">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              type="text"
+              id="globalSearchInput"
+              class="search-input"
+              data-i18n-placeholder="searchPlaceholder"
+              placeholder="Search table cells..."
+              autocomplete="off"
+            />
+            <button id="clearSearchBtn" class="search-clear-btn" title="Clear" style="display: none;">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Actions & Preferences -->
+        <div class="header-right">
+          <!-- View Mode (Tabs vs Grid) -->
+          <button id="viewToggleBtn" class="action-icon-btn" title="Toggle View Mode">
+            <i class="fa-solid fa-table-cells-large"></i>
+          </button>
+
+          <!-- Export All Tables (JSON) -->
+          <button id="exportAllBtn" class="action-icon-btn" title="Export All Tables">
+            <i class="fa-solid fa-download"></i>
+          </button>
+
+          <!-- Language Toggle (EN / AR) -->
+          <button id="langToggleBtn" class="action-pill-btn lang-btn" title="Switch Language / تغيير اللغة">
+            <i class="fa-solid fa-globe"></i>
+            <span id="langBtnText">العربية</span>
+          </button>
+
+          <!-- Theme Toggle (Dark / Light) -->
+          <button id="themeToggleBtn" class="action-icon-btn theme-btn" title="Toggle Theme">
+            <i class="fa-solid fa-moon icon-dark"></i>
+            <i class="fa-solid fa-sun icon-light"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Subheader Bar: Table Tabs & Dynamic Scaling (+1 / -1) ── -->
+    <section class="control-bar">
+      <div class="control-bar-inner">
+        <!-- Tabs Scroll Area -->
+        <div class="tabs-area">
+          <div class="tabs-list" id="tabsContainer">
+            <!-- Dynamic Tabs rendered here -->
+          </div>
+          <button id="quickAddTabBtn" class="tab-add-btn" title="Add Next Table (+1)">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+
+        <!-- Scaling Controls (+1 / -1) -->
+        <div class="scaling-strip">
+          <div class="scale-counter-badge" id="scaleCounterBadge">
+            <span class="counter-label" data-i18n="activeCopies">Tables:</span>
+            <strong class="counter-val" id="activeCountNumber">1</strong>
+          </div>
+
+          <button id="addTableBtn" class="scale-btn scale-btn-add" title="Add 1 Table">
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="addOneTable">+1 Table</span>
+          </button>
+
+          <button id="removeTableBtn" class="scale-btn scale-btn-remove" title="Remove last table (-1)">
+            <i class="fa-solid fa-minus"></i>
+            <span data-i18n="removeOneTable">-1 Table</span>
+          </button>
+
+          <button id="resetTablesBtn" class="scale-btn scale-btn-reset" title="Reset back to 1 table">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Main Workspace ── -->
+    <main class="main-workspace" id="mainWorkspace">
+      <!-- Dynamic Table Cards Rendered by script.js -->
+    </main>
+
+    <!-- ── Custom Glassmorphism Confirmation Modal (Zero Native Alerts) ── -->
+    <div id="customModal" class="custom-modal-backdrop" style="display: none;">
+      <div class="custom-modal-box">
+        <div class="modal-icon-wrap">
+          <i class="fa-solid fa-triangle-exclamation" id="modalIcon"></i>
+        </div>
+        <h3 class="modal-title" id="modalTitle">Confirm Action</h3>
+        <p class="modal-message" id="modalMessage">Are you sure you want to proceed?</p>
+        <div class="modal-buttons">
+          <button id="modalCancelBtn" class="modal-btn modal-cancel">Cancel</button>
+          <button id="modalConfirmBtn" class="modal-btn modal-confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Floating Toast Notifications Container ── -->
+    <div id="toastContainer" class="toast-stack" aria-live="polite"></div>
+
+    <!-- ── Minimalist Clean Footer ── -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-dot"></span>
+          <span>&copy; <span id="currentYear"></span> 
+            <a href="https://hamza-gamal.github.io/portfolio" target="_blank" rel="noopener noreferrer">Hamza Gamal</a> &bull; Table Hub
+          </span>
+        </div>
+        <div class="footer-hints">
+          <span class="footer-hint"><i class="fa-solid fa-arrows-left-right"></i> <span data-i18n="hintResize">Drag column borders to resize</span></span>
+          <span class="footer-hint"><i class="fa-solid fa-bolt"></i> <span data-i18n="hintAutoSave">Instant auto-save</span></span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Main Application Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
