@@ -214,6 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateAuthUI();
   bindEvents();
   renderApp();
+  initGoogleIdentity();
 });
 
 function initCopyright() {
@@ -404,6 +405,7 @@ function handleAuthBtnClick(e) {
 
 function openAuthModal() {
   clearAuthError();
+  initGoogleIdentity();
   const modal = document.getElementById("authModal");
   if (modal) modal.style.display = "flex";
 }
@@ -435,8 +437,8 @@ function toggleAuthMode() {
 }
 
 // ── Google OAuth Client Configuration ──
-// بمجرد وضع الـ Client ID هنا، ستفتح شاشة جوجل الرسمية المباشرة فوراً
-const GOOGLE_CLIENT_ID = "";
+// معرّف العميل الرسمي لـ Google Cloud الخاص بـ Table Hub
+const GOOGLE_CLIENT_ID = "592566520210-4ftbc8sf9ftost7s7h7t6ud8nq1mu55v.apps.googleusercontent.com";
 
 function decodeJwtResponse(token) {
   try {
@@ -455,15 +457,53 @@ function decodeJwtResponse(token) {
 }
 
 function handleGoogleCredentialResponse(response) {
+  if (!response || !response.credential) return;
   const payload = decodeJwtResponse(response.credential);
   if (payload && payload.email) {
     const user = {
       id: Date.now(),
-      name: payload.name || payload.email.split("@")[0],
+      name: payload.name || payload.given_name || payload.email.split("@")[0],
       email: payload.email,
-      provider: "google"
+      provider: "google",
+      picture: payload.picture
     };
     completeGoogleLogin(user);
+  }
+}
+
+// تهيئة زر جوجل الرسمي ونظام Google Identity Services
+function initGoogleIdentity() {
+  if (window.google && window.google.accounts && window.google.accounts.id) {
+    try {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredentialResponse,
+        auto_select: false
+      });
+
+      const officialBtnEl = document.getElementById("googleOfficialBtn");
+      const fallbackBtn = document.getElementById("googleSignInBtn");
+
+      if (officialBtnEl) {
+        officialBtnEl.innerHTML = "";
+        window.google.accounts.id.renderButton(officialBtnEl, {
+          theme: AppState.theme === "dark" ? "filled_black" : "outline",
+          size: "large",
+          width: 340,
+          text: "continue_with",
+          shape: "rectangular"
+        });
+        officialBtnEl.style.display = "flex";
+        if (fallbackBtn) fallbackBtn.style.display = "none";
+      }
+    } catch (e) {
+      console.warn("Google Identity init warning:", e);
+      const fallbackBtn = document.getElementById("googleSignInBtn");
+      if (fallbackBtn) fallbackBtn.style.display = "flex";
+    }
+  } else {
+    // Retry if Google script is still loading
+    setTimeout(initGoogleIdentity, 600);
   }
 }
 
