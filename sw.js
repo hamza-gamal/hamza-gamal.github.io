@@ -1,4 +1,4 @@
-const CACHE_NAME = "hamza-portfolio-v2";
+const CACHE_NAME = "hamza-portfolio-v3";
 
 // Static local assets to pre-cache immediately
 const STATIC_ASSETS = [
@@ -65,6 +65,17 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   // Only handle GET requests
   if (event.request.method !== "GET") return;
+
+  const requestUrl = new URL(event.request.url);
+
+  // NEVER intercept or cache sub-projects like /table/ or /quran/
+  if (
+    requestUrl.pathname.startsWith("/table") ||
+    requestUrl.pathname.startsWith("/quran") ||
+    requestUrl.origin !== self.location.origin
+  ) {
+    return;
+  }
 
   // Skip form submissions or external API requests (e.g., Web3Forms)
   if (event.request.url.includes("api.web3forms.com")) return;

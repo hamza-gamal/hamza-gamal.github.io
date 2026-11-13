@@ -27,8 +27,25 @@
     <!-- Google Identity Services (Official Google Sign-In SDK) -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+    <!-- Cache Clear: Evict stale Service Worker caches for Table Hub -->
+    <script>
+      if ('caches' in window) {
+        caches.keys().then(function(keys) {
+          keys.forEach(function(k) {
+            caches.open(k).then(function(c) {
+              c.keys().then(function(requests) {
+                requests.forEach(function(req) {
+                  if (req.url.includes('/table/')) c.delete(req);
+                });
+              });
+            });
+          });
+        });
+      }
+    </script>
+
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="style.css?v=2.1" />
+    <link rel="stylesheet" href="style.css?v=2.2" />
   </head>
   <body>
     <!-- ── Header ── -->
@@ -326,6 +343,6 @@
     </footer>
 
     <!-- Main Application Script -->
-    <script src="script.js?v=2.1"></script>
+    <script src="script.js?v=2.2"></script>
   </body>
 </html>
