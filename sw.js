@@ -1,4 +1,4 @@
-const CACHE_NAME = "hamza-portfolio-v6";
+const CACHE_NAME = "hamza-portfolio-v23";
 
 // Static local assets to pre-cache immediately
 const STATIC_ASSETS = [
@@ -8,13 +8,12 @@ const STATIC_ASSETS = [
   "./script.js",
   "./images/HG.png",
   "./images/HG.svg",
+  "./images/imgCodev.png",
   "./images/imgHamza.png",
-  "./images/imgLeon.png",
   "./images/imgNote.png",
   "./images/imgTable.png",
   "./images/imgPortfolio.png",
   "./images/imgQuran.png",
-  "./images/imgResturant.png",
   "./images/Services.png",
   "./manifest.json",
   // CDN Stylesheets & Webfonts so they work completely offline:
