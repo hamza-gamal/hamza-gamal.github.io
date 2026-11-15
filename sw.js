@@ -1,4 +1,4 @@
-const CACHE_NAME = "hamza-portfolio-v5";
+const CACHE_NAME = "hamza-portfolio-v6";
 
 // Static local assets to pre-cache immediately
 const STATIC_ASSETS = [
